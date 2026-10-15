@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dry'Arts</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icone-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-title" content="Dry'Arts">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#b8893a">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-size:14px}
+img{max-width:100%}
+/* Layout: app de uma coluna para celular, fundo de etamine, navegação fixa embaixo */
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f6f2ec; --tela:#fffdf9; --tela2:#efe8de; --fg:#2d2420; --sub:#7a6b62; --linha:#e2d8cb;
+  --acento:#a8324a; --acento-s:#f6dde2; --verde:#3f7d4e; --verde-s:#dcefe1; --azul:#3a5f8f; --azul-s:#dde7f4;
+  --laranja:#e0801c; --vermelho:#c9302c; --grade:rgba(120,90,60,.06);
+  --f-tit:"Young Serif",Georgia,serif; --f-txt:"Figtree",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1c1816; --tela:#26201d; --tela2:#302824; --fg:#f1e9e1; --sub:#b3a398; --linha:#3d342f;
+  --acento:#e2768a; --acento-s:#4a2730; --verde:#7fc28f; --verde-s:#22382a; --azul:#8fb2e2; --azul-s:#24324a;
+  --laranja:#f0a24b; --vermelho:#f0736e; --grade:rgba(255,230,200,.04); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1c1816; --tela:#26201d; --tela2:#302824; --fg:#f1e9e1; --sub:#b3a398; --linha:#3d342f;
+  --acento:#e2768a; --acento-s:#4a2730; --verde:#7fc28f; --verde-s:#22382a; --azul:#8fb2e2; --azul-s:#24324a;
+  --laranja:#f0a24b; --vermelho:#f0736e; --grade:rgba(255,230,200,.04); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-txt);font-size:15px;line-height:1.45;
+  background-image:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px);
+  background-size:7px 7px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.app{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 110px}
+header.topo{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding-block:14px 10px;border-bottom:1px dashed var(--linha)}
+.marca{display:flex;align-items:center;gap:10px;min-width:0}
+.marca h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.marca h1{font-family:var(--f-tit);font-weight:400;font-size:1.35rem;margin:0;letter-spacing:.2px}
+.marca small{display:block;color:var(--sub);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase}
+.bastidor{width:38px;height:38px;border-radius:50%;border:3px solid #b98a5a;background:var(--tela);display:grid;place-items:center;box-shadow:inset 0 0 0 2px var(--tela2)}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{border:0;border-radius:12px;padding:10px 14px;background:var(--acento);color:#fff;font-weight:600;cursor:pointer}
+.btn.sec{background:var(--tela2);color:var(--fg)}
+.btn.peq{padding:6px 10px;font-size:.85rem;border-radius:10px}
+.btn:focus-visible,.nav button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--acento);outline-offset:2px}
+.perfil{border:0;padding:0;background:none;cursor:pointer;border-radius:50%;flex:none}
+.perfil img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--acento);display:block}
+.boasvindas{display:flex;align-items:center;gap:14px;margin-top:14px}
+.boasvindas img{border-radius:50%;object-fit:cover;border:3px solid var(--acento);flex:none;cursor:pointer;max-width:45%}
+.boasvindas .nome{font-family:var(--f-tit);font-size:1.4rem;line-height:1.15}
+.rodape-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:28px}
+.aula{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;overflow:auto;
+  padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.aula-in{max-width:520px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.celular{border:10px solid #2d2420;border-radius:30px;background:var(--tela);height:300px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.cel-topo{background:var(--bg);padding:10px 14px;font-family:var(--f-tit);font-size:1.05rem;border-bottom:1px dashed var(--linha);display:flex;align-items:center;gap:8px}
+.cel-corpo{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.cel-linha{height:12px;border-radius:6px;background:var(--tela2)}
+.cel-btn{align-self:flex-start;background:var(--acento);color:#fff;border-radius:10px;padding:8px 14px;font-weight:600;position:relative;animation:pulsa 1.6s infinite}
+.cel-btn.sec{background:var(--tela2);color:var(--fg)}
+.cel-campo{border:1px solid var(--linha);border-radius:8px;padding:7px 10px;font-size:.85rem;color:var(--sub);background:var(--bg)}
+.dedo{position:absolute;width:34px;height:34px;border-radius:50%;background:rgba(168,50,74,.25);border:2px solid var(--acento);right:-14px;bottom:-16px;animation:toque 1.6s infinite}
+@keyframes pulsa{0%,100%{box-shadow:0 0 0 0 rgba(168,50,74,.45)}50%{box-shadow:0 0 0 10px rgba(168,50,74,0)}}
+@keyframes toque{0%,100%{transform:scale(1)}40%{transform:scale(.7)}}
+.legenda-aula{font-size:1.08rem;line-height:1.5;min-height:4.5em;background:var(--tela);border:1px solid var(--linha);border-radius:14px;padding:12px 14px}
+.aula-ctrl{display:flex;gap:8px;align-items:center;justify-content:center}
+.aula-ctrl .btn{min-width:56px}
+.cap-lista{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.cap-lista button{border:1px solid var(--linha);background:var(--tela);border-radius:999px;padding:6px 12px;font-size:.8rem;white-space:nowrap;cursor:pointer}
+.cap-lista button.on{background:var(--acento);color:#fff;border-color:var(--acento)}
+.passo{border-bottom:1px solid var(--linha);padding:10px 0}
+.passo:last-child{border-bottom:0}
+.passo summary{font-weight:700;cursor:pointer}
+.passo ul{margin:8px 0 0;padding-left:18px}
+.passo li{margin-bottom:4px}
+.qrbox{background:#fff;border-radius:14px;padding:10px;width:220px;max-width:100%;margin:6px auto}
+.qrbox svg{display:block;width:100%;height:auto}
+.arte{width:100%;max-width:420px;display:block;margin:0 auto;border-radius:12px;border:1px solid var(--linha)}
+.marca-card{display:flex;align-items:center;gap:14px;margin-top:14px;padding:10px}
+.marca-card img{width:104px;height:104px;border-radius:50%;flex:none;object-fit:cover;background:#fff}
+.flip{perspective:600px;flex:none;border-radius:50%}
+.flip-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s ease-in-out}
+.flip-in img{position:absolute;inset:0;width:100%!important;height:100%!important;border-radius:50%;object-fit:cover;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:3px solid var(--acento);background:var(--tela);display:block;max-width:none!important}
+.flip-in img.verso{transform:rotateY(180deg)}
+@keyframes vira{0%,40%{transform:rotateY(0)}50%,90%{transform:rotateY(180deg)}100%{transform:rotateY(360deg)}}
+.perfil .flip-in img{border-width:2px}
+.insta-link{display:inline-flex;align-items:center;gap:5px;color:var(--acento);font-weight:600;text-decoration:none;font-size:.9rem}
+@media (prefers-reduced-motion:reduce){.flip-in{transition:none}}
+.fotos-ed{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin-bottom:10px}
+.fotos-ed div{position:relative}
+.fotos-ed img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;border:2px solid var(--acento);display:block}
+.fotos-ed button{position:absolute;top:-4px;right:-4px;width:26px;height:26px;border-radius:50%;border:0;background:var(--vermelho);color:#fff;cursor:pointer;font-weight:700}
+.foto-wrap{position:relative;flex:none}
+.mini-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--linha);background:var(--tela);color:var(--acento);display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.mini-btn.cam{position:absolute;right:2px;bottom:2px;background:var(--acento);color:#fff;border:2px solid var(--bg);width:34px;height:34px}
+.boasvindas .insta-link{margin-top:4px}
+.icone{background:none;border:0;padding:6px;cursor:pointer;color:var(--fg);border-radius:10px}
+h2{font-family:var(--f-tit);font-weight:400;font-size:1.25rem;margin:18px 0 8px;text-wrap:balance}
+h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin:18px 0 8px;font-weight:600}
+.card{background:var(--tela);border:1px solid var(--linha);border-radius:16px;padding:14px}
+.lista{display:flex;flex-direction:column;gap:10px}
+.linha{display:flex;align-items:center;gap:10px;min-width:0}
+.cresce{flex:1;min-width:0}
+.mudo{color:var(--sub);font-size:.85rem}
+.chip{display:inline-block;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--tela2);color:var(--sub);white-space:nowrap}
+.chip.aguardando{background:var(--tela2);color:var(--sub)}
+.chip.bordando{background:var(--azul-s);color:var(--azul)}
+.chip.pronto{background:var(--verde-s);color:var(--verde)}
+.chip.entregue{background:transparent;border:1px solid var(--linha);color:var(--sub)}
+.bolinha{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.b-laranja{background:var(--laranja)} .b-vermelha{background:var(--vermelho)} .b-verde{background:var(--verde)}
+.resumo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.resumo .card b{display:block;font-family:var(--f-tit);font-weight:400;font-size:1.35rem;font-variant-numeric:tabular-nums}
+.campo{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.campo label{font-size:.8rem;color:var(--sub);font-weight:600}
+input,select,textarea{background:var(--tela);border:1px solid var(--linha);border-radius:10px;padding:10px;width:100%}
+textarea{min-height:70px;resize:vertical}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--tela);border-top:1px solid var(--linha);display:flex;justify-content:space-around;
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.thumb{width:72px;height:72px;border-radius:12px;object-fit:cover;flex:none;border:1px solid var(--linha);background:var(--tela2)}
+.semfoto{background-image:linear-gradient(45deg,transparent 42%,var(--acento-s) 42% 58%,transparent 58%),linear-gradient(-45deg,transparent 42%,var(--acento-s) 42% 58%,transparent 58%);background-size:12px 12px}
+.prev{width:100%;max-height:220px;object-fit:contain;border-radius:12px;background:var(--tela2);margin-bottom:10px}
+.b-entrada,.entrada{color:var(--verde)} .saida{color:var(--vermelho)}
+details summary{list-style-position:inside}
+.nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.64rem;color:var(--sub);padding:6px 1px;min-width:0;border-radius:10px;position:relative;flex:1;cursor:pointer}
+.nav button.ativo{color:var(--acento);font-weight:700}
+.nav .ponto{position:absolute;top:4px;right:calc(50% - 16px);width:9px;height:9px;border-radius:50%;background:var(--laranja);border:2px solid var(--tela)}
+.progresso{height:10px;border-radius:99px;background:var(--tela2);overflow:hidden}
+.progresso i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--acento) 0 6px,color-mix(in srgb,var(--acento) 75%,#fff) 6px 12px)}
+.carretel{width:30px;height:30px;border-radius:8px;border:1px solid var(--linha);flex:none;position:relative}
+.carretel::after{content:"";position:absolute;inset:40% 0;background:rgba(255,255,255,.25)}
+.ferr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ferr button{text-align:left;background:var(--tela);border:1px solid var(--linha);border-radius:16px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.ferr button b{font-family:var(--f-tit);font-weight:400;font-size:1.02rem}
+.voltar{background:none;border:0;color:var(--acento);font-weight:600;padding:8px 0;cursor:pointer}
+.result{background:var(--acento-s);border-radius:14px;padding:12px;margin-top:6px}
+.result b{font-variant-numeric:tabular-nums}
+.grade-box{overflow-x:auto;border:1px solid var(--linha);border-radius:12px;background:#fff;margin-top:10px}
+canvas#grade{display:block}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+td,th{padding:8px 6px;border-bottom:1px solid var(--linha);text-align:left}
+th{font-size:.75rem;color:var(--sub);text-transform:uppercase;letter-spacing:.05em}
+.tabwrap{overflow-x:auto}
+.filtros{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.filtros button{border:1px solid var(--linha);background:var(--tela);border-radius:999px;padding:6px 12px;font-size:.82rem;white-space:nowrap;cursor:pointer}
+.filtros button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.modal{position:fixed;inset:0;z-index:20;background:rgba(20,12,8,.45);display:flex;align-items:flex-end;justify-content:center}
+.folha{background:var(--bg);width:100%;max-width:560px;max-height:92%;overflow:auto;border-radius:20px 20px 0 0;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.aviso{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;z-index:30;font-size:.9rem}
+.exemplo{font-size:.7rem;color:var(--laranja);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+footer.rodape{text-align:center;color:var(--sub);font-size:.75rem;margin-top:28px;line-height:1.6}
+.dica{border-left:3px dotted var(--acento);padding:4px 0 4px 12px}
+.ponto-g{display:flex;gap:12px}
+.ponto-g svg{flex:none}
+.cont{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0}
+.cont b{font-family:var(--f-tit);font-weight:400;font-size:2rem;min-width:90px;text-align:center;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="topo">
+    <div class="marca">
+      <button class="perfil" id="btnPerfil" onclick="editaPerfil()" aria-label="Editar foto e nome"><div class="flip" style="width:42px;height:42px"><div class="flip-in"><img id="fotoTopo" alt=""><img class="verso" id="logoTopo" alt="Dry'Arts"></div></div></button>
+      <div class="bastidor" id="iconeTopo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20"><path d="M4 4l12 12M16 4L4 16" stroke="var(--acento)" stroke-width="2.6" stroke-linecap="round"/></svg>
+      </div>
+      <div><h1 id="nomeTopo">Dry'Arts</h1><small id="saudacao">Boa tarde</small></div>
+    </div>
+    <div class="linha" style="gap:2px;flex:none">
+    <button class="icone" onclick="compartilhar()" aria-label="Compartilhar aplicativo" title="Compartilhar aplicativo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+    </button>
+    <button class="icone" onclick="aviso('Atualizando…');setTimeout(()=>location.reload(),400)" aria-label="Atualizar aplicativo" title="Atualizar aplicativo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
+    </button>
+    <button class="icone" id="btnMais" aria-label="Mais opções">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    </div>
+  </header>
+  <main id="tela"></main>
+  <div class="rodape-btns">
+    <button class="btn sec peq" onclick="abrirAula(0)">▶ Aula</button>
+    <button class="btn sec peq" onclick="guia()">Como usar</button>
+    <button class="btn sec peq" onclick="compartilhar()">Compartilhar aplicativo</button>
+    <button class="btn sec peq" onclick="location.reload()">Atualizar aplicativo</button>
+  </div>
+  <footer class="rodape">
+    <img src="" id="logoRod" alt="Dry'Arts" style="width:72px;height:72px;border-radius:50%;display:block;margin:0 auto 6px;background:#fff">
+    Dry'Arts · Ateliê de Bordado · versão <b id="versao">1.0</b><br>
+    Desenvolvido por Luís Ricardo de Almeida Siqueira<br>
+    © 2026 Luís Ricardo de Almeida Siqueira — Todos os direitos reservados.
+  </footer>
+</div>
+
+<nav class="nav" id="nav">
+  <button data-aba="inicio"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</button>
+  <button data-aba="encomendas"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Encomendas<span class="ponto" id="pEnc" hidden></span></button>
+  <button data-aba="catalogo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h16l-1.5 11h-13z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>Catálogo<span class="ponto" id="pCat" hidden></span></button>
+  <button data-aba="caixa"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg>Caixa</button>
+  <button data-aba="linhas"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M7 8h10M7 16h10"/></svg>Linhas<span class="ponto" id="pLin" hidden></span></button>
+  <button data-aba="ferramentas"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20L20 4M14 4h6v6"/><circle cx="6" cy="6" r="2"/></svg>Ferramentas</button>
+</nav>
+
+<div class="modal" id="modal" hidden><div class="folha" id="folha"></div></div>
+<div class="aviso" id="aviso" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+const VERSAO="1.0";
+const LOGO_GIRA="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/2wBDAQcICAsJCxULCxUsHRkdLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wAARCAFoAWgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6RooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKZJNFCAZZEQH+8wFAD6KjjuIZv8AVSpJ/usDUmaACiiigAooooAKKKKACiijNABRRmigAooooAKKKKACg0UhoAxvEniODw9YpI0bXF1O4it7dPvSuegH9T2rh4vFl5pOp/adU1YT3kw2C0jfFtFk52gYyzcfe474rD8e+I7mw+Id7DJaXE0yW6RWIRC3DcsVx3JwM+xFcvp+gTz+IhqWrSM0lhmSdA3yRyEfJD7sPvN6cCvFxVao5OzskelRpRUVfW57fpXjixvtWttKnjkgvblGZMDcjbcZGeoPJPIxweemenryD4Y2Muu+LrzxHICLWzU21v8A7Tn7x/Afzr18dK9DCSqTpJ1NzkrxjGdoBRRRXUYBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRVe+u47Cwnu5c+XAhkbHoBmua0r4haZqF0beYfZ3IDK2dysp6Nn09/zxWU60INRk7XA62qmo6XYatbGC/s4bqI/wyoGH/wBarSOsiBkYMrDIIOQaXFabgeGfED4ay+F0fX/Dd1cwWkZzPAsjZgH99T1K+oPTr0rJ8P8Axg8R6E8aap/xNLPO0l+JF9s19CXEEdxbyQzIskUilHRhkMpGCD+FfLniDS4tF1zUNNYF4bWZoSO5jB4P1AwfwrhrxdNqUTKemqPofwv430bxZAGsLjEoGWhfhx+Heuhr5AtZL3SdQ+0WM7R3Vu3yshxu7g/iK+hfht4/i8X6Z5FyRHqVuP3qdN4/vCtKNfmfLIqM7ndUUmaw9f8AEsGjhLeKJrvUJ/8AU2sf3m9z6KO5NbzmoK8jWMXJ2RsyzxwRs8jqiKMlmOAK5qfxxZSSNFpNrdavIpwTbJ+7B95Dhf1rlL65kvJPN1y4XUJs5W0jJFrD7Y/5aH3PHtWRdeKDNcCwt/Ou5hwtpZxltv8AwFeB+NeRUx8pPlpI7oYVWvI7SXxF4ilORDpGnj0nuGlYfggx+tVzq/iA8jX9HHsLSQj/ANCrmYNI8a3wDQaFBZo3Q3l0FP8A3yuTU58I+O9uRJogP93fJ/PFZ/7XLUvlorqdJHrfidASk2iagP7qyPAx/wC+gRV2Pxv9jwNb0q700HrNgSw/99rkD8cVxMmg+ObT5n0mxvFHX7PdAH8AwFQQ+LLnSJhDqVteaVI3G25jIRvx+6aPbYmlrJP8w9jTn8LR7BZaha6hAs9pcRzxNyGRsg1arya1nt2nF3pU66TeNyXh5t5f99Og+o5rs9A8Um9uDp2pRCz1JBnZuykq/wB5G7iu/D42NXR6M5atBw1R01JigHNGa7zmDFFGa53xb4nGgWccVun2jUrs7LW3B+83qfRR1JqZzUI8zKjFydkZ3jTxG0Mg0fS3RdSlQtJORkWkXdz79gO5ry64WbW9Us/CehZQSE7pGOSF6vI57k9T+VLrWqNp1tLbxTNeX91JuuJgMtcSnoB/sjoB/jXpfw38F/8ACN6Sby+QNq96A07HkxjqIwfbv7/SvHjzYyrd/Cj0XbDw82dPoWjWugaNbabZptht12g92Pdj7k81pDpSUor2krKyPNbvqwopKWmIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAhurdLq1lt35SVCh+hGK+cdPj+x6hcaRfu0MVtOY0nU4a3fPBB/umvpM14V4xso7D4oXUE65ttSHzE9twyD+e6vMzCF4KRLNjT/EmreFpVgvXAgY/LcbS0L/76j7p9x+Vei6R4ktdT2RtiC4cZVCwKv7o3Rv5+1ebaBctbTt4d1vEgA/0aZ+kqeh9xTNT0e+8OyNPp4+02BO57Vj933Q9jXnUcXUo6boZ7GeRXzB8QLxX+JutqhBXziv4gAH+Ve1eFPG1vqKwW08+8SHZHK/3t39x/wDa9D3+vX50166M3jfV5X4L3UpOf9816s6sa1NOJnU2J45FD2lx3dDC3+8h4/QirOma3N4T8YWuqWrfLvG9R/Ep6j8uKwvPkNqiQq0ki3YCIoySWXGAPqBVnxVanTY4Yppgb4JvliUZEQPIG7ufpx9a5krSRmrn1JrHiiGx0KC8tVFzNehVs4geZWYZA+mOSe2K4SW4NklzPPcia8nGbu7JwDj+BfRB+vWsXwdc3l34a0++v8iW3tjaWi/3Fzl3+pyF+gNa+haMPFWvNHcDdpmnMGnXtNJ1WM+w6n8B3rnrVJ4mr7OJ7lGCpU+eQaB4Zv8Axcwu7p5dP0Y/c2/LNdD1H9xPfqfavR9J0PTdDtBbabZxWsQ6iMYLe5PUn3NXlUKAAAB7U6vVo0IUlaKOWpVlUeogApcUmRUcs0cKlpHVFHdjiugysS4FQ3NpBd27QXEKTRPwyOoZT+Bqh/wkWnsxWKYTH/pmQaG8QWEWDM7wg93Qgfn0paM09nNdDkdZ+G62xe88MT/YJxybRyWt5PYDqh+nHtXP2mpveSnSNWhm03UbY70DD54W7PGf4lPfHBFesw31tdYEcqknoOhrJ8T+FbPxLZqkxMNzD80Fyg+eJvb1HqOhrgr4SM/ehozeFZx92exP4X159ThktLzauoWmFmC/dcH7rr/snrXQZrxnS9VvfD/iCNdSAjvtPISfHSa3Y43D1APzD0+YV7BJcRRWzTu6rGq7ixPAHrW2FquUXGe6Ma9PlldbMp67rVp4f0ifULyQJHEuQO7Hso9zXjWsa1OslxqupMP7TulwyZ4tYu0S/wC0erH8KteJvFQ12/GrScadasRp0LdJWHBnI9B/D71x+l2V54s1gy7N2nQPuuJZX2Ix/ulvfvjmvPxVZ1pckfhR2UKSprmlud18LfCb6pfDxVqkf7peLGJvXvJ/h+fpXsK8CvMjq26NYpNYuhHGAqw2ESwRqB0AJyxAp8NxHvBg1zWLV+xkdJl/EEVdPG0qS5YoyqUZ1HzM9Npa4i28T6npSb9SWLUbEdbu1BDRj1ePqPqMiuws723v7VLi2lWWKQZVlOQa9KjiIVfhOOdNw3J6KBRXQZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFIzqoyxAA7mgANeU/GbS2H2DV4wSYz5ZwO6/MP03CvTG1SwVtrXtuD6GVf8azfFGlx+I/DF1ZxOjSOu+FwcgOOV5+vH0Nc9eKqwcUJ6nnUltH4t8KRTwOEvrcB4pB1BFS+HPE/wDaNo1hqC7LyD5JFbviuN8Ma1JoWqy2EyvEoYjY3BXnlfqDxV7xTERcJrWmE+an+sVf4h6f4V8y1Z8rFcTxDCdD1Nr+yUGKT/XRjow9fqK8v8UQfY9a+2xzNPb32ZUcnJ3E5ZT7813l3riX9gJS2cjnPasXQfDn/CV3Nxp8++LTbdlnmmTrHzwq/wC03IHtk9q68NJwfvEPUTwJp8sOnS67cJgvIY7EEclwMNL9FBIHuT6Vn+ObGRvFdoSP3d/DCyfgNjD81P5160dKSURbIVgt4U8uCJR8saAcAVz3iPQDqOn2twF/0jRrkTgd2hYgOPwOG/A0LEJ1b9CqcU5JG7PKmmaQFUfJaQhQB3IHP5nNei+D9GOi+GLS2cD7Qy+dO396R/mb+ePwrzdAt/cWVsTuW4uokb3BcE17MowK6Mth8U2eri3ZKKEpjuEUliABySakPArgfGXiqySOWwe9FtDnbJIrfM/qq/4167aSOejSdWVkamseJ1ELRWE0MbngTTttQe47muYEmq3M37nWdHuJD1DhiT+OTWHFfaJw9v4X1DUs/wDLVrR5c/i+anbWPDsSZ1HwjcWa/wB+TTsD8wBWLlc9eFFU1aK/I07uSS3Gdd8Oxywgc3Vl+8C+/ADiprWS5t7UXmj3p1rTWHzW0rBpVH+w3f8A3W5pNCvtCvH3aJrLQsP+WBlLr9Nj8j8DUuo6NNHO2o6YI7K/zlwn+oufZx/Cf9r+dAX15Xp/X9bFeW7RbP8AtbRibmyXJnsj2A+8VHVWH93oa6Cy1qWEWskMxurK7UGEucnOM7c+46Z9MVxx1NA8usWkTxTK3l6lanqMfxkf3h69xVvS5ETwBO6MMWl07QkdAFkBGPzIoTHUopxV0b3jbRV8QaHHqmnxmS+tFZo1A+aRDw8R+vOB6iuU1vxPJrGh2eieZJDZ2tvGdTk5V3OOIB/tHHPoK3PEWq6vpkGpxaT5fmSQrMN5x5eTtZx9Bg15Bq2rC1tltbd2aKPJ3H700h+859z+grhxUnGXubs5IUrfFsti9J53irxFHp8TiCELulKdIIV7D+QrrbKy1DxBMNF8NwRWtnZAK00mfLhHuByznr/hWN4V0a50HRdUu7yMrfT7AynqgI3Bf1Fe1eEtEj0LQILVVAkYeZM2OXc8kn+X4UUsMpWi9updefs4KS3ZzNp8I9PEYN/q2p3kx6sswiXPsqiquo/C6+skM/h7W5zIvP2a+O+N/bcBkfrXpuKMV2vDUmrcp5qr1E73PGtI1q7hv5bK9hew1O2OJYWP6jsVPrXQaXqieHNSiuYfk0q8kEdxCPu28jHh19FJ4I7GrPxO0D7RpA8QWa7dQ0oeZuXrJF/Gh9eOR9K563kj1LSniLZhu4dufqOD+Bwa8WtB4SqnHY74NV4ansQIIBHOaWue8DalJqnhCxmmbdOimKQ/7Snaf5V0NfRU5c8VJdTypR5W0FFFFWSFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFNkkWONndgqqMkk4AFLmuN17w3qnjKYwahevpmiqf+PaDBmn93boo9F596mTaWgGD4p+MUNtK9j4athqVwODcNnyVPt/erzy7ufFPiRy+q6zdBW58qEFEFezWPwy8KWESoulJOR/FcO0hP5nH6VdfwL4ZkTadDsh7pHtP5jmuKpQq1N5GbjJ9T56ufBymMsdQuQ59QG/rWfBeeKfCdz52j6xKQnJjDnn2KN1/DNe+6r8L9Luoj9gu7vT5O2H86P8A75fP6EV5d4t8AeINCgkmlgXUbRfmM9sCdo9WQ/Mv4ZFc6pVqbvuQ4tHPX3iePxxcic26WOvAfvY04S5IH3kB6PjqvftyMU/TvEEgiMM56DBB71xWohZXEgf5wcrKp5GOnI6/zr0rwZZ6X8UNOlsLqYad4osU3GdR8l7H03sv97pkjnvzU1KCrarcadzkrqOd9VSCxQzfbJBGka9d7HA/OvZfDXh6DSNPh0q2O9Ijuml/57Sn7zfTsPQAVyej+CdV8KeJ5rzV40AtYD9lkRwyu7naGHfgbutejaCQsCnvXHUurU38yoruW5LFQVQKOFP9B/WsfULNra6EyKCOQykcMDwQfYiujeVWuGHcIP1Yf4VFfwLIhIFYzhpdFtHCQ2q6T4hsVBJt1uIpoWP9zcBg+4zj8Ae9exqf0ry7V7QTaXKv8dsfOjPcDow/LB/4DXoWkXq6jo9tdqf9agJ9j0I/PNell094nXOftIRk/Qr+JNYj0jRprh5BGxUqhJ6MR1/DrXkltNJp0yT2OnC5vpvuy3R/fSf7iAFlX8vrXUfEnU/+JnYWESCS5GWjVj8oc9GPsoBNck+sf2NIbPR4W1PVLhgskrceY55wx9O+0cAcmu+ctT18HS5aV7bmr9u8YCNp5/7ItgvVJHZiPqRwPzrKb4n3+nSkXUFpeRLwTaStx+mKB4Zl1nUcatqL3X2cb73Y2yGPuI1Hrjkk9B9a2LeDTrex/tWa1WKxQgafaIgG89Ffb3Zv4fQc96nU6HyJaq5TGueEfE7KmrWP2C9b7jSL5EoPs64/Wr4OseHE3x3Emt6YBna2PtES+oI4cfTn2rI8R2Om2OmtdeIokn1G44htk5EeeiKO59WrE8OXXiLSzO8cRntoWBazLFnRSMgqT14z+VFxqmmrx2N7W7+2lhXXtOlVl2bJwn/LVPcf3l/lmtG0tDZeAtM0o/LPeyxqVPXLvvb8lFc5ax2mv+IYprI4spALi8ReFfB447MW4PrzXTR3a6h4glvncJaaYrIrfwmUj5yP91ePxpIqaslHsa00kd34pvVzmOCw2se3zsTj8hXLeBvh1DceJv7UvZFnsLdI5reFuSWYZG72X9ePSrsN88HhnUNVxm61Z/3CnrtPyRD8sn8a6bw9cx2niNNNUcLZJHkdMgnH54NVaMmrnFWi1TdjD1c79U12M/8ALO8RiPbC/wBK9XTGOK8z1238rxtqNsel/arKn1A2n9QK77RrsXuj2lz3kiUn645/WrgrNnHitacGaQozTaWtTzivqEKXGnXMLjKSROjD2KkV4p4Ycjw5aA/wJt/I4r2HxBfLpvh3UL1zgQW7v+O04/XFeRWUR07SIIH4aOMb/rjJrxsya91HoYNaM6jwH4hj0vSpIJ1/dyX04VgenIP9a9JhnjuIlkiYMjdCK8x8NeDItf8Ah1aPLNJa3kk0t5b3CfejLMcZH8QIAyDTdD8R6j4c1x9G1pBFdIN2Af3c6f30J/8A1joa6KdSdCMef4fyMqkI1JPl3PVKKgs7yG+t1mgbcp/Q+hqevTTTV0cWwUUUUwCiiigAooooAKKKKACiiigAooooAKMCiigBKjmmjgTdI4RR3JqjrOt22j2rSzON2OF9a85vtY1TX58q5ht/1NcGJxkaOi1Ym7HZ6l4zsbMlI8yv6CueufHd05JismI7Z4/pUGn6DEmGYb2Pc1sHTo0j+6K8uWJrVNb2Fqzy7xLovh/xFdNdT2s2kXbffktVUo59WQgc+4wa4S48PeIPA2rW/iXSLhL62spBILm3z8o7rKnVQRxnkc9a9z1HS4HDfIorjLy3udJuvtNnJgD7y9iO4I7g+lFPEzg/e1Jatqb2r+LrLxVomnatZN+4uVU7T1RgDuU+4JIqzZ6xDZWZnlfbGgBPr7AfjXDpFYw6LPJpNv8AZYhcm4nt1+7CzAKWUdkJA47E+lZXiXWtmkW8O4lXmCtt/wB08fzqai9rV5l1LpJSmk+p6zpHiC31dZLm3LBRtjIbrndn+RBrYmugI8k8etebeG7n+xvD+boFHAFxMPQncxH4DA/CqWheJr3UvEMpnmYxeU7smflUbgqgD67vy96iz1t0Oj2alzSjsjujMJ9QEJxtmVoz+Ix/WrXw61xZbT+z5H5YF0z/AHh99f8A2b8T6VzNtfhtctADj94M1T8I2D28ySSakTKsvmqlsudvzEjLN3wcHAxyRRQn7KXOTRnFRkpGl8RQq+MAUmKSyWyqW/55pyWI9zgCuf0S9is7C51lIvugwWUffGcZ+rt1PoK73XvDFj4onN5dm7jmMXk7oZFX5c56FcVyV54QudNWyisZ/tdvauGMLrslIUHGB0bnnjH0r01iYSe57eGxdFwjTk7MuLGPJs9CL73uN099IDy4By//AH02F+lW47qO/wBYuNQnYCy0rMcAH3fNA+d/+Aj5R9TXM2Wq+Q+saiwJaMCJc9fkXJH/AH036VD4gmaw8HWOlRsRLdsqSsO5PzSE/ia6FI7XTuFta3PjC7v9VnB85I/N09D02qcjH1IwfqK6vzIYhp2vwELazIsFyR/CpOUb/gLZU/WsDwhMum3DaNIxF3aN5lqT/wAtIz1X/PcCttJraxvpdPePdpmp7mhB6I5/1kXt/eH/ANahE1L3sjK16zk8NalINKRYrfVZC6yD7sMuPmz7YywHuaaojuootEty0dpEA11JnnbnO3P95z19q0oGiuoZ/D+qlpNi7oZf4nQfdkX/AGl71ycxvdMdtHnbyRzJJcKf9ah/iU9yfXtSZpT1XK9zp47yPUdT+2NtXTtMJEfZXlAxkeyD9a0PDEsk2p22oSApJqV0jRK3VYVBC/mMt+Nc1apHqMESOottGhXhD8puAOw9E9SetdD4TuZtY8W2d8Rtto2KWy4xvGDufH93AAFVHcxqq0Jeh0fj2D7LNpOsLx9nn8iQ/wCw/T/x4D862PCEo+x3Nrn/AI95jtH+yw3D+ZpvjW2F34M1NCMlITKv1X5h/Ks/wddeZqTY6T2cch+oOP61rtI8pe/h2ux24oNA6VQ1jVYdI057mXLEYVI1+9I56KB6k1Umoq7POSu7I5fx7qCzvb6MpyrEXN17RKeFP+82B9Aa8+1UT380OmW2Td6jKIUx2z95voBk1q6nespuJ7uRTcyt5ty4PAI6ID/dUcfXJrc+Gnh17id/FF/EVaZTHYowwViPV8erdvb614aTxde/RHp6UKXmeg2FlHYafb2kIxFBGsaj2AwKzvE3hey8TaWba5BjmT54LhB+8gfsyn+Y6EVtgYFLivecU1ZnlqTTujynw9rep+G9bfRtXAW7iGSAfkuI+gkT/PB4Neo21zHdQJNE25GGQawfGPhODxPpq7WFvqFqTJaXI6xt6H1U9CK5jwV4kmt55rLUUa2uIH8q5gbny3HceoI5B7j6VwRbws+V/A/wOmSVaPMt0elUUisGUEEEHnIpa9I5AooooAKKKKACiiigAooooAKKKKACsnWdcj02MpGjT3JHyxIM/n6Vev7oWWn3FyRkQxs5H0Ga8Y8KeFtQ+I2pza/4inuBpPmnyLVZGRZufY/dHc9zx2rmrznpCnuxM17q01XWbxri8KdcqgYsF/Krdpps8RA3wY9GQn/2atjXdJ8JaNY+ZdadDbCNeGt8xOB0GCpBz6etRT+GdUtVEtjdtqVsQD9mvDtnUf7Mo6n2YfjXi1MFO7ad2HI0rsmt7edAOLVh6bWX9QTUstwIoz50UkQ/vxHzFH1HUVhLfzRGQoX/AHRxLFIu2WH/AHl/qODUy6ms653c+1YKXLo9wuLeyb4WlhZLmLu8Zzj6jqK4fVrzZJITMjRlBhNvIPOTnuCMcY7V0Gpu8MhuLVzBcjpJH/F9R0NchdyQ61ch7iFNO1UqQjEbUm9v9k0731JZjaVrMVtqBEyIxVyjD+CdCCQrD0Zf5EVrI8EvibSr23s7a3srm6jjeGJfkikB6YPTIII/GuG13zWvGV18m4jHllWyCxz0P44II6Gt7RPMt7y3srmcSJqkEcsM68DzlO5D7EOpQ/X3ro5NOZG1SUJxTWj6lrUrm8urO9020Be7YiFVJxuYZ4/Ss/TpBpGlP5jYvZyGZVOQABgLnuQMn6sK1pZxD4z8QXSJtGnia6A/2mQBP/Hpf0rmWsb7WIYprBQWSYREE4LMRnjtwF3EngAUox0t0CjUs+SW1zf0nWJIVvb+5IUWcDlMd3xsUe+WNafhfXLazt0Mkiq2AMscVm2VtpcNkli8K6tIrq0hYsIQw6AAYLgZPJ4J7V12nFzsAsbFEXogtI8D9KyqchjUlzTckdjpOt/aY1WG3kkUjhziNT9C3J/KpNSjeVCxtyp7FXVv8KyIEiaRXMQs5T/y0h+6fqnT8sVneJPiLZeEJUsNRtLu7u5E8xFhUCNlJxkOeD+HTvWUYuekdSopy0RleJdOk1CCfyRsvOC6gY89QRnP+0AOvfp6Vha9NJe6tpsdvELnMUpZCwUHJA5JrSb4gabqkfnXGnXdl3Dq6uU54OMD9Kw/EP2ePVLC7trsJBJvBljwArHkjDfd5B47Zr0MPKa9yZ7+AqVI/uqi9P8AIt3Wk3cNlHqV5qcEV3ZjMRQ55/2mPXjsOtaFhr0HiDT5ILxGhnOGePG1gw6SJnvVCyvtPkkWS1hn1O+QcOcy7foThF+tUtWsnmlF/e3Aguc4iitySd316u304rtPVtfc3JJ5ZglpeS+VexfPbXKDiT/aH1/iWny3cGsQLp+pxCG7i+aM8Eg/34yeGU9xXMtqt7DAsGr2gn3t8nlnDg9jjpkeoxSy6xE4+z3Ect2FG8B4ykkfvuHH48Uh8qL91a6gpJv0e/tYzlfsyllk9N4+9+HT616V8OtNuLmRtdu1MSuhht4sY2jPJPvxiuV8H+FNT8QxJdPcXNrp+4f68DzHH+yR/M17FZ20NlaxW8CBIolCqo7AVtTj1Z5mOxCUfZxevUo+KZVh8K6kx727qPckYH6msLwbEY9bkjByLeyjRvqT/wDWpPFmtW0o8t3H2G1bfK+eJHHRB64PJ/AVF4evRoumTzToZtTvn89oAQPKTGEDk8IMc8+tE5qLu+hyRi4UGurO21DU7fS7Jrm5fai8AAZLHsAO5PpXnOva5NNdtdXJEcyKRFFuyLZT1JPeQjqew4Heqeu+Jljl8+a4865J2oVBwmf4Yl65/wBrqfarXhzwBd69NHqHiGM21hncmnn78voZT2H+z+fpXnVKk8XLkp7GcIRornmUvCvhaXxldpfXiMmhQvlVPBvGB6f9cwep79K9kRAigKoUAYAHAFNhhSGNY40VEQBVVRgAdgBUlenQoRox5YnHVquo7sKKKK6DEK4T4heHZvk8TaVEXvrJcXESdbmAckf7y9R+Iru6CM1nUpqpFxkXCbg+ZHKeDfEUOpWUMSyB0dN0LjuMZx/n+ldYK8p1GxbwX40EUOY9M1R2mtMdIZhy8f0P3h+Ir0vTb5b+xSdeCeGHoR1rlw03FujPdfijWtFaTjsy3RRRXcc4UUUUAFFFFABRRRQAUUUUARzwR3MEkMqh45FKMp6EHgiqjLa6LpQWKNYbe2jCoi8AAcACr9cF8QtfNrCbOEGRxjCL1dzwq/qB+Nc+IqKlBy6mlKHPKxnaZHN4y8atNOd+naYwkkH8Ly9UT8PvH8PWvSMAdaxvCegjw/4dgs3YPctmW5cfxytyx+nYewFY3jr4k6V4MtWEjrPeEELCG6H3rOlFUYXlu9/UdaopPTZG/q+jWmpBZZP3NxCP3dwmA6e2ehU9weK8+vTZx6qbAXtot+2diRzArN/ujOVP+yfwzXiPi34peJ/FUrrJdvbWxPEMZwAPoK4RxqE90iRTTS3DuBGseS5btjHOfpWNWjCv0szm5rn01fRC4he1u4Sf7yvkZ5rk/EVhJcxOgBUKQzMwBDDHY5yCD603w5q3jLw9piR+LbiyvY9nyWkymS6QdgzqQF+hJNSN478OTKVvNJ1O1bofLCzKf1Bry3SlCVk7iZyMtybxRp+pMEu1+W1uWP3h2Vj3B7GmWN1Iug3lvMCL7QbhL+JO4jLBZV+gO1vzrS1i78HauhEWtfZmVdqpcQPFj8cEVh20k1lqsCzuk5miktftMbh0nidSoBI7qcH6V1Qv1Qkdb4wWRH117NN9xqt1ZWUSL1bCbiB9TsqrqupQ6Vaw6Dp0odrZStzIvWR+r4PoSPyVai1fXo9NgGplvMuLYyPAo5/fyARqf+AorH8RWPoGhahcsLuaEopBkYz7gqr6nHP8qm3uK4NnVaHGk1zCIyqshzJhyAMjjI/i/wAmu+0eyEkH7pmglL733YkP3skdSOR6dM1meHtKv7eCHy7h4EkfCm3tEIAwSGJ5wCB1PqK7iyt9RAG+6huFHaa2C5/FT/SuR+8yooVrAPFyK5rxL4btPEGn/wBm3uY5EbzLWcDLQv8A1B6EfT0rsjN5ceJ4vI7ZDboz+PUfjWLrYIUnG1xyKT9xqUTRPl1R5JPpV/4Wvxba5ZqbeUYinHMM4P8AdbsfUH8QauXHhxb7T3WxlUpJhgrnBjI6H/PHuOlew6G1j4j0KXTtQgiuYmGHikXIPr/Q/jXIav8ADbU9AuDeeGJnu7ZefsMz/vE/65v3+h/OvQVOXKqlLbserQxnfc4Y6L4p05UgubOS3XAIeGEyhh6hgStWVtLqx/eQ6Tf3FzKMefNE3/oRHA9lFdV4b8avbTvbNutp4ziW0nUoQfdeqn3HHtXoul65aaooWNzHPjJiY849QejD3Fb0qkKmj0Z1zxs4fZueQaf4O1u/VroWZNwwx59yPKjQf3VU84/U+tbegeGtO0p2nuwuqzBtzcBIN3qWb72PQDArqPFOuRxCeN2/0O34m29Zn/55j2HGfUkCspNJhljjuvFE7bpF3Q6VCT8q9twXkn8gK3do6jeIlKF56J9EXrjx1aWrCI3unwED7qbpCPbtWTf+OPtZEEK3+oPJwkMMJjVvrjkj6nFJqPifTtMh8q1jtdOQ/KsdsitM3tuxgH6Bj71FYaL4l1//AI9bP+yLOTlp7vPmSe+37zf8CIFc7xEpaUlc517OGrjb1Mu5LtILzXbuOCKDmKzgcYQ9tz9Bj0XP1q9ZWXiDxUgTSbIWNhnP2q5BRD7qv3pD7n867PRPhzo+lyR3N2H1S9Q7hNdYIU/7KfdX9T7116qBRHCSm+as/kc9XF3funM+GvAel6BKLtg19qJHN1cYLD/cHRB9OfeuqVQBRSivQjBQVonDKTk7sdRRRWhAUtJS0ABpKU0lAGD4y8P/APCSeGbiyQhLpcTWsh/gmXlT+fB9ia574f8AiA3UESTAxvITFLGescy8FfzBH5V355FeXa9af8I78RGeMGO11pfPQjotwmN/4ldrfga8/FxcGq0d1+R1UHzJ031PUqKq6ddi+sYpx1Ycj0PcfnVqu6MlJJo5mrOzCiiiqEFFFFABRRRQAUUUUAQ3dwtpaSzv92NSx/CvMNCgfxL8QhdT/NBpw+0uDyDK2Qg/D5m/AV1Xj/UxZaIsG/a07c8/wjk/risjwjJB4d8AT69e/ILndeOT129I1/ID868+q/aV1F7R1OqHuUnLuS/Efx9D4P0kxQkSahOp8tQfu+9fNN4bzWryW8umaaVuWJOFUfU8CtfWNWufFXiGfVr4s3msfLjB6L6D0FLBo+o6uPLs7Oe6ReiW8TOq/wDfIPP1rOU3OVzzZSbZyF7HBADmXzCOvljgfia9X8CeFE8M6LDq80P/ABO9Qj3xbuTaQsOMejsOSeoBA9axdL+GOuza9YPq2kXFppXnq08kyhAUGWIxnPOMdO9ep2Df2pqj3EmCCxwOwrDFVXCKgt2VFGXF4Va7j8+cbieuaxdd8O29uphEIcTDYqRoS5Pc5B6V6uUUxLBEq+YRnJ+6g/vH2qo2jLtYAH5h80p++/4/wr7CuC0lqi+U+edV8KTyTeUIUjkPLL1IBOBn0P41HYfDDUXuy8l2bSMYJVEzn8zjNe7yaIYhJh1Rd6lAiAEAdQSeufWqxtbKwtprmd1trG2Vpp5D0VepP1P8zWn1movdiTax5faDwn4T8XLoniG4lN1JFHcQ3so3Rxlx9xlH3TxncPXnFeo6TpFtNGlxp0kF3EAdjW8odSD7A18veKdYn8WeLdQ1wqYvPlzEn9xBwg/AAUy1jnQG6sppbaVfviFyhX34PSu6phFNJylqGiPrq30xoJkkMEpkVSoY5zgnJHp2Fakcjx8GOQfhXyNb+KfFNjJHJHr+pMqMDse4dlbHYgnkV0uu6/4yubAeKPDmu6qmmOQt1bxzs32GXHTBz+7bqp7cg9KzjgnfSRakj6PubvKHqPXisK8mTaUf/V46DqnuPb2r52sfi74/sjzrzXS/3LqJJAf0zXbaD8aLfU5EtvFOnLZM3AvrPOwe7IeQPcVnVwlRap3BtM7NNfvvDq391YQxzzW8LTpFITtkCjJGR6rnH4VqeEfjn4e8RultfRtpd03A3tujb6N2/GsC9cC7t2idJraXG2WM5SWNuCQfTBrxCPT3tLmW3xuMEjRkryRtJHTr2rbBzcYuPYnmaPr7xD4R0bxZbI93EDKozDdwNtkT02uOo9uRXmmtaR4g8FxSPMW1LTEJZLyIbXhOOC4HQ/7Q49a5v4cfEy+8LTxWGqSPdaTI2ASctFnuP8K+h0kgvrRJoik0EyblI5V1I/lXZKnCurvc6qOIcfQ8U1LVZrfQdEuWuN7PL5skm0EmTBYkDpuyeOOuK19K8J+IPEa+fcSPolpLy28b7mb3Oen1b8hT/sr6D4o/s6fy0+zzfarB5B8kiH+H2Izj24NegWmv2EoCyyC1lPWOb5T+B6H6g0vYqcvfZ6mIk7J01pYg0DwVovh8iS0tQ9z3uZz5kp/4Een4YroV4qul7bEcXER+jiplcMMggj1FdUYqOiPLld6skpw6UwGlzVEDxTqaDS5pkj6KQUtUIKMUUuaACiiigBK5T4i6Y994SmuoE3XemsL2HHXKcsPxXcK6umyoskbI4DKwwQe4qJxUouL6lRlytM5XwNqSXVq6I+UkUTx/QgZ/pXW15R4Nc6DrEmmykj+zrx7TJ7xk5Q/98sv5V6uK48DL3HB7xdjfExtPmXUKKKK7zmCiiigAooooAKKKQ0AeUfEi5bUvEC6ZEcsdlqoH95yM/wDoQ/Ks7416i9n4f0nwtp6nddsMxoMsUTCqoHuf5VPpMn9u/FGCU8os811+CAhf1K100Phwan8WbnXLxN0WlWsVvaKRx5jAszfgG/WvMoJ1OefdnTidIxh5GF4D+D9pp9lFe+JIlurxgGFoTmKH2b++36D0PWvUIoIoIlihjWKNRgIgCqPwFSgAUtd8YKKsjlSsch4/uRbaOpzj5XP8l/8AZjXDaFfCG3HyFmYgKo7k9q6X4sSGLS4iO6N/6Eteb6VqJVAd23aNqn0Pc/lx+NeBjdarIk9T1GwugVKswfnLv/fb/AdBWjLqMQjwSK4GxvrieFjABHBEPnmdtqIPcmsTU/iVounMYdPkXWL0cb2fy7dT9erfh+dc8HOWkUaQTlpFHoOoahbw2ct7dXEdpZQDMk8rYVR/U1xniPQ9W+IfgG/u9PjmtNLRRLYW7DbLfbTlpHHZcfcXv1PauSGpx+JNSt7zXbqTUZYnDx2scifZo/bysYP4mvUtO8fS/LG5hYAYAkhMf4ZQkfpXXRdKm7zep0fValj5dSxMDmN1KsOoNXo7BgyyQuVdeh/ofWvfPEvgfw/4wnF1EV0nUZuRuwYZ29mHG79fUVwGo/D3XPDzFrm2fyVPEm0sh/4EuQPxxXW5t6rU4p05QepytrYR3rbHQRXHeP8Ahf8A3ff2rovAGuyeDvFsTSDfpl4fIuomGVZD3I9qZHaRXUe2aL/gQOVH/Ah0NV9Wt5Rb7JGDMORJ3fHc/wC0P1rKNW0jNOx7jrPwR8Fa632iCxbT3f5t1k+1Gz32HK/liuauP2bdKYnyNcuUHYPArfyIruvhRrra/wDD6ylkffPbZtpD7r0/TFdoRmvVUYzVzeyZ4pbfC+/8EaHdINXTUdMBEiRtEUe3bPLA5I2nuPxriLz4V+K0vbjVf7La6tLuRriM2zh3VWO4ZXhgcHsDX1A8SSIUdQysMEEZBFHlgcAcVl9WjzOXcHFM+O7+0ZXeNwVdThgylSD6MDyDXrfwQ8YvdJP4XvJCZLdTLbFuu3+Jfw6/nXpfifwTo3iy1MeoW+JwMR3MXyyp9G7j2ORXz3qejap8JfiFYXkv7yGOYNFcKMJPFnDD2IB5H9KhU3TlfoQk4u59Ea1oOn67Z/ZtQtxKgO5SDhkPqrDkGuZ/4QfVbFdmm68WhHSK8h8zH4jH8q7eKRJ41kjbcjgMp9QeQafiulxTO6nXnBWi9DhP+Eb8Srz5+iSext2H9KoT3usaBdI2o2IsImbat5Zvuiz2DKf6j8a9JKisnxJbwXPhvUIrnHktA+7PbjOfzqXDsdEMS27SSaHaHrA1S1bdtE8RCyBTwc8hh7GtYHivPfArSR6gsLk7hYqX+u7j+tbnizxTFoVk0ccircMhcu3IhT++R69gO59gal1FGHNIivR5ajhEd4n8YQaJFJHHLEJ4xmR5PuQjtn1Y9l/PArkn8XamzB1vroMeQ+5cf98bcY9v1rmLvRptWgsr/VVkS3uZTNb2jn5mjX5mmk9WY7QB/tZ9AJb+6W0tJrmU5CKXPua8XE4io5Kzt5HRRowtrqeueD9ffxDorTzKi3EErW82z7pZe49iCDit/Fcx8PtEk0HwdaQXGftdxm5uM/8APR+SPwGB+FdRXu0+bkXNueZO3M7bCUUuKTFakC0ZpKKAFoPSkxS0gPLPFsTWHxEkZFwmo2SzA+skbbT+hWvS7C4F1YQTg58yNW/MVxHxNh8ufQb8DlLl7Zj7SIf6qK6PwlP53h23GcmMtGfwNefS9zEzj3Vzrn71GMu2ht5paSgV6JyC0UUUAFFFFABVXUrgWul3VwTgRRO/5AmrVYPjaY2/gjV5AcH7My5+vH9ambtFsqKu0jgPhVB53iW+nIz5Fmifi75/9kr1lVArzT4PplNbm7mWKP8AAIT/AOzV6BqWqWulWvn3Um0E7VUDLOfRR1Jrkwto0U2b4jWq0WzXP6x4y07Sw6I4uJVOG2thFPoW9fYZPtXEeIvH13qN8umadDLNNNxHZ2/zO/8AvsO3qAQB3J6VNovwvutSkW88W3IdR9zTrZ8RoPR2GM/RcD61Lrzqu1FfMapRgr1H8jkfFPjW48VTXMMaPLaW8L5eOM+Wj5Uhd3qQD1OfYVV8IaDNrd1FHHGZB1CE4B9WY9lGfqegr23VvDFne+FJ9Fs4IbSJo8RLGgVEYdDgf55rN8IaBF4N8LySagY4ZQpkuJCchEXoM+gGT9SawlhHKfvPTqzmmlKd0ivF8PNHaJX1rGpiPkRzfJbx/SMHH4tk1uWmiaIIgLXTtPEY4/dQR4/QV5x4g8S3OqXvmNujjHMUDdIl7EjoXPU5+70HOTVHRtd1BPFOn22nq895NKokSNcAw5+cvjjAHQnkHGPSlDFQU/Zwjodiw0lDmbsel6n4D8NauhF3otmx/vpEI3H0ZcGvPPEnw51LwtFLqWh3E2pafGN0tnN800a9yjfxY9Dz9a9nA4pGUEGu+pQhUVpIwhVnB3TPCtJ1OO7tVmgdJbaYfMjDKuPQj/JruPD/AIla0nhtrqRnsZmEUUzNloHPSNz3U/wt+B9+O8W6KvhTx1st4xHp2sK08SqMLHMv31HpnIb8TT7eSN0eGcFoJl2SAeh7j3HBHuBXgXnhKtkeo4xrwuel6t4N0PW1L3NhGk56XEI8qUf8CXGfxzXjnxD+G1/4dspNRt7hr/TkOXcrtkh93A4K/wC0Me4717D4K1aXUtD8m6ffeWLm2mb++R91/wDgSkGt+aCK4gkhmjWSKRSjowyGUjBB9q93khWipHi1Kdm0zxb9nO/Z4tfsGyAkkUyj0yCD/IV7hXk/ws8KHwn8QPGFggY20XkCFj3RtzKPwHH4V6xW1NWjZijsFFFLWgxMVzXjzwlB4x8JXWmSACbHmW7n+CUdD9D0Psa6akNS1cDlvAM8t18P9FlnUrMtqsUgPUMmUI/Na1l1SyfcFuoiVOD844NW4LWK0h8qBBHHuZgo6ZJJP6kms7UfD2mak5e5tFMn/PRCUf8ANcE0tbaGkOX7Q6TWLGMc3CMfRTuP5CuR8TeI47sCwRHbeRi3T5pZznhSo6Lnr6+1bJ8EaWSdzXrL/da7kx/OrkGlaVoFpLNBbQWkaKWkkxzgckljyaiV2jrhOlB3V2zm7BX8LaPPfX4R9TvmGIVbgED5Uz6AZJP1rnvDWhy+Ntblv76QzaVazZkJHF5OO2P7i8cewHrTdTlvfGviePTbEvC0wy7f8+ttnkn/AG29PXA7GvRrz7J4S8JymzhWK3sYCIo19eij6kkfnXHFe1fM/hQ6k2v8TOA8Q3v2/wAQ3kykGKI/ZIseiH5z+LnH/AKzNOsF1vxdpOkuC0LSm5nHrHH82D9W2ioyDAoiLbjGMM395urH8WJNdP8ACuw+06vq+suMqhWyiP0+Z/1Kj8K82gvb4nmex0VP3VE9OQcU6kFLX0Z44uaZJKkUbSSMFRRksxwAPWnVxXxA1UrHb6TG3E3764HrGp4U/wC82B9Aazq1FTg5suEHOXKjprPW9O1CXy7a7jkcjIUHBI9RnqPpV+vCb69vA9ulq7teT3MaQYPIkLDBHpjn8M17opOMHrXPhMQ68W2rGtej7JpXH0UZorsOc474nx7vBpnHW2uoJR7fvAD+hqT4fy79NvI8/wCruD+qg1P8RI/M+H+reqxB/wAmB/pWV8NZ/MGqJ2Dxt+an/CvPnpiovumdcdaD9Tu6SlFFegcgCijFFMAooo70AFc18QLee78CanBbRPNNIiqkaDLMd68AV0lc14r8Ux6LCbeBlN2y7iTyIl9SO5PYd/oDWVaUYwbk9C6abkrHM+Hd3gDw7PBfSQy6rdv9oeFW+WAbQqh2/DtyT09a56CXXvH+rTRaa5ECny7jUpV/dxjuiDuf9kf8CJpuh6LffEPUpXklmt9FikPn3AP7y5fuqt/Nu3Qe3sWnabaaXp8NlYwJb20K7I40GAorgpUnWS5tIrZHXOapvvJmV4Y8H6V4WtDHZRF7iT/XXUp3SzH/AGj6ew4Fb+MUuKMV6KioqyONybd2NPSvPfiBrolnGlwndDblZLjB4eTqkZ9h98/8BHeu11vU00bRrm+dd/lL8iDq7HhVH1JArxS+uJJZ3Mzh5SzPI46PITlj9M8D2Arz8fX5I8i3Z1YWlzy5nsjPvJ5FCiNGnuZ3EcUa8tI7Hgfia9d8C+DYvCullpys+qXWHu7gdz2RfRV6Afj3rj/hhoP9razL4jukzbWTNb2QI4aTo8n4fdH4165jAowOH5I88t2Viq3M+RbBRilxSivSOI89+LtqJNE0q6A/eW+oxgH2ZWU/0rh4nxzXoHxUcf2LpsJ/5aX6N+CI7H+VecI20Cvn8x/i/I9fB/wztPh5eEeLNRtt3yz2cU+P9pWKE/livSwK8m+Gn77x7fuORBp6IT6FpCf6V60K9PA39irnDire0ZHHawxXEs6Rqss2PMYDlsDAz9KloortOUWikpaACkNLmmt0oArTX9nbyrDNdQxSP91HkAJ/A1N1rwGPW7m6urt7gn7SJ5EuUkGSXDEENntjAA6YxXqXw11GfUvB6POzP5NxNBGzHJKK2F574HH4VxUcV7Wbha1jqqUPZxUrnVYxXnHxE8ULEG0+El44WHmqnJllONkQHfkgkeu0etdl4m1oaHo73CBWuJD5UCMcBnPTPsBkn2Brz3wJo7eIvE76xcgyWOluRCzD/X3J5aQ/TP5n2orycmqUeu/oFJJJzl0Ou8BeF38PaKZb0BtVvj512+c4PaMH0UHH1yaqfEi/8u00+wB/18pnkH+xGMj83KV2wUAV5R4/vhceKZ0B+W1hjtx9T+8b/wBkpYpqlQaj6BRTqVbs5i5uRBBJK54RSxP0FerfDfTTpvgHTQ64muEN1L6lpDu/kR+VeNX8bXqxWKn5ryZLcf8AAmA/lmvouCJIIEhjACRqEUDsAMCuTLYfFI6MbLaJIOtNkmjhjaSV1jReSzHAH406vJ9Tutf8e+Irm10XbBZWUrRNdTg+VEQcfKv8bnr7DHSvUqTcFors4YQ5nq7I9DfxRo6kgXyP7orMPzArzHXNT/tPWry9+YLK+2MMCCI0+VeD0ydzf8Co8S/DebSvDtxqFx4s1Oe8QBYwiIiM7EKoxycZPrWHdTpCHYuSkY+8T1AHX9K8fHVajShO2p34anC/NFm34JS1vfHRurqeGKHSYdyCRwu6aTgEZ9FB/OvUZPEWjwj5tTtifRZAx/IZrx7RvCfjnU9Lgv7R9Pt7e7UTIkkzqwU8jcAvXGK2YPhn4vvHxf8Aia2s4j1W1jeRj+LED9K6aHtqcFCMTOsqc5czkdPrHxFt7aZLPS7aS9vp22QREYMjey9cdyTgAV2cJkMKeaFEm0btvTOOce1cx4V8A6N4Udri2WW5vpBte7uG3yMPQdlHsK6kcCu+mprWb1OSbjtEwPHYz4D1kf8ATq1cx8KJN8usexhH/jrV1PjW2uLzwZqltaQtPPLAVSNOrHI4Fc58LNJ1HTLXVJdSsprOS4mTakoAJCr1/M1hUi3iIy6WZtBr2Ml5noOaM1w3jDxvHpLSwxTiGODiaUfeLf3F/MZPPXArjW8b3MLxXF7putafbTMBHeTLIiEnpkk8fiKVTGKLaim7bkww8pK+x7ZnNFc54R1u41WK5hucO1vsZZgMeYrZxkdmG05xx0PeiuqnUVSKnHZmMouD5WdHRRSGtCTI8Sa4mg6O9zhXnc+XBGTje56Z9hyT7A143DY3vjbxMukxXMnlvm4vrr+IJnBI9Gb7qjsPpW78UtZLeKY9P3YW1tQ2M/xSE5P/AHyoH4mtn4P2MUfhm61EgGe9vJNzd9qHaq/oT+NeXN+3xHs3tE7oL2VLn6s7vT9PttM0+Cys4Vgt4ECRxqOFUVaxSKQRxTq9NaHCJRR0qG9u4bCxmu7h9kMCNI7eigZND7gee/ETWTJqMWnRMQtoBNJ7yMCEH4Lub6la86njnvrq20yyP+l38ot4v9knq30Ayfwq9qV/LeXMtzcEiad2mkB7M3RfwXav4V0Xwn0UX+r3fiOZcx22bS0z/e/5aOP0X868BJ4rEX6Hr/wKPmem6JpNtoejWmmWi7YLWMRr746k+5OT+NaFNHWnV7yVtDyW77hRmimuQFJJwB3psR5l8Tr3zdas7Qfdtrd5W/3pCFX/AMdV64cygDmr2v6mdW1W5vskrcyl489ox8sY/Ibv+BVgXguLkw2FmC11eyLbxD0ZjjP4DJ/CvmcRL21Z29D26MfZ00mehfCy4s9N0jUNbv50hOqXJWAHlnjjG0EAcnndXpWn6pZ6nGz2c6yhDhh0Kn3B5FfPsb3ElhHZ6awWSSRbKFj0RQ/lqPoPvH1JJrsvAtvLo/xMu9GhvZ7yCCGUF5Tlio8vr9HLY/GvTw9Z3UEtFocdale829dz1yikBrnfGPiGTQ9PhW2ZVublyqsRnYoGWbHc9APcivRnNQi5PocUYuTsjo6K8m07x5qceu6dA8sk63d0lu0bkNkMcZHAwR19OK9G17V10XQbvUGUOYI8omfvt0UfiSBWNLERqxc0XOlKD5WadNc4WvHLr4gavapNcG8ZpIVLnOPLYjqNmPu9uufevRdWTVdb8IqNKmhsry7ijbdMCQisAWHHOcHFTSxMaybgtip0ZU2ubqeO+LHGpePb9dIi8261KdYrdF6SMqhS59sgkn0XNe0+GdEj8OeGrLSo33i2jCs/99jyzfiSTWT4S8C2HhXfdu5vdTkXbJdyKAQv91B0Rfb86j8YeKbe10qS1sbpXuZ/3ZaI58pf4mJHAOOB7kVnCKoqVSe7NJydS0I7I4rxtrdx4k1+LTtM+eSaQ2dme3X95L9OD+C+9eq6Do9toOh2mmWg/c20YQE9WPdj7k5P415n8MoLE6xfa3ezwwsn+i2UUjBSiD7zAH14A9h716ql5bOPlnib6ODTw2qdSW7FW0tBbIsHpXgmrXn23Ury5ByLi5llH03bR+iCvadS1mysLKeR7qFXWNiq7xuY44AHU18/CUrbwo2QyxqDn1xz+pNcuYzvGMUb4OOrZr+FLcX/AMQtFhIysUj3LD/cU4/UivWtY8Y6fo05tm3TToAZFUgCMHpuY9CfTrXmnwth+0ePLq4xu+y2BwPd3A/ktYSMfEt5bQ3MrIL+9CzkHB+aT5+fXHy/lUUqkqNGPLu2XUgqlR32SPbNB8XWGvStDDujmVd+wsGDLnGQRweevcVtqiIpCqFGc8DHNeR+DLG0tvivdQ6RAtvYW6zP5cf3FXCJx9WDH8K9e7V6VCcpxvI4asVGVkcB8Tr7aum2CnHzPdOPZBtX/wAefP4V5pJbNqd5Z6VHndf3CW/HZSfmP/fINdR8Qb7z/F14u7K26R249jgu36sv5VT+HNp/aPxEhlYZj0+2ef8A4E3yL+havKqfvsVy9j0Kf7uhc9phhSCFIo1CxooVQOwHArmPEHjaHS55La2RJJIjiSRz8iHGdoA5Y469AO5rqzkKcde1fOou5NW06RJX2zuJIpC3Z9zbs/jXdjK0qUVy9Tkw9JVG+bodlD8WL9XguZbCdrG4fy4p3tTHFK3YK+TjPYkEV6bpGqQazpFvqFtnyp13ANwQehB9wQRXE65Bd+KfANjaaDYxO7NGrrI4RbZo+zd+COg/rXV+G9F/4R/wvaaWJjO9vHhpTxvc5LH8ya1pc6e91Ympy20Vmch4p8fCD7S8Nwbeyt2ZC6nDSlTgnd2XOQMcnB6VzcPxJvrAQSyw6hZxzkCKS8icwy56DLc8+x/OsPRBDf6xodrqAEiR6gsc6PyNwduCP97Fe8anpNlrOmy2GoWyXNtMu143GR/9Y+9cdKE67lNyaaZvUcKNo2ueV+AtJPibxnNqN9tnttIAKA8rJcPli59ccke5HpXp/iOyivvDGpW06h45baRWDc/wmqXg7wnD4Q0qWzhuJLoyzGVpZFAY8AAHHoAOaPG+oLZeFrmINtmvB9mj+rDBP4LuP4V2U4KjS975nPOXtKnumX8JYJF8EQ3E6MJpQo3tn51CDGPxLc/4UV0PhO2S08J6dHG26MwiReMYDfMB+AOPworTDx5aUURVlzTbNeg0UVuZHjXxj8N6gmsw+JLG2lurVoBBeLEpZotpJV8DkjBIOOmBXK+F/GWrQWzaV4ftru8nnbPlW4IG48bmJX5O2TkdK+jsVUvI3isLk2wCS+WxUgfxY4riqYZOftE7HVGu1HkauZvhDSbvRvDsFtqFz9pvWLSzuCSodjkquew6D6VvVzfhDVjqtpO7MC25Xx6BlH9Qa6Ot6M1OClEwqJxk0wrivibqgtdEg08Hm9k/eD/pknzN+Z2r/wACrtT0rxP4kax9t8V3EQ/1dmq2y89/vv8AqVH/AAGssZU5KT8zXDw56iOSvp7iX5IFMl1cOI4l/vSMcD9TX0F4Z0SHw74bsdKhOVtYghb++3Vm/EkmvEPBk9pF4yi1HUFc2umxmVML8rTH5V5OAMDJ69xXa3nxgtXuTa6VbG7uOnlwI1w/5LgD864sG4Uo3e7OrFKU3yrZHqAxilyK8wj1T4j6wA1toxsIz0a8nSH/AMdUFq2dH0jxvHdxSajrdh5QYF44o5JCRnkZYj88V6Cqt7RZxOnbdnbVyfxA1j7DoZsY5fLmv8x7geUiAzI35cD3YV008yW0DzSOEjjBZmY4AA6k14h4t15tY1WS6+ZVkAWND1SIcqPqx+c/VR2rLF1vZQ03Zph6XPLyMW4uDJIz4Cg9FHQDsPwFdN8J9EOq+ILnxDOmbWxBt7Qno0p/1jD6D5fxNcdFaXms6pbaPp2ftd420N1ESfxSH2A/XFfQmjaTZ+HtDttNtFCW1rGEUnjOOrH3JyTXBgKF37RnZiqvLHkR4/4w8Nz+ENfN3byI2k3U7Tou/bJbP99seqgjIPbIFQ+FfFg0/UL69gS4W7uUQv8AarUhgnJGCSMhiS2fWtnUN/xG+IH2BcnSLQBp3HTyweFz6yMM/wC6BWF4h1IX+u3d0hxHK+2MDoI1+VAPbAJ/4FSrtQvUhprp+rHTXOlCR6p4U8YjXrqeymVBcRRCYNHkBlJ28g9CD9etcb8QNUN14mmiVvktI1gA/wBo/O/80H4Vb+EOnD7JqXiGY4W7fyISe0UZO4/ixP5VxWqX/wBu1K6us8XE8kw+jMdv/ju2rxFSX1eKluyKNOPtnbZG58OrD+1vHounXMGkwGXn/nq/yr+S7jXV/E/VPJsrPTkIJlfz5B/sp9383K/kaj+FFnHaeDZ9VlIRr+eSdmbgCNPkX8MKT+NcD4q8TJr/AInuXjPCIu0HqseSEB9z8zfj7VUv3OG5VuxL95Xv0Rj3cb3qxWKctdzR24/4EwH9a+k90drbcsqRxL1JwAAK+e/DQjl8b6KJWVYYrg3EjMcBRGhbJ/HFdrr/AIjv/GOsf8I34dHyfenmYHZGv99/b0Xqx68UYKSp02+rDExc5JdEM17xPrHi/Xm0Hw2itEoDSSvkRov9+Q+h/hTv1PtxP2bUL7VI9Hg1Ka+uL668mGUqFRI14aQKOAOGb6AetelapZWngHwFJp9hI32q9Yxvcv8A6yR2HzysfUKDj04FZfwh0b7bPfeJJUxHk2dmMdEX77D8QF/4CaudP2lRRlq93/kTGahByW3QtyfCi5iB+weLdRQdluI0lX+lVJPhv4sjyIfEOnyDsZLPB/rXq+BijFdbw1N9Dn9vPueOax4A8TWXh3UL+68TRK1tbvMEtbbbu2qTjJNcNNJg4zzgfyr6E8WxNJ4M1lFGWaymx/3wa+bDcb0VwfvKD+lebjaUYcvKjuwtRzTuen/BaAPqOv3PcCCIe3DN/Ws34geFYvCusnWrG8RLO8laSSzkB/dtjczoR0GccepGK1/gkcWWuSZ5a5jH5R1Fen/hP/icLJV8zStNw8x/hKq3yr/wNxn/AHVrpUU6EY9WYuTVaT6HN6B4i1TQru4V9OutNubhI5mLspDxnOzHBI78GvRvA/jS613VrnTLvDskInR8AEDdtKnHB7EHjvXmvinVBqGv3t0pyJJm2/7i/Iv6An/gVdh8ILJYdJ1XxFckKLiTyo2PaKLOT+LbvyrDDyl7Zxi/dRpXjH2fNJas4zX777Xr+pT5yJbyZvwD7R+iiu2+DNnug1nUyOZZ0t0Psi5P6tXl00reYwb7xZmP1LFv617V8I7YQ/Diyl73Ms05/FyP5AUYRc1eUh4l8tJI7K6uIrS0luJm2xRIXY+gAya+b7j+0Gn1DxA9qF0qa8McsidI5m+Ykj+7yFz6j3r1j4p+IDp+jx6bbgvc3hHyL1IyAq/8CbA+gNaml+H9N0LwLFouptC1u0RS6MpAWV35f8yT+ldlaCrNxey/M5aUnSXMup534W8UT6RfLIhZ0bAkizxKv/xQ7Hv0PbHsmn31vqmnw3lpKJYJl3Iw7j/H2r5suoTpOr3enJK1xb28hFvOQR5sX8J57jofcV6Z8JteMl7e6Sx+R0+1xj0bO2TH1+VvqTXLhKjpz9jLY3xFNSj7SJz3xI8Py+FvE76vBGw0nU3DySJ/y73Hr7A4BB9Qa9S8I+JoPEekRyGRPtcagTID1P8AeHsf06dq2L61tb+yltb2GOa2lUrJHKMqwPY5rxjWPDx8D6iL3wnrCXUavk2Mknzwg9dsvTHs/wCtdUo+xm5x2e5gpe1ioS3R7ZNPFbwvLLIscaDczMcAD1Jrx/xVrk3i3xZZ6Rp5cPcOIYcJuMUZI3zMuR25xkcADqahuvFeueNpU0nSLUXcwx5pTi3iP9536HHp+QNeheCPA9t4Tt5J5JTe6rcj/SLphjP+yo7KP16mk28TolaP5gkqOr3OrooorvOQKKKKACmkZ606koA808FzHRvHOo6JI2AGeNB7A70/8dNei3F3BaW7T3EqQxJ953bAH41xXia68O+H/EUmuNCs2sCILlnwkQwRub0JHHqQOPWuUgh8VfEW7S4t5GstKJ4vp1xkf9MY/wD2Y/ma8+EvZXpx1dzrlH2lpvRHUeJvippWixN5brn+F5cjP0T7x/HFeO39/wDabia7kZiJWaZmfgncSxJ9OteneIvBeh+EfAmp3EEBuL+eMQNeXJ8yU72CnBP3eCemK8usdNbXddsNHTP+nXCxNjtH1c/98g1yYlTlKMJPVnVh+SMXKJ6H4G+Fmn6rodprHiE3F012vnpZlykMak5XIHLEjBOT3r1PTtKsNJthb6fZwWkQ6JDGEH6VZhiSGJI41CoihVA7AdBUletCnGCskedOpKbuxu32o6U6uK8aeMY9NglsrKfbcfdlmTkxZH3V9XI/756nsCVKkaceaQoRc3ZGT8RPFETxyaXA+6GJ8TkHiVxyI/8AdHBb8F7mvKby+KBpZC0ju3QDLOxPAA7kmpNT1EHMsp2Rrwq5JwPQdySfxJPvXofw2+HsyXMXiPX7cx3C/NZ2j9YQf+Wjj++ew/h+teKozxdS72PUvHDw8zb+GfgyTw7p0moami/2vfgGQdfIj6rED+p9/pUfjnxDc39yvhXQV+0ajc8S4Pyxr33Hso7n8OprvXj3xMgYruBGV6j3FZeieGdO0BJfscTGac7priVt0sp/2m/p0r13TtFQjojzue8nOW5hrokPgj4bails5kuI7aSaa4Iw0spU5c/0HYCvErmSV4hBb/62TbDF/vHCr/SvpLWdNXV9CvdNdti3cDwlh23AjNfN89pqHhzWobbV7K5hubOVJAViLrKVIIZCOGBx0/lXFjKesbLRHXhZ6Su9T1bxde2vgjwHbaNEzACAQ/JwfLUAOfqxOB7t7V5LFcXOZob2Jre9hcrPCwwUJ5H4YIr03w94f1Xxp4hj8Q+IbSW3sImEtvb3C7XmYfdJT+FF6gHqeTXY6/4E8O+JJVn1PTlknUbfOjdo3I9CykEj61VTDuur7diYVlSdt+55nH4muLjwrpng3Ro1ub9oRGyxnIYA53Of4U7nPJ6fXmtY0mPQNaubBZjcTRrGs856yS7dzn2GXwB6Cu+1TVfDvgSFtN8L2Ma3s7eXuiUyySP/AHQTkuw9ztHf0rzS41CfUHN3dLtnmJdgW3HJPc9z71zYh2jZu7N6GsrpWRq+E/D194r8RSWVlPHaRwwh57pl3PErHGEHTccdT0xXu+geHNO8NaWtjp0Hlxj5ncnLyN3Zm6kmuC+CFkRp+s6ky8XFwsCH1Ea8/qxr1Miu/C01GmpdTjxE3KbXQ8V+J2o3GseL49FsW3SApZwqOnmPgsfwG38jXrehaTBoWh2ml2wxDaxiNffHU/icn8a8o+G2l3GufEPUdbvY32afJKB5ikHz3Y56/wB1c/mK9nAqsPF3dR7sVaVkoLoKKMUtHeuo5yvdQLdWc1u/3ZUaM/QjH9a+TzDLZPJZTjbNaSNBID2KnH9K+tjzXifxa8C3VtqsnifSrZpradQb6KMZZGHHmgdwR1x6ZrixlJzhddDrwtRQlZ9TE8JeIm0TwxrFtbBnvr6aJIUT7x3KV4988D6+1eq+HvDx8I+BbrdtbUXhe5uZF7ybDgD2UAAfSvIvhxqemWvii0vLsRyxx7grfe2Fh94D1H54Jr6HxDeWZAKywzJjIOQykVGEXNHXdaFYl8srLY+WprlvsKuOWEQx9cf416v4pvY/CHw80zw9agvM8Mcbov3mBxkfV3OPpn0ridZ+G/iXRNSe2ttIn1WxD/uJbchtyZ4VhkFSOmfau98IeCNXvvEA8SeK4vKlhObWzaXzWVsY8yQjjIHAA6VjQpTi5Rtv1Na1SMkpX2PHU88Fku/luYpHjmGejhiCK918C6paaT8KNNuLiTakETIQOpYO3ygdyT2rlPH/AMMtXk16fWPD1sl5DeHfcWocI6Sd2XPBB7j1qjoXw+8ZasIrLUoF0bTgSZJWdWnYdCECkgEjjccfjTp06lGo+VbiqThVgrss6dfHWfEV74y1BfMstMfbbxk8S3B+VEU+iZ6+pJqzomkat8R7+e/1G/lttKicxhoDtedh1VD/AAIOmRya2PiNosWhfDmCDSbbybHT542dE52x8gsfXkgk/jVn4f8AiLR7DwPZWst0sUtshDjaSX+YncMDnOa15Up8s3pv6szcrw5onnvxA8L6b4W8QWkGlRPFHNalpQ8jOWYPgEkk89aoeEdN1TW/EosNJv4rGbyHleaWHzQFBUYxkYyT+lWPHviSLV/EFxcsRHGuI0BP3VXOB9SSSR7gdq774ReErnSrK51zUYGgu9QCpDE4w0cI5GR2LE5x6YrmhBVa7a2RvKbp0UnuUrrwFr0IB1Hxpawx43MUshnHr8zHFbNh8ItGLLLq19f6w3XbPLsj/wC+ExWbrNwfFHxCtNKTL2wlBkx0McZ3En2J/mK9UA4rroRhNtpaI5KspxSV9yvYafaaZZpa2VtFbQIPljiQKo/AVaFGKK79jlCiiigAooooAKwPF/iEeH9H81Cn2mZvLhD9AcZLH2ABP5DvW/XjnxmvZI/Eml2pYiM2kjgdsl1B/QCufETcKbkjajBTmkzK0LTI/FuoX2sayZX0TSmLyoeTdTYyd3qAME/UDoK9i0PUbfU9MSa3Cqi/JtXgLjpx9MVy3wtt7ab4Z20G1W3vOs49WLtnP4EVmeC75/D3jC88NXb8q/lxs38S9Y2/FTiuan+55Oz39Tea9pzLqjp/iJo93rnge+tbBPMu12zRR5xvKMG2/iARXnPwg0a4ufGFzqd3Z3FuLC3MarPEyESOcEcjqFB/OvbQcijv3NdUqMZTVR7owjVcYOHcVaHdUUszBQoySTgCsPVvF2maSrqZRPMnWOIj5f8AeY8L+JryvxX8Q5dQjdWkRLf+5nEQ+ucGQ/XC+xrOrioU9N2OnQlUOy8WfEGG3gaDTZflYEG4U8t7R/8AxZ4HbJryK+1Oa8uo4Y4ZJ7iUlYLaEF2YnnAHU+pJ+pNaeh+F/EXjWYTWsTWtm5+e/u1IBH+wvVv0Few+E/AekeEYmazRp72QYlu5sGV/bP8ACPYcVxKjVxMuapojr56eHVo6s5nwJ8MfsM8OteIlSbUV+aC1B3R2p9f9p/foO3rXpgAAoAxS16cKcaa5YnDObm7sKKKK0ICmlQfwp2KKAExxmvOfiB42ktZBomkq897Owh2xH53c/wDLNT2/2j2Hv06zxbrf9geHLi8UjzeI4s/324B/Dk/hXC/CnQjf3Nx4svQXZ2a3sQ/JVAfnk+rHIz9fWuarJykqcfmb04pLnkSQeFYvBPg3Udd1Flutca2KmX+GEt8qxxjsASOe9ePTyJAhJPyov6AV7F8Y9bFrpdrpSH5p385/ZV+7/wCPH9K8k0DSm8R+KtN0dQSlzOPNPpEvzOfyGPxrz8RFSqKnHodtBtQc5H0F8ONJOjeAdLt3UrLJF58gPXc53H+Y/KupqtNdW9jB5kzrFGOBn9AP8KpxeItPlm8syPEc4zIhUZ+vb8a9RShC0WzzneTcjUCgEkADPWnCqV3qtpZECaT5iMhFBZiPXAptnrFnfPshkIkxnY6lSR6jPX8Kr2kb8t9SeV2uaFFJmlqyRMcUhXNOooA5i/8Ah34S1O7a5utAs3nY7mdU2Fj6naRmt+zs4LGzitbWFIYIVCIiDAUDsKsUUkktUU5N7jdvtS7aWimSNIoxTqKBkU0EdxC8MqLJHIpVkYZDA9QR6V51efBTRDPI2mapqmlQyHLW8EoaMfQMDge2a9KpMVEoRlpJFRnKOzOG8P8Awm8N6DfR3rRz6jeRHMct4+8IfVVACg++K6DxLqa6Tos0obbI42R/Ujr+A5rYNeV+PdSn1vW7bRdNcNJNIII8cjJ+830GCf8AgPvXPXkqVO0N3ojamnUneT0L/wAL9MM8uoa/KvMz/Zrcn+4p+Y/i3H/Aa9HAqnpGmwaPpNtp9su2G2jEa++O/wBT1/GrtbUafs4KJlUnzycgooorYzCiiigAooooAK5L4i+Dv+Ew8OeXbssepWZM1o5UfM20gxsTyFbjODwQp524PW0VMoqSsxxk4u6Pmzw1401PwFqMtjqdvNYOTiSG5Q7Wx0Pue25SeOoNdZdeOfB+t31vql/ZW7X0AASVLpkIwcjsD19a9dvtNstSh8m+tILqL+5NGHH5GsGX4ceDpG3t4Z0wn2gA/lXJ9XlHSMtDp9tF6tanF3vxtsIgViNsrdjuaQ/yUfrWBceOfEvij91pmnalfKf+eUTLH+mB+bGus1qXSPBuvwWUPhnT7eGdd9vcLCuHI+8pPYj8eDmvQNOuoL+wint/9W4+7/dPcH6VkoOpJwlPYtyjBKSieNWfw08Z68ynU7i20i367WbzpF+iLhQfxrufD/wq8O6HJHczwvqt6nInvDv2n1VPur+VduB6ClxXTDD04bIxnXnLS5mvrmlW77JL63UjjG8cU0+JdGH/ADEIP++qz7n4c+Eby4eefw9YySyMWZjHySep61D/AMKv8F/9C3Y/98H/ABq/3nkSuTzNT/hKNF/6CEP500+LNEXrqEf61mf8Kw8Ff9C3Y/8AfJ/xoPwx8Fnr4csv++T/AI0v3vkH7vzNP/hLtD/6CEf5GkPi7Q8/8f6fkazB8LvBI6eG7L8m/wAaP+FW+Cv+hcs/yb/Gj975D/d+ZpHxfoY/5f1/75NH/CX6Gel8P++TWb/wq3wV/wBC5Z/k3+NH/Cr/AAWDkeHbP/x7/Gl+98g/d+ZzPxi1NJ/C2kT2colt7i4Yq68hv3bY/rXXeETa2HgHSCGWOCOyjZmJ4Hy5Yn8c1F4n8E2Wt+DhoVqqWK2+1rNkXiB1+7x6ckH2Jrym/tviTa6QNAOgXksSHaHtnV4WGeo6cd8Hj2rKXNTm52vdGkeWcFG9rMwfHniT/hIPE93eKx8gHZGD/Ci9P6n8a9A+CXhRrewm8T3kZEt6vlWisOVhzkt/wI/oB61jeD/g3qV/fRXvitFtrNW3mxV90kx9JGHAX1A5Ne5RQpDEscaKiKAqqowAB2AqMPRfN7Se5pWqrl5IHmPxg1C+tLEx2crxSfZWkjdeCv7xVkYe4Q9e2TXkVtMbaYS2eLO4H/LVGYlvZwSd4PcGvo7xb4bHiHTUWMol5bEvAzjKEkYZHHdWHB/+tXzxrWiT6FcTkwyx28LbZIpOZLUnoreqH+F+hHXBrHEQlGbfc5ZuTinHoWtW12fVwEmWSK3CqDbmYuHbHLMwOWUdFXOAOTzVvwNqV5a63JDaFxboYGWME7UlaUKAo7ZXdke1c5BHNfz/AGe22bgu93c7UiTu7nsP59BXsnwz8Ei1SHUp4pEtoz5sAlXbJcSEY89x/CAOEXsOeprKEJTdkKlKTl7SWx6Nf6tY6WE+2XCQ787Qepx14ql/wl2if8/yfkak1rwxoviJYRq+nQ3ogyY/MB+XPXGPpWT/AMKu8FHr4cs/yb/GvVl7S/u2GuS2tzTHi7RP+f5PyNL/AMJbon/P8n5GssfC/wAFAceHLL8j/jSn4X+CyP8AkXLL8j/jStV8h/u/M0x4t0Q/8v6fkaD4s0Uf8v6fkazP+FYeCx/zLll/3yf8aP8AhV/gv/oXLL/vk/40Wq+Qfu/M0/8AhLNE/wCf9PyNL/wlWi/9BCP9azP+FYeC/wDoXLL/AL5P+NH/AArDwX/0Lll/3yf8aP3vkH7vzNMeKtFP/L/H+tSL4l0dyMahDz/tVkf8Kx8Gf9C5Y/8AfJ/xpR8M/BgOf+Ecsf8Avg/40fvfIP3fmdPFNHPEskTrIjDIZTkGn1BZ2Vtp9nFa2kKQW8K7UjQYVR6AUXd1FZ2zzyttRBk/4VreyuzProZHizWV0rSZNr7ZpAQpHUDuf6fjXK/DPRGvJ5vFN0ufOBisge0efmf/AIERgew96yr37T488X/2UjOtqv7y8kQ8RxdkB9W6D8TXrNtbxWtvHBDGscUShEReAqgYAFcVJe3qe1ey2/zOmb9lDkW73JRRRRXecoUUUUAFFFFABRRRQAUUUUAFGKKKAMPxX4atvFOhS2EzGKTPmQTqPmhkH3WH9R3BIrgPBfiW70LUp9H1dDFc2zeXcR/ykX1BHI9R7ivWsVxvj3wW/iCKLUtMZYdZsgfKY8LMnUxMffsexrkxFJytUh8SN6U0vcnszr4pElRZI2DIwyrA5BFPrzXwL41Do1lfBoTE5jkjkGGgcdQR6Z6/n0r0lWDKCDkGtKNZVY3W/UipTcHZjqQ0ZorYzA1XkvbWK8htJLiJLmcM0cTMAzgdSB3xVg9K8S8Rau974p1TxJb2OpXFxo9zFHpskFq7wmOIn7RlxwNxZwf90UpOxUVc9sGKK4uXVtX1rxjb2ej6nb2ulnTor9nNuJXk3SEBRkgAFRye3auZ07VNa8L6P401qTUv7QWz1GWNbdrcKGlbywH3A5CjcPlHpS5g5T1oUteaWviHxmkl7BHZ3N+zWMk0El3YC0CTqRhPvHcrZOM85GCeaZF4x1aG0XThqfnaxdX0FoBfaf8AZnsxIGO5kBw4+U7cHBPGTT5kHKz03FJtB7V5drninxT4ck8QWT6laX01hYQXVtKbYId0k2w+YoOOnp25q7qfifxB4SudVh1K8ttVMemi+gYQeQI380RlTgnKZYHPXANLmQcp6JgCjiuCku/FWn+LNJ0e5121uY9Ut7h/MWzVWidEBBUZ+ZMnPPPrWF4V1PXtM8DeHbWDVIZZdbumtreWeAYtADIzHr+8Y7eAccmjmDlPWsVyfizTdA1q/ttMutQis9akU/ZmUgyle4KnhkODlTwak8N6rqg8SapoGq3UV9LZRQ3Ed1HF5RZJNw2uoJAYFT06g1y8s2paL4/8Z609+lxDp9jDcNbm2UGRQkhRN+crtI6jrSklJWY43T0Lvhv4ZWOis11qhtTFC5mW3hUrbgjnzH3csR2B+Ve1egQSxTwJLFIskcihldTkMD0IPevNdO8R+Jp7cNewzXVteWM0knnacII4XERZdp3Heh+7g+xqtpL6vdeLvDdxFqSWkb+HluXt4rVdm0NHuQDOBk9D26CpgowVooqSb3PWKhmuoLZ4kmmjjaZ/LjDsAXbGcD1PHSvPrHxN4iXRNK8UXd9Zy2GpXEUZ09IMGJJX2rtkzlnGQSCMHnpWl4kkv9f8WJ4XtJ7azihtV1CWaW3E7M3mbUCKSAMFck9elacxFjtBS1zHgTWNS1rw9NPqkkEl3DeXFuzwLtQhHKggfhXJWXiLxhdaR4e1D+17EDXLprPyms+IB8+JAQfmbCdDxzRzBynqE88VrA808qRRIMs7sFVR6knpTbe7t7tN9vPFMvHMbhhyMjp7V5rfeINWvIrjwvdSWVzenV004Xk1uDHsMYmDmPOCwAwBnBNVbfUNX8F3muaNbtpkjhrQ28qWogUSXEhQvKqnqMdBwcDpmlzD5T1qiuU0vUNY07xcmg6rexamtzaNdRTpAIXjKsFZWUEgg7hg+xFdXVXJasFFFBOKYhGYKpYkADkk15l418Uz393Fpekxm4uJn8uCNersf4j6ADv2HNXvHPjKO1gNrasX3ER7UG5pnJwFA78/mfarngXwfJpIk1fVsPq92uCM5FunXywfX+8e59hXn1JPES9nD4Vu/wBDqhFUo88t+hq+EPDEXhjRhb7hNdTHzbmfHMsh/oOgHpXQUAUV3RioqyOZtyd2FFFFUIKKKKACiiigAooooAKKKKACiiigApDS0UAcH458Dy6hP/b2gqkWsxAeZHnat2g/hJ7MOzfgeKpeC/HMbobK83xGJjG8cgIeBh1Ujrj27duK9II4rifGvgJdbk/tfSXWz1uJcB+iXAHRJMfo3UfSuOtRkpe0pb/mdEKia5J7fkdojrIgdGDKwyCDkEU6vKfCnjW5sL19K1WB7S5gOJrWXhkJ/iU9CD6jg+1eoWt3BeQiWCRZEPcdvY+lXRrqrps10IqUnD0JWXcpU55GOKpadpFnpOlRabZQiK0hUqseSeCSTknrnJrm9Y1XVr3xw+g2GqRaRFbWAvGlaBZXmLOVwAxwFXHPfkdKzL3X9duZNdltdds7FNBiQ7Wt1ZLo+UJDIxJyqNnA2n8TW90Rys67SvDOl6I0bWFsYjHbi1TLlsRhiwXk9ixqFvB+iPqF/ePZbn1FWS5QyMY5cgAkpnbkgDnGeK4jUfFviibT9d1i0vIbKDS7a0uI7OS2D7zJErsrtnOOe3NdR4evtYh8VX+jarfpqCx2kN3HMIBEVLs6smBwRlQR3pJpjaaJ7TwB4ds4bmNLF5Rcw/Z386eSU+VnOwFmJUZAPHpSx+AvDq6fd2b2LTpeFDM80zySMU+4d7HcNvbB4rk9c8Va+mjeJdcs9YtrJNHu3tI7F7dX3bSoyzE7tzbsqBx0607WfEPimKXxDfWOqW8VvpV7b20NtJahxIJFjyWbOeDJkY9KLoLM6aH4d+HIIbuMWUkhvUWO4eW4d3lCtuXcxJPBA/lWvd6Dpt/eSXV3apPLLbNZvv5VomOSpHTk1wt74n8Q6Je3+iz6jb3U4u7K3iv5bcIIVn3biyA4OCnHuwzRq/iTxLpl1faNb6jbXV3DPYiK7e3A2LPIUZJEU4yANwxjg0XQWZ1Gl+A9A0bUoL+ytJFurdWSKSS4kkKKRgqNxPy47UxPh94bjsru0XTz9nu5RM0Zmcqjglg0fP7s5JPy461H4o1XU/C3w/nu0nW/1GEJGJ3iVFLO4XeVBAAG7OMgcda5mfxF4xs9Pu4ZHKS/aLOOC5vLeEOPNl2OGjjcgjHIPHf0o0QK71ud5ovh3TdAjmXT4CjTvvmkd2kklIGAWdiScDp6VIui2KX97ei3Uz38aRXBY5EiqCACDxjDH868+uNf8WabJrc02sW9zDoN7b25T7Gqm6STyydxB+UgSYG305rqfEupamPEGkaHpt7Fp7X6zSvdPEJWxGF+RFPBY7s89gad0Jpj9P8AAPh3TLhpbWxdWMTwKHnkdYkYYZUBJCAj0qW78J6CE0+5mg8kaPFtglWZk8uNcHaxBGV+UEg5HFc5d634iabULSDXNOik0bT1upZ2tgVu3bec43fIg2YOCeT+FZV54k1/xF4X1Z01Gz06Oy0aKeaOSAMblpYC7HJI2L/CMd/ypXQ7M7Sx8GeHItQi1W0s1LbzcQgSs0KM3JdEztBOeoHermteFtJ1+WGa+t3M0AKxyxStFIFPVdykHB9K8/h8R+IB4Z1O7sNSs9Pt/D9hAFt5oA5nJt1cs7EgqDnC47jmuu8Qa5qFto+ix2c0Ftd6tPFb/aZk3JDuQsTtyMk4wBnqaLoLO5qaFpekaLZy6ZpCRwwwSkvCjlvLdvmOcnIznOPeki8MaTDaadbJa4h0yXz7Zd5/dv8ANz15+8evrXmkfiHXdK13VdPtpkvL691YQyXdvbB8BLZWO2MsBvIAGC2Bg1qWWqeJb3X9Fub64Fm8Vveebb+QP3wjdPmwHIVmGBjJ2kH1pXQcrOv1LwroE9pqL39qgiu5Rd3EjSFcOigCQNn5SAOoxVXTfB3hU2t/Da28d2l4ixXZknaZpB95dxJJzhgQevSuN1TxP4guvDVtPcXdhPa67pt3MbaGHDwBYWYANuO4DgEkdaNE1DXNHmvL+C4t/wCzlvbC3ktWhLSSCSCFCQ+flxuBAwe9F1cfK7bnoGj+GdI8NtPcWkTLJIoEk88zSvtHQbnJIUenStpSCAQQQehFeTDxN4n8RaTeJJYNJZanaXaIggWMQ7VYJtfeS5OMNlRgmvSraaOx0e3a5dYhHCikk99o4p8ysJxZfZwqkk4A71wfjLxtDaQG1tmL+YfLAQEtKx6KoHJz+v0ql4p8Zy3E66dp0MlxcTHbFaxDLyn1PoPrwO9avhHwN/Z9wus62yXWssPlxzHbA/wp6n1b8uK4pVJYh8lL4er/AMjeMI0lzT37FfwV4Lnt7oa7r6KdRb/j3t87ltFP6Fz3PboK70DAoAxS12U6caceWJhObm7sKKKK0ICiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA53xV4M03xVbJ9oDW95CD5F3FxJEf6r6qeK8+g1TXPh/qiW2uACCU7Ir2MZgm9Af7rex/A17HVe9sbbULSS1vII7i3lG145FDKw9wa5q2HVT3lo+5tTquOj1RzBXw141SAanYWt1NHnYJVzjPUK3XB9P0rSvPCHh/UZ4JrvRrOeSBRHGWiHyqv3Vx0IHYHgVxeq/DvU9Ake78KTG4terabcPyo9I3P8A6C351L4f+IO25On3qyQ3MXD21yCkifTPb8x71gq8qT5ay+Zo6Smr038ju59F025S8SayhkW+Ci4DLxKFGBu9cCp0sbZb57xYUFzJGsTS4+YoCSF+gJP51BY6vaX4Aikw/wDcbg/h6/hV7NdsZRmrxOdpp2Ziah4L8OarfyXt9otnc3MihXkePJYDgZ9SPXrV2TQ9OmiuY5LKF0upFlmUrxI642sfcbV/IVfzS1VhXZn3Wg6Xem7NzYQT/bVVLjzE3eaFztB9cZOKhs/C2iWFoLW20y3ih85bjaq9ZFIKuT1JGBgn0rWpcUCILq1gvbWW2uYUmgmUpJHIu5WU9QR3FZdj4P8AD+nWrW9ppNrDE0iTMqp1dDlCT14I49K28UmKAKE2h6ZOt2stlC63rrJcAr/rWXG0n1I2r+VGraHpuuWq2+p2UN3Erb1Ei52t6g9QfpV/FGKLAYdx4M8O3UNtFNotk8drGYoV8oAIh528ds84PGeaW78HeHr/AOz/AGrR7Sb7NEIIt8edsY6L7gehrbxS4o0HdmFd+DPDt/Ksl3o9pMyRCAFk/gAwFPqB2z0q9f6Np+qaYdOvrOG5syAPKkXK8dPyxxV/FJQK5hL4M8Ox6a9gmjWi2ryCVo1TALgYDeu7HfrU3/CL6L5NjF/ZlsI7B99soTHlN3I+vf1rXpCeKLId2YcXgzw7bzzTRaNaRyTBw7KmMhwQw9gQTkD1q4NE00RPELKEJJIkrLt4LpgIfqNq4+govtatLJDufew6qhBP49h+NcNrfjyW4uTp2nxvcXUnC2tqC0h+p7D34FctTEU6em77I1hSnM2dTtPC+l3F5Oul2b3V0rpOQowQ33gx7Z745PeuT/tHWPGV79i0BFMMP7trt1It7cdML/eOOw/E1q6Z8Pr7WZEuvFFx5cPUadbvwfaRx1+i8e5r0K1tILO2jt7aGOCGMbUjjUKqj2ArFUqlfWrou3+Zq5wpfBq+5ieF/B2n+GIneHdc30w/f3k2DJJ7f7K/7I4rosUUV3xioqyOVtyd2FFFFUIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEIzWPr3hXR/EkATU7JJnUfu5R8skfurjkVs0Umk1ZjTa1R5deeC/FHh9hJot2us2i8+RcERzr9G+6344NO074hPaXS2WpGaxuuht75Cp/Anr+BNen4qnqGk2OrWxt7+0hu4T/BKgYfrXFLCJPmpPlZ0KvfSauZ1l4nsrlRvJRvUfMP05/StaC7guFzDMkg/2TmuMuvhfp8RZ9Fv7zSX6hFfzYv8Avlun4EVnS6J400p8xpZasi9Gjcwyfk3H61PtMRT+KPN6D5KU/hdvU9JBBpa8xHjTWtL41LSdTtPd7cyJ/wB9LkVctPifZSEBry1z3V/kb+f9KaxsF8aa+Qvq0+mp6HmjNcpb+N7ScZHlsP8AZk/+tVpfFtof4T+DCrWMov7RDoVF0Ohornv+EttB/A3/AH0KjfxjagcRj8X/APrU/rdH+YPY1Ox0tFcbdfECztx8z20YHd5P/wBVZE3xPt5G22s4nf8Au20RlP6ZqHjaXTUpYap2PSCarXGoWtt/rZ0U+mcn8hXnP9u+KdWYrZ6Fqjg9HnAgT/x4j+VT2/hLxdqJ/wBNv7HS4j1WEGeT9cL/ADqfrNSf8OD+Y/Yxj8Ujpb/xhaWikoN2P4nO0f4/yrkrnxxfa3M1vo1vc6pKDgpariNf95+g/E1vWfwx0KN1l1H7Tq0w5zdyEpn2QYX9K6y3s4LSBYbeGOGJeiRqFUfgKPY1qv8AElZdkP2lOHwq78zz2y8B65rBEmvagtjbnn7JYtlz7NIeB/wEfjXbaL4e0vQLXyNMsorZT95lGWc+rMeWP1rTAxRXTSoQpfCjKdWU9wAooorcyCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKMCiigBMfhVS70jT78Yu7G2uB/01iVv5iiik0mO9jJm8A+Fp879Cshn+5Hs/liqrfDPwtuyumsnslxIB/wChUUVDpQe6KVSS6if8Ky8MZ5spj9bqX/4qnr8NfCakE6PG/wD10kdv5tRRSVGmug/az7l+38G+HbXHk6Hp6kd/IUn9RWtDbQ28YSGJIlHZFCj9KKKtRS2RDbe5JgUuB6UUVQgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/2Q==";
+const LOGO=LOGO_GIRA;
+const FOTO_PADRAO="data:image/jpeg;base64,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";
+const CHAVE="atelie-bordado-v2";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const brl=v=>(+v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const hoje=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const dataBR=s=>s?new Date(s+"T12:00").toLocaleDateString("pt-BR",{day:"2-digit",month:"short"}):"sem data";
+const diasAte=s=>s?Math.round((new Date(s+"T00:00")-hoje())/864e5):null;
+const somaDias=n=>{const d=hoje();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const hojeISO=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+
+/* Cores DMC mais usadas (aproximadas) */
+const DMC=[["310","Preto","#000000"],["B5200","Branco neve","#FFFFFF"],["3865","Branco inverno","#F9F7F1"],["321","Vermelho","#C72B3B"],["666","Vermelho vivo","#E31D42"],["815","Granada","#87071F"],["3801","Melancia","#E7495E"],["776","Rosa médio","#FCB0B9"],["818","Rosa bebê","#FFDFD9"],["3687","Malva","#C96B70"],["553","Violeta","#A3638B"],["550","Violeta escuro","#5C184E"],["340","Lavanda","#ADA7C7"],["3747","Lilás claro","#D3D7ED"],["820","Azul marinho","#0E365C"],["797","Azul royal","#13477D"],["799","Azul delft","#748EB6"],["3325","Azul bebê","#B8D2E6"],["996","Azul elétrico","#30C2EC"],["3812","Verde-água","#2F8C84"],["699","Verde Natal","#056517"],["702","Verde bandeira","#47A72F"],["704","Verde-limão","#9ECF34"],["368","Verde pistache","#A6C298"],["3347","Verde musgo","#71935C"],["444","Amarelo limão","#FFD600"],["726","Amarelo ouro","#FDD755"],["3078","Amarelo palha","#FDF9CD"],["740","Tangerina","#FF8313"],["947","Laranja","#FF7B4D"],["3340","Damasco","#FF836F"],["434","Marrom claro","#985E33"],["801","Café","#653919"],["898","Café escuro","#492A13"],["738","Bege","#ECCC9E"],["945","Pele","#FBD5BB"],["3770","Pele clara","#FFEEE3"],["415","Cinza pérola","#D3D3D6"],["414","Cinza aço","#8C8C8C"],["413","Cinza chumbo","#565656"]];
+const corDMC=c=>(DMC.find(d=>d[0].toLowerCase()===String(c).toLowerCase())||[])[2]||"#ccc";
+
+/* ---------- dados ---------- */
+function exemplo(){return{
+  encomendas:[],projetos:[],linhas:[],compras:[],clientesFone:{},
+  config:{vp:0.01,pct:20,pctNome:"Reserva p/ material"},
+  perfil:{nome:"Adriana",foto:FOTO_PADRAO,tam:96},
+  produtos:[],caixa:[],viuAula:false,
+  marca:{nome:"Dry'Arts",insta:"artesadry",zap:"15996459895"},
+  pix:{tipo:"Celular",chave:"",nome:"",cidade:"Tatui"}
+}}
+let D;
+try{D=JSON.parse(localStorage.getItem(CHAVE))}catch(e){}
+if(!D)D=exemplo();
+{const ex=exemplo();for(const k of ["config","produtos","caixa","perfil","marca","pix"])if(!D[k])D[k]=ex[k];D.config.pctNome="Reserva p/ material";if(!D.perfil.fotos)D.perfil.fotos=D.perfil.foto?[D.perfil.foto]:[];if(D.perfil.logo===undefined)D.perfil.logo=true;if(![0,20].includes(+D.config.pct))D.config.pct=20;}
+const salvar=()=>{try{localStorage.setItem(CHAVE,JSON.stringify(D))}catch(e){};pontos()};
+
+let aba="inicio", sub=null, filtroEnc="ativas";
+function aviso(t){const a=$("#aviso");a.textContent=t;a.hidden=false;clearTimeout(aviso.t);aviso.t=setTimeout(()=>a.hidden=true,2200)}
+async function copiar(t){try{await navigator.clipboard.writeText(t);aviso("Copiado")}catch(e){aviso("Selecione o texto e copie")}}
+
+/* bolinhas de pendência (sem números) */
+function alertaEnc(e){if(e.status==="pronto"||e.status==="entregue")return null;const d=diasAte(e.entrega);if(d===null)return null;if(d<0)return"vermelha";if(d<=2)return"laranja";return null}
+function pontos(){
+  $("#pEnc").hidden=!D.encomendas.some(alertaEnc);
+  $("#pLin").hidden=!D.linhas.some(l=>l.qtd<=1);
+  $("#pCat").hidden=!D.produtos.some(p=>p.qtd<=0);
+}
+
+/* ---------- telas ---------- */
+const telas={
+inicio(){
+  const ativas=D.encomendas.filter(e=>e.status!=="entregue").sort((a,b)=>(a.entrega||"9")>(b.entrega||"9")?1:-1);
+  const mes=new Date().toISOString().slice(0,7);
+  const receber=D.encomendas.filter(e=>e.status!=="entregue").reduce((s,e)=>s+(+e.valor||0)-(+e.sinal||0),0);
+  const doMes=D.encomendas.filter(e=>(e.entrega||"").startsWith(mes)).reduce((s,e)=>s+(+e.valor||0),0);
+  const acabando=D.linhas.filter(l=>l.qtd<=1);
+  const dica=DICAS[new Date().getDate()%DICAS.length];
+  const pf=D.perfil;
+  return `<div class="card marca-card"><img src="${LOGO}" alt="Logo Dry'Arts"><div><div class="mudo" style="text-transform:uppercase;letter-spacing:.08em;font-size:.72rem">Ateliê de bordado</div><div style="font-family:var(--f-tit);font-size:1.5rem;line-height:1.1">${esc(D.marca.nome||"Dry'Arts")}</div>${D.marca.insta?`<a class="insta-link" target="_blank" rel="noopener" href="https://instagram.com/${encodeURIComponent(D.marca.insta)}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@${esc(D.marca.insta)}</a>`:""}</div></div>
+  ${pf.foto||pf.nome?`<div class="boasvindas">${pf.foto?`<div class="foto-wrap" style="width:${pf.tam}px;height:${pf.tam}px;max-width:45%"><div class="flip" style="width:100%;height:100%;cursor:pointer" onclick="editaPerfil()"><div class="flip-in"><img alt="${esc(pf.nome)}"><img class="verso" alt=""></div></div>
+   <button class="mini-btn cam" onclick="editaPerfil()" aria-label="Trocar fotos"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button></div>`:""}
+   <div><div class="mudo">${$("#saudacao").textContent}${pf.nome?",":""}</div><div class="linha" style="gap:6px">${pf.nome?`<div class="nome">${esc(pf.nome)}</div>`:""}<button class="mini-btn" onclick="editaPerfil()" aria-label="Editar nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg></button></div>${D.marca.insta?`<a class="insta-link" target="_blank" rel="noopener" href="https://instagram.com/${encodeURIComponent(D.marca.insta)}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@${esc(D.marca.insta)}</a>`:""}</div></div>`:""}
+  ${!D.encomendas.length&&!D.produtos.length&&!D.caixa.length?`<div class="card" style="margin-top:14px;background:var(--acento-s);border-color:transparent">
+    <b style="font-family:var(--f-tit);font-weight:400;font-size:1.15rem">Primeira vez por aqui?</b>
+    <p style="margin:6px 0 10px">Assista à aula de poucos minutos. Ela mostra, passo a passo, como usar cada parte do app.</p>
+    <div class="linha"><button class="btn cresce" onclick="abrirAula(0)">▶ Assistir à aula</button><button class="btn sec cresce" onclick="guia()">Ler o passo a passo</button></div></div>`:""}
+  <button class="btn" style="width:100%;margin-top:14px;padding:14px" onclick="aba='ferramentas';sub='orcFoto';render();window.scrollTo(0,0)">Quanto cobrar? Calcular pela foto</button>
+  <button class="btn sec" style="width:100%;margin-top:8px;padding:12px" onclick="aba='ferramentas';sub='moldes';render();window.scrollTo(0,0)">Moldes, riscos e aulas grátis</button>
+  <div class="resumo" style="margin-top:14px">
+    <div class="card"><span class="mudo">A receber</span><b>${brl(receber)}</b></div>
+    <div class="card"><span class="mudo">Entregas do mês</span><b>${brl(doMes)}</b></div>
+    <button class="card" style="grid-column:1/-1;text-align:left;cursor:pointer" onclick="aba='caixa';render()"><span class="mudo">Caixa do mês · fica para você</span><b>${brl(calcCx(hojeISO().slice(0,7)).liq)}</b></button>
+  </div>
+  <h3>Próximas entregas</h3>
+  <div class="lista">${ativas.slice(0,4).map(cardEnc).join("")||`<div class="card mudo">Nenhuma encomenda em aberto.</div>`}</div>
+  <h3>Linhas acabando</h3>
+  <div class="card">${acabando.length?acabando.map(l=>`<div class="linha" style="padding:4px 0"><span class="carretel" style="background:${corDMC(l.cod)}"></span><span class="cresce">DMC ${esc(l.cod)} · ${esc(nomeDMC(l.cod))}</span><span class="bolinha b-laranja"></span></div>`).join(""):`<span class="mudo">Estoque em dia.</span>`}</div>
+  <h3>Dica do dia</h3>
+  <div class="card dica">${dica}</div>`;
+},
+encomendas(){
+  const f={ativas:e=>e.status!=="entregue",aguardando:e=>e.status==="aguardando",bordando:e=>e.status==="bordando",pronto:e=>e.status==="pronto",entregue:e=>e.status==="entregue",todas:()=>true}[filtroEnc];
+  const l=D.encomendas.filter(f).sort((a,b)=>(a.entrega||"9")>(b.entrega||"9")?1:-1);
+  const nomes={ativas:"Em aberto",aguardando:"Aguardando",bordando:"Bordando",pronto:"Pronto",entregue:"Entregue",todas:"Todas"};
+  return `<div class="linha" style="justify-content:space-between"><h2>Encomendas</h2><button class="btn peq" onclick="formEnc()">+ Nova</button></div>
+  <div class="filtros">${Object.keys(nomes).map(k=>`<button class="${k===filtroEnc?"on":""}" onclick="filtroEnc='${k}';render()">${nomes[k]}</button>`).join("")}</div>
+  <div class="lista" style="margin-top:10px">${l.map(cardEnc).join("")||`<div class="card mudo">Nada por aqui. Toque em “+ Nova” para lançar uma encomenda.</div>`}</div>`;
+},
+projetos(){
+  return `<div class="linha" style="justify-content:space-between"><h2>Projetos e contadores</h2><button class="btn peq" onclick="formProj()">+ Novo</button></div>
+  <p class="mudo" style="margin-top:0">Acompanhe os pontos feitos e conte as carreiras sem perder a conta.</p>
+  <div class="lista">${D.projetos.map(p=>{
+    const pct=p.total?Math.min(100,Math.round(p.feitos/p.total*100)):0;
+    return `<div class="card">${p.ex?'<div class="exemplo">exemplo</div>':""}
+      <div class="linha"><div class="cresce"><b>${esc(p.nome)}</b><div class="mudo">${esc(p.tecnica)}${p.obs?" · "+esc(p.obs):""}</div></div>
+      <button class="btn sec peq" onclick="formProj('${p.id}')">Editar</button></div>
+      ${p.total?`<div style="margin-top:10px" class="linha"><div class="progresso cresce"><i style="width:${pct}%"></i></div><span class="mudo">${pct}%</span></div>
+      <div class="mudo" style="margin-top:4px">${p.feitos.toLocaleString("pt-BR")} de ${(+p.total).toLocaleString("pt-BR")} pontos</div>
+      <div class="linha" style="margin-top:8px;flex-wrap:wrap"><button class="btn sec peq" onclick="pontoP('${p.id}',-10)">−10</button><button class="btn sec peq" onclick="pontoP('${p.id}',10)">+10</button><button class="btn sec peq" onclick="pontoP('${p.id}',50)">+50</button><button class="btn sec peq" onclick="pontoP('${p.id}',100)">+100</button></div>`:""}
+      <div class="mudo" style="margin-top:10px">Contador de carreiras / voltas</div>
+      <div class="cont"><button class="btn sec" onclick="carr('${p.id}',-1)" aria-label="Diminuir">−</button><b>${p.carreira||0}</b><button class="btn" onclick="carr('${p.id}',1)" aria-label="Aumentar">+</button></div>
+    </div>`}).join("")||`<div class="card mudo">Nenhum projeto ainda.</div>`}</div>`;
+},
+linhas(){
+  const l=[...D.linhas].sort((a,b)=>a.qtd-b.qtd);
+  return `<div class="linha" style="justify-content:space-between"><h2>Estoque de linhas</h2><button class="btn peq" onclick="formLinha()">+ Linha</button></div>
+  <p class="mudo" style="margin-top:0">Quantidade em meadas. A bolinha laranja aparece quando sobra 1 ou nenhuma.</p>
+  <div class="card"><div class="lista">${l.map(x=>`<div class="linha"><span class="carretel" style="background:${corDMC(x.cod)}"></span>
+     <div class="cresce"><b>DMC ${esc(x.cod)}</b> <span class="mudo">${esc(nomeDMC(x.cod))}</span>${x.qtd<=1?' <span class="bolinha b-laranja"></span>':""}</div>
+     <button class="btn sec peq" onclick="qtdL('${x.id}',-1)" aria-label="Menos">−</button><b style="min-width:22px;text-align:center;font-variant-numeric:tabular-nums">${x.qtd}</b><button class="btn sec peq" onclick="qtdL('${x.id}',1)" aria-label="Mais">+</button>
+     <button class="icone" onclick="delL('${x.id}')" aria-label="Remover">✕</button></div>`).join("")||'<span class="mudo">Nenhuma linha cadastrada.</span>'}</div></div>
+  <div class="linha" style="justify-content:space-between;margin-top:6px"><h3>Lista de compras</h3><button class="btn sec peq" onclick="faltantes()">Puxar linhas acabando</button></div>
+  <div class="card"><div class="lista">${D.compras.map(c=>`<label class="linha"><input type="checkbox" style="width:auto" ${c.ok?"checked":""} onchange="togC('${c.id}')"><span class="cresce" style="${c.ok?"text-decoration:line-through;color:var(--sub)":""}">${esc(c.txt)}</span><button class="icone" onclick="delC('${c.id}')" aria-label="Remover">✕</button></label>`).join("")}
+  <div class="linha"><input id="novaCompra" placeholder="Ex.: agulha tapeçaria 24"><button class="btn peq" onclick="addC()">Adicionar</button></div>
+  <button class="btn sec peq" onclick="copiar(D.compras.filter(c=>!c.ok).map(c=>'• '+c.txt).join('\\n'))">Copiar lista para o WhatsApp</button></div></div>`;
+},
+ferramentas(){
+  if(sub)return `<button class="voltar" onclick="sub=null;render()">‹ Ferramentas</button>`+FERR[sub].html();
+  return `<h2>Ferramentas</h2><div class="ferr">${Object.entries(FERR).map(([k,f])=>`<button onclick="sub='${k}';render()"><b>${f.nome}</b><span class="mudo">${f.desc}</span></button>`).join("")}</div>`;
+}};
+
+function nomeDMC(c){return(DMC.find(d=>d[0].toLowerCase()===String(c).toLowerCase())||[,"cor personalizada"])[1]}
+function cardEnc(e){
+  const al=alertaEnc(e), d=diasAte(e.entrega);
+  const quando=d===null?"sem data":d<0?`atrasada ${-d} dia(s)`:d===0?"entrega hoje":d===1?"entrega amanhã":`entrega ${dataBR(e.entrega)}`;
+  const falta=(+e.valor||0)-(+e.sinal||0);
+  return `<button class="card" style="text-align:left;cursor:pointer;width:100%" onclick="verEnc('${e.id}')">
+    ${e.ex?'<div class="exemplo">exemplo</div>':""}
+    <div class="linha"><div class="cresce"><b>${esc(e.cliente)}</b> <span class="mudo">· ${esc(e.peca)}</span></div><span class="chip ${e.status}">${ROT[e.status]}</span></div>
+    <div class="linha mudo" style="margin-top:4px">${al?`<span class="bolinha b-${al}"></span>`:""}<span class="cresce">${esc(e.tecnica)} · ${quando}</span><span>${brl(e.valor)}${falta>0&&e.status!=="entregue"?` · falta ${brl(falta)}`:""}</span></div>
+  </button>`;
+}
+const ROT={aguardando:"Aguardando",bordando:"Bordando",pronto:"Pronto",entregue:"Entregue"};
+
+/* ---------- encomendas ---------- */
+function abrir(h){$("#folha").innerHTML=h;$("#modal").hidden=false}
+function fechar(){$("#modal").hidden=true}
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")fechar()});
+const PECAS=["Toalha de banho","Toalha de rosto","Pano de prato","Fralda de boca","Jaleco","Avental","Bastidor decorativo","Kit enxoval","Camiseta","Almofada","Uniforme escolar","Outra"];
+const TECN=["Ponto cruz","Bordado livre","Vagonite","Ponto russo","Pedraria","Bordado à máquina","Monograma/nome"];
+function formEnc(id){
+  const e=D.encomendas.find(x=>x.id===id)||{status:"aguardando",entrega:somaDias(7)};
+  abrir(`<h2 style="margin-top:4px">${id?"Editar":"Nova"} encomenda</h2>
+  <div class="campo"><label for="fCli">Cliente</label><input id="fCli" value="${esc(e.cliente)}" list="dlCli"></div>
+  <datalist id="dlCli">${[...new Set(D.encomendas.map(x=>x.cliente))].map(c=>`<option value="${esc(c)}">`).join("")}</datalist>
+  <div class="campo"><label for="fFone">WhatsApp</label><input id="fFone" inputmode="tel" value="${esc(e.fone)}" placeholder="(15) 9____-____"></div>
+  <div class="duas"><div class="campo"><label for="fPeca">Peça</label><select id="fPeca">${PECAS.map(p=>`<option ${p===e.peca?"selected":""}>${p}</option>`).join("")}</select></div>
+  <div class="campo"><label for="fTec">Técnica</label><select id="fTec">${TECN.map(p=>`<option ${p===e.tecnica?"selected":""}>${p}</option>`).join("")}</select></div></div>
+  <div class="campo"><label for="fTxt">O que bordar (nome, desenho, frase)</label><input id="fTxt" value="${esc(e.texto)}"></div>
+  <div class="campo"><label for="fCor">Cor da linha</label><input id="fCor" value="${esc(e.cor)}" placeholder="Ex.: Rosa bebê 818"></div>
+  <div class="duas"><div class="campo"><label for="fEnt">Entrega</label><input type="date" id="fEnt" value="${e.entrega||""}"></div>
+  <div class="campo"><label for="fSt">Situação</label><select id="fSt">${Object.keys(ROT).map(k=>`<option value="${k}" ${k===e.status?"selected":""}>${ROT[k]}</option>`).join("")}</select></div></div>
+  <div class="duas"><div class="campo"><label for="fVal">Valor total (R$)</label><input id="fVal" inputmode="decimal" value="${e.valor??""}"></div>
+  <div class="campo"><label for="fSin">Sinal pago (R$)</label><input id="fSin" inputmode="decimal" value="${e.sinal??""}"></div></div>
+  <div class="campo"><label for="fObs">Observações</label><textarea id="fObs">${esc(e.obs)}</textarea></div>
+  <div class="linha"><button class="btn sec cresce" onclick="fechar()">Cancelar</button><button class="btn cresce" onclick="salvaEnc('${id||""}')">Salvar</button></div>`);
+}
+function num(v){return parseFloat(String(v).replace(",","."))||0}
+function salvaEnc(id){
+  const v={cliente:$("#fCli").value.trim()||"Sem nome",fone:$("#fFone").value,peca:$("#fPeca").value,tecnica:$("#fTec").value,texto:$("#fTxt").value,cor:$("#fCor").value,entrega:$("#fEnt").value,status:$("#fSt").value,valor:num($("#fVal").value),sinal:num($("#fSin").value),obs:$("#fObs").value};
+  if(id)Object.assign(D.encomendas.find(x=>x.id===id),v,{ex:0});else D.encomendas.push({id:uid(),...v});
+  salvar();fechar();render();aviso("Encomenda salva");
+}
+function verEnc(id){
+  const e=D.encomendas.find(x=>x.id===id);const falta=(+e.valor||0)-(+e.sinal||0);
+  const msg=msgCliente(e);const tel=String(e.fone||"").replace(/\D/g,"");
+  abrir(`<div class="linha"><h2 class="cresce" style="margin-top:4px">${esc(e.cliente)}</h2><span class="chip ${e.status}">${ROT[e.status]}</span></div>
+  <div class="card"><table><tbody>
+  <tr><th>Peça</th><td>${esc(e.peca)}</td></tr><tr><th>Técnica</th><td>${esc(e.tecnica)}</td></tr>
+  <tr><th>Bordar</th><td>${esc(e.texto)||"—"}</td></tr><tr><th>Linha</th><td>${esc(e.cor)||"—"}</td></tr>
+  <tr><th>Entrega</th><td>${dataBR(e.entrega)}</td></tr><tr><th>Valor</th><td>${brl(e.valor)} (sinal ${brl(e.sinal)}, falta ${brl(falta)})</td></tr>
+  <tr><th>WhatsApp</th><td style="user-select:all">${esc(e.fone)||"—"}</td></tr>${e.obs?`<tr><th>Obs.</th><td>${esc(e.obs)}</td></tr>`:""}</tbody></table></div>
+  <h3>Mudar situação</h3><div class="filtros">${Object.keys(ROT).map(k=>`<button class="${k===e.status?"on":""}" onclick="stEnc('${id}','${k}')">${ROT[k]}</button>`).join("")}</div>
+  <h3>Mensagem para a cliente</h3><div class="card" style="white-space:pre-wrap;user-select:all">${esc(msg)}</div>
+  <div class="linha" style="margin-top:8px"><button class="btn sec cresce" onclick="copiar(${esc(JSON.stringify(msg))})">Copiar mensagem</button>${tel?`<a class="btn cresce" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/55${tel}?text=${encodeURIComponent(msg)}">Abrir WhatsApp</a>`:""}</div>
+  ${falta>0?`<button class="btn" style="width:100%;margin-top:10px" onclick="cobrar('${id}')">Cobrar com Pix (${brl(falta)})</button>`:""}
+  ${+e.valor?`<button class="btn sec" style="width:100%;margin-top:10px" onclick="lancaEnc('${id}')">Lançar no caixa</button>`:""}
+  <div class="linha" style="margin-top:16px"><button class="btn sec cresce" onclick="formEnc('${id}')">Editar</button><button class="btn sec cresce" id="bDel" onclick="confDel('${id}')">Excluir</button></div>`);
+}
+function msgCliente(e){
+  const n=e.cliente.split(" ")[0];const falta=(+e.valor||0)-(+e.sinal||0);
+  if(e.status==="pronto")return`Oi, ${n}! Sua encomenda (${e.peca}${e.texto?" – "+e.texto:""}) está pronta 🧵✨${falta>0?`\nValor restante: ${brl(falta)}.`:""}\nQuando fica bom para retirar?`;
+  if(e.status==="entregue")return`Oi, ${n}! Obrigada pela preferência 💕 Espero que tenha gostado do bordado. Se puder, me manda uma foto usando!`;
+  return`Oi, ${n}! Confirmando sua encomenda:\n• ${e.peca}${e.texto?" – "+e.texto:""}\n• ${e.tecnica}${e.cor?", linha "+e.cor:""}\n• Entrega: ${dataBR(e.entrega)}\n• Valor: ${brl(e.valor)}${e.sinal?` (sinal de ${brl(e.sinal)} recebido)`:""}`;
+}
+function stEnc(id,s){D.encomendas.find(x=>x.id===id).status=s;salvar();render();verEnc(id)}
+function confDel(id){const b=$("#bDel");if(b.dataset.c){D.encomendas=D.encomendas.filter(x=>x.id!==id);salvar();fechar();render();aviso("Encomenda excluída")}else{b.dataset.c=1;b.textContent="Toque de novo para excluir";b.style.background="var(--vermelho)";b.style.color="#fff"}}
+
+/* ---------- projetos ---------- */
+function formProj(id){
+  const p=D.projetos.find(x=>x.id===id)||{tecnica:"Ponto cruz",total:"",feitos:0,carreira:0};
+  abrir(`<h2 style="margin-top:4px">${id?"Editar":"Novo"} projeto</h2>
+  <div class="campo"><label for="pN">Nome</label><input id="pN" value="${esc(p.nome)}"></div>
+  <div class="campo"><label for="pT">Técnica</label><select id="pT">${TECN.map(t=>`<option ${t===p.tecnica?"selected":""}>${t}</option>`).join("")}</select></div>
+  <div class="duas"><div class="campo"><label for="pTot">Total de pontos (opcional)</label><input id="pTot" inputmode="numeric" value="${p.total||""}"></div>
+  <div class="campo"><label for="pF">Pontos feitos</label><input id="pF" inputmode="numeric" value="${p.feitos||0}"></div></div>
+  <div class="campo"><label for="pO">Anotações</label><textarea id="pO">${esc(p.obs)}</textarea></div>
+  <div class="linha"><button class="btn sec cresce" onclick="${id?`delP('${id}')`:"fechar()"}" id="bDelP">${id?"Excluir":"Cancelar"}</button><button class="btn cresce" onclick="salvaP('${id||""}')">Salvar</button></div>`);
+}
+function salvaP(id){const v={nome:$("#pN").value.trim()||"Projeto",tecnica:$("#pT").value,total:parseInt($("#pTot").value)||0,feitos:parseInt($("#pF").value)||0,obs:$("#pO").value,ex:0};
+  if(id)Object.assign(D.projetos.find(x=>x.id===id),v);else D.projetos.unshift({id:uid(),carreira:0,...v});salvar();fechar();render()}
+function delP(id){const b=$("#bDelP");if(b.dataset.c){D.projetos=D.projetos.filter(x=>x.id!==id);salvar();fechar();render()}else{b.dataset.c=1;b.textContent="Toque de novo";b.style.background="var(--vermelho)";b.style.color="#fff"}}
+function pontoP(id,n){const p=D.projetos.find(x=>x.id===id);p.feitos=Math.max(0,Math.min(p.total||1e9,p.feitos+n));salvar();render()}
+function carr(id,n){const p=D.projetos.find(x=>x.id===id);p.carreira=Math.max(0,(p.carreira||0)+n);salvar();render()}
+
+/* ---------- linhas ---------- */
+function formLinha(){
+  abrir(`<h2 style="margin-top:4px">Adicionar linha</h2>
+  <div class="campo"><label for="lC">Código DMC (ou outra marca)</label><input id="lC" list="dlDMC" placeholder="Ex.: 310"></div>
+  <datalist id="dlDMC">${DMC.map(d=>`<option value="${d[0]}">${d[1]}</option>`).join("")}</datalist>
+  <div class="campo"><label for="lQ">Meadas em casa</label><input id="lQ" inputmode="numeric" value="1"></div>
+  <h3>Ou toque numa cor</h3><div style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px">${DMC.map(d=>`<button title="${d[0]} ${d[1]}" aria-label="DMC ${d[0]} ${d[1]}" onclick="$('#lC').value='${d[0]}'" style="aspect-ratio:1;border-radius:8px;border:1px solid var(--linha);background:${d[2]};cursor:pointer"></button>`).join("")}</div>
+  <div class="linha" style="margin-top:14px"><button class="btn sec cresce" onclick="fechar()">Cancelar</button><button class="btn cresce" onclick="salvaL()">Salvar</button></div>`);
+}
+function salvaL(){const c=$("#lC").value.trim();if(!c)return aviso("Digite o código da linha");const ex=D.linhas.find(l=>l.cod.toLowerCase()===c.toLowerCase());const q=parseInt($("#lQ").value)||0;
+  if(ex)ex.qtd+=q;else D.linhas.push({id:uid(),cod:c,qtd:q});salvar();fechar();render()}
+function qtdL(id,n){const l=D.linhas.find(x=>x.id===id);l.qtd=Math.max(0,l.qtd+n);salvar();render()}
+function delL(id){D.linhas=D.linhas.filter(x=>x.id!==id);salvar();render()}
+function addC(){const v=$("#novaCompra").value.trim();if(!v)return;D.compras.push({id:uid(),txt:v,ok:false});salvar();render()}
+function togC(id){const c=D.compras.find(x=>x.id===id);c.ok=!c.ok;salvar();render()}
+function delC(id){D.compras=D.compras.filter(x=>x.id!==id);salvar();render()}
+function faltantes(){let n=0;D.linhas.filter(l=>l.qtd<=1).forEach(l=>{const t=`Linha DMC ${l.cod} – ${nomeDMC(l.cod)}`;if(!D.compras.some(c=>c.txt===t&&!c.ok)){D.compras.push({id:uid(),txt:t,ok:false});n++}});salvar();render();aviso(n?"Linhas adicionadas à lista":"Nada novo para adicionar")}
+
+/* ---------- ferramentas ---------- */
+const FERR={
+moldes:{nome:"Moldes, riscos e aulas",desc:"Nomes em ponto cruz, gráficos e riscos prontos, e aulas grátis",html(){return telaMoldes()},depois(){moldesLigar()}},
+orcFoto:{nome:"Calcular preço pela foto",desc:"Tira a foto, marca o bordado e o app conta os pontos e dá o valor",html(){return `<h2>Calcular preço pela foto</h2>
+  <p class="mudo" style="margin-top:0">Tire uma foto da peça ou de um modelo. Depois arraste o dedo em volta do bordado e diga o tamanho dele. O app estima os pontos e o valor.</p>
+  <div class="duas"><div class="campo"><label for="ofCam">Tirar foto</label><input type="file" id="ofCam" accept="image/*" capture="environment"></div>
+  <div class="campo"><label for="ofGal">Escolher da galeria</label><input type="file" id="ofGal" accept="image/*"></div></div>
+  <div id="ofFotoBox" hidden><div class="grade-box" style="background:var(--tela2)"><canvas id="ofCv" style="display:block;width:100%;touch-action:none;cursor:crosshair"></canvas></div>
+  <p class="mudo" style="margin:4px 0 10px">Arraste o dedo para marcar só a parte bordada. O que fica pintado de rosa é o que o app contou como bordado.</p>
+  <div class="campo"><label for="ofSens">Sensibilidade: <span id="ofSv">50</span></label><input type="range" id="ofSens" min="10" max="90" value="50" style="padding:0"></div></div>
+  <h3>Ou escolha um modelo pronto</h3>
+  <div class="filtros" style="flex-wrap:wrap">${MODELOS.map((m,k)=>`<button onclick="usaModelo(${k})">${m.n}</button>`).join("")}</div>
+  <h3>Tamanho e tipo do bordado</h3>
+  <div class="duas"><div class="campo"><label for="ofL">Largura do bordado (cm)</label><input id="ofL" inputmode="decimal" value="10"></div>
+  <div class="campo"><label for="ofA">Altura (cm)</label><input id="ofA" inputmode="decimal" value="8"></div></div>
+  <div class="duas"><div class="campo"><label for="ofT">Tipo de bordado</label><select id="ofT">${DENS.map((d,k)=>`<option value="${k}">${d.n}</option>`).join("")}</select></div>
+  <div class="campo"><label for="ofD">Pontos por cm²</label><input id="ofD" inputmode="decimal" value="${DENS[0].d}"></div></div>
+  <div class="duas"><div class="campo"><label for="ofP">Parte bordada (%)</label><input id="ofP" inputmode="numeric" value="50"></div>
+  <div class="campo"><label for="ofM">Peça e material (R$)</label><input id="ofM" inputmode="decimal" value="0"></div></div>
+  <div class="result" id="ofR"></div>
+  <div class="linha" style="margin-top:10px;flex-wrap:wrap"><button class="btn sec cresce" onclick="orcParaPeca()">Salvar como peça</button><button class="btn cresce" onclick="orcParaEnc()">Fazer encomenda</button></div>
+  <p class="mudo">É uma estimativa. Se ela souber quantos pontos uma peça teve de verdade, pode ajustar os "pontos por cm²" até bater, e o app passa a acertar mais.</p>`},depois(){orcLigar()}},
+projetos:{nome:"Projetos e contadores",desc:"Progresso de pontos e contador de carreiras",html(){return telas.projetos()}},
+precoPonto:{nome:"Preço por ponto",desc:"Calcula o preço pela quantidade de pontos",html(){return`<h2>Preço por ponto</h2>
+ <div class="duas"><div class="campo"><label for="ppN">Quantidade de pontos</label><input id="ppN" inputmode="numeric" value="2000" oninput="calcPP()"></div>
+ <div class="campo"><label for="ppV">Valor por ponto (R$)</label><input id="ppV" inputmode="decimal" value="${String(D.config.vp).replace(".",",")}" oninput="calcPP()"></div></div>
+ <div class="campo"><label for="ppC">Custo da peça/material (R$)</label><input id="ppC" inputmode="decimal" value="0" oninput="calcPP()"></div>
+ <div class="result" id="ppR"></div>
+ <h3>Não sabe os pontos? Estimar</h3><div class="card">${estimadorHTML("q")}<button class="btn sec peq" style="margin-top:8px" onclick="$('#ppN').value=estimar('q');calcPP()">Usar estimativa</button></div>`},depois(){estLigar("q");calcPP()}},
+grafico:{nome:"Gráfico de ponto cruz",desc:"Transforma uma foto ou desenho em gráfico com cores DMC",html(){return`
+  <h2>Gráfico a partir de foto</h2>
+  <p class="mudo" style="margin-top:0">Escolha uma imagem simples (desenho, logotipo, foto com fundo liso). <button class="voltar" style="padding:0" onclick="exemploImg()">Ver um exemplo</button></p>
+  <div class="campo"><label for="gArq">Imagem</label><input type="file" id="gArq" accept="image/*"></div>
+  <div class="duas"><div class="campo"><label for="gL">Largura (pontos)</label><input id="gL" inputmode="numeric" value="40"></div>
+  <div class="campo"><label for="gC">Máx. de cores</label><input id="gC" inputmode="numeric" value="6"></div></div>
+  <div class="duas"><div class="campo"><label for="gT">Etamine</label><select id="gT">${[11,14,16,18].map(t=>`<option ${t===14?"selected":""} value="${t}">${t} (${(t/2.54).toFixed(1)} pontos/cm)</option>`).join("")}</select></div>
+  <div class="campo"><label for="gS">Mostrar</label><select id="gS"><option value="1">Cores + símbolos</option><option value="0">Só cores</option></select></div></div>
+  <div class="linha"><label class="linha mudo"><input type="checkbox" id="gF" checked style="width:auto"> Ignorar fundo branco</label><button class="btn cresce" onclick="gerar()">Gerar gráfico</button></div>
+  <div class="grade-box"><canvas id="grade" width="1" height="1"></canvas></div>
+  <div id="gInfo"></div>`},depois(){if(IMG)gerar();$("#gArq").onchange=ev=>{const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{IMG=i;gerar()};i.src=r.result};r.readAsDataURL(f)}}},
+tecido:{nome:"Calculadora de tecido",desc:"Tamanho do bordado e quanto cortar de etamine",html(){return`
+  <h2>Calculadora de tecido</h2>
+  <div class="duas"><div class="campo"><label for="tL">Pontos na largura</label><input id="tL" inputmode="numeric" value="80" oninput="calcT()"></div>
+  <div class="campo"><label for="tA">Pontos na altura</label><input id="tA" inputmode="numeric" value="60" oninput="calcT()"></div></div>
+  <div class="duas"><div class="campo"><label for="tC">Tecido</label><select id="tC" onchange="calcT()"><option value="11">Etamine 11</option><option value="14" selected>Etamine 14</option><option value="16">Etamine 16</option><option value="18">Etamine 18</option><option value="12.5">Linho 25 (sobre 2 fios)</option><option value="14.01">Linho 28 (sobre 2 fios)</option></select></div>
+  <div class="campo"><label for="tM">Sobra em cada lado (cm)</label><input id="tM" inputmode="decimal" value="5" oninput="calcT()"></div></div>
+  <div class="result" id="tR"></div>
+  <h3>Quantas meadas?</h3>
+  <div class="duas"><div class="campo"><label for="mP">Pontos dessa cor</label><input id="mP" inputmode="numeric" value="1500" oninput="calcT()"></div>
+  <div class="campo"><label for="mF">Fios usados</label><select id="mF" onchange="calcT()"><option value="1">1 fio</option><option value="2" selected>2 fios</option><option value="3">3 fios</option></select></div></div>
+  <div class="result" id="mR"></div>
+  <p class="mudo">Estimativa para meada DMC de 8 m. Sempre compre uma a mais da cor principal: o lote pode mudar o tom.</p>`},depois(){calcT()}},
+preco:{nome:"Calculadora de preço",desc:"Quanto cobrar pelo tempo, material e lucro",html(){return`
+  <h2>Quanto cobrar</h2>
+  <div class="duas"><div class="campo"><label for="cH">Horas de trabalho</label><input id="cH" inputmode="decimal" value="3" oninput="calcP()"></div>
+  <div class="campo"><label for="cV">Valor da sua hora (R$)</label><input id="cV" inputmode="decimal" value="20" oninput="calcP()"></div></div>
+  <div class="duas"><div class="campo"><label for="cPe">Peça / tecido (R$)</label><input id="cPe" inputmode="decimal" value="18" oninput="calcP()"></div>
+  <div class="campo"><label for="cLi">Linhas e aviamentos (R$)</label><input id="cLi" inputmode="decimal" value="6" oninput="calcP()"></div></div>
+  <div class="duas"><div class="campo"><label for="cE">Embalagem (R$)</label><input id="cE" inputmode="decimal" value="3" oninput="calcP()"></div>
+  <div class="campo"><label for="cM">Lucro (%)</label><input id="cM" inputmode="decimal" value="20" oninput="calcP()"></div></div>
+  <div class="result" id="cR"></div>`},depois(){calcP()}},
+pontos:{nome:"Guia de pontos",desc:"Como fazer cada ponto, do básico ao rococó",html(){return`<h2>Guia de pontos</h2><div class="lista">${GUIA.map(g=>`<div class="card ponto-g">${g[3]}<div class="cresce"><div class="linha"><b class="cresce">${g[0]}</b><span class="chip">${g[1]}</span></div><div class="mudo" style="margin-top:4px">${g[2]}</div></div></div>`).join("")}</div>`}},
+agulhas:{nome:"Agulhas e fios",desc:"Qual agulha e quantos fios para cada tecido",html(){return`<h2>Agulhas e fios</h2>
+  <div class="card tabwrap"><table><thead><tr><th>Tecido</th><th>Agulha</th><th>Fios</th></tr></thead><tbody>
+  <tr><td>Etamine 11</td><td>Tapeçaria 22</td><td>3</td></tr><tr><td>Etamine 14</td><td>Tapeçaria 24</td><td>2</td></tr>
+  <tr><td>Etamine 16</td><td>Tapeçaria 26</td><td>2</td></tr><tr><td>Etamine 18</td><td>Tapeçaria 26 ou 28</td><td>1 ou 2</td></tr>
+  <tr><td>Linho 28 (sobre 2)</td><td>Tapeçaria 26 ou 28</td><td>2</td></tr><tr><td>Algodão cru / tricoline (bordado livre)</td><td>Bordado nº 7 a 9</td><td>2 a 3</td></tr>
+  <tr><td>Toalha felpuda (ponto cruz)</td><td>Tapeçaria 24 + etamine de bordar</td><td>3</td></tr>
+  <tr><td>Linha perlé nº 5 / 8</td><td>Tapeçaria 22 ou chenille</td><td>1 (inteira)</td></tr></tbody></table></div>
+  <div class="card dica" style="margin-top:10px">Agulha de tapeçaria tem ponta arredondada e não rasga o fio do tecido. Para bordado livre use agulha de ponta fina.</div>`}},
+bastidor:{nome:"Medidas de bastidor",desc:"Quanto de tecido para cada bastidor",html(){return`<h2>Bastidor e tecido</h2>
+  <div class="card tabwrap"><table><thead><tr><th>Bastidor</th><th>Corte do tecido</th><th>Área bordável</th></tr></thead><tbody>
+  ${[10,13,15,18,20,23,25,30].map(b=>`<tr><td>${b} cm</td><td>${b+10} × ${b+10} cm</td><td>até ${b-3} cm</td></tr>`).join("")}</tbody></table></div>
+  <div class="card dica" style="margin-top:10px">Deixe 5 cm de folga em cada lado para prender no bastidor e fazer o acabamento atrás.</div>`}}
+};
+
+function calcT(){
+  const L=+$("#tL").value||0,A=+$("#tA").value||0,c=+$("#tC").value||14,m=num($("#tM").value);
+  const pc=c/2.54, wl=L/pc, ha=A/pc;
+  $("#tR").innerHTML=`Bordado pronto: <b>${wl.toFixed(1)} × ${ha.toFixed(1)} cm</b><br>Cortar tecido: <b>${(wl+2*m).toFixed(0)} × ${(ha+2*m).toFixed(0)} cm</b><br><span class="mudo">${(L*A).toLocaleString("pt-BR")} pontos no total</span>`;
+  const p=+$("#mP").value||0,f=+$("#mF").value;
+  const porMeada=1600*(c/14)*(2/f);
+  $("#mR").innerHTML=`Cerca de <b>${Math.max(1,Math.ceil(p/porMeada))} meada(s)</b> <span class="mudo">(uma meada rende ~${Math.round(porMeada).toLocaleString("pt-BR")} pontos)</span>`;
+}
+function calcP(){
+  const h=num($("#cH").value),v=num($("#cV").value),pe=num($("#cPe").value),li=num($("#cLi").value),e=num($("#cE").value),m=num($("#cM").value);
+  const custo=h*v+pe+li+e, preco=custo*(1+m/100);
+  $("#cR").innerHTML=`Custo: <b>${brl(custo)}</b><br>Preço sugerido: <b style="font-size:1.3rem">${brl(Math.ceil(preco))}</b><br><span class="mudo">Sinal de 50%: ${brl(Math.ceil(preco/2))}</span>`;
+}
+
+/* ---- gráfico de ponto cruz ---- */
+let IMG=null;
+const SIMB="●▲■◆★♥✚✖○△□◇☆♦♣♠";
+function exemploImg(){
+  const c=document.createElement("canvas");c.width=c.height=200;const x=c.getContext("2d");
+  x.fillStyle="#fff";x.fillRect(0,0,200,200);
+  x.fillStyle="#C72B3B";x.beginPath();x.moveTo(100,175);x.bezierCurveTo(10,115,15,40,65,40);x.bezierCurveTo(85,40,98,55,100,70);x.bezierCurveTo(102,55,115,40,135,40);x.bezierCurveTo(185,40,190,115,100,175);x.fill();
+  x.fillStyle="#FCB0B9";x.beginPath();x.ellipse(70,75,14,10,-.6,0,7);x.fill();
+  x.fillStyle="#47A72F";x.fillRect(96,8,8,34);x.beginPath();x.ellipse(118,22,16,8,-.4,0,7);x.fill();
+  const i=new Image();i.onload=()=>{IMG=i;gerar()};i.src=c.toDataURL();
+}
+function rgb(h){return[1,3,5].map(i=>parseInt(h.slice(i,i+2),16))}
+const PAL=DMC.map(d=>({cod:d[0],nome:d[1],hex:d[2],rgb:rgb(d[2])}));
+function dist(a,b){const r=(a[0]+b[0])/2,dr=a[0]-b[0],dg=a[1]-b[1],db=a[2]-b[2];return(2+r/256)*dr*dr+4*dg*dg+(2+(255-r)/256)*db*db}
+function perto(p,lista){let m=1e12,k=null;for(const c of lista){const d=dist(p,c.rgb);if(d<m){m=d;k=c}}return k}
+function gerar(){
+  if(!IMG)return;
+  const W=Math.max(10,Math.min(150,parseInt($("#gL").value)||40)),K=Math.max(2,Math.min(16,parseInt($("#gC").value)||6));
+  const H=Math.max(1,Math.round(W*IMG.height/IMG.width));
+  const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(IMG,0,0,W,H);
+  const px=x.getImageData(0,0,W,H).data;const fundo=$("#gF").checked;
+  const cel=[],cont=new Map();
+  for(let i=0;i<W*H;i++){const p=[px[i*4],px[i*4+1],px[i*4+2]];
+    if(px[i*4+3]<100||(fundo&&p[0]>235&&p[1]>235&&p[2]>235)){cel.push(null);continue}
+    const k=perto(p,PAL);cel.push(k);cont.set(k,(cont.get(k)||0)+1)}
+  const top=[...cont.entries()].sort((a,b)=>b[1]-a[1]).slice(0,K).map(e=>e[0]);
+  const fin=new Map();const cel2=cel.map(k=>{if(!k)return null;const t=top.includes(k)?k:perto(k.rgb,top);fin.set(t,(fin.get(t)||0)+1);return t});
+  const cv=$("#grade"),larg=Math.min(window.innerWidth-34,560-34),s=Math.max(8,Math.floor(larg/W)),sym=$("#gS").value==="1";
+  cv.width=W*s+1;cv.height=H*s+1;const g=cv.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,cv.width,cv.height);
+  const ordem=[...fin.keys()];
+  cel2.forEach((k,i)=>{if(!k)return;const cx=(i%W)*s,cy=Math.floor(i/W)*s;g.fillStyle=k.hex;g.fillRect(cx,cy,s,s);
+    if(sym&&s>=10){const r=k.rgb;g.fillStyle=(r[0]*.3+r[1]*.59+r[2]*.11)>140?"#222":"#fff";g.font=`${Math.floor(s*.7)}px sans-serif`;g.textAlign="center";g.textBaseline="middle";g.fillText(SIMB[ordem.indexOf(k)%SIMB.length],cx+s/2,cy+s/2+1)}});
+  for(let i=0;i<=W;i++){g.fillStyle=i%10===0?"#555":"#ccc";g.fillRect(i*s,0,i%10===0?1:.5,H*s)}
+  for(let j=0;j<=H;j++){g.fillStyle=j%10===0?"#555":"#ccc";g.fillRect(0,j*s,W*s,j%10===0?1:.5)}
+  const t=+$("#gT").value,pc=t/2.54,nP=cel2.filter(k=>k).length;const tem=new Set(D.linhas.filter(l=>l.qtd>0).map(l=>l.cod.toLowerCase()));
+  $("#gInfo").innerHTML=`<div class="result">Gráfico de <b>${W} × ${H} pontos</b> · em etamine ${t}: <b>${(W/pc).toFixed(1)} × ${(H/pc).toFixed(1)} cm</b> · cortar ${(W/pc+10).toFixed(0)} × ${(H/pc+10).toFixed(0)} cm<br>${nP.toLocaleString("pt-BR")} pontos a ${brl(D.config.vp)} = <b>${brl(nP*D.config.vp)}</b> de bordado</div>
+  <h3>Cores do gráfico</h3><div class="card"><div class="lista">${ordem.map(k=>`<div class="linha"><span class="carretel" style="background:${k.hex};display:grid;place-items:center;color:${(k.rgb[0]*.3+k.rgb[1]*.59+k.rgb[2]*.11)>140?"#222":"#fff"}">${SIMB[ordem.indexOf(k)%SIMB.length]}</span><div class="cresce"><b>DMC ${k.cod}</b> <span class="mudo">${k.nome}</span><div class="mudo">${fin.get(k).toLocaleString("pt-BR")} pontos · ~${Math.max(1,Math.ceil(fin.get(k)/(1600*t/14)))} meada(s)</div></div>${tem.has(k.cod.toLowerCase())?'<span class="chip pronto">tenho</span>':'<span class="bolinha b-laranja" title="Não tem no estoque"></span>'}</div>`).join("")}</div>
+  <button class="btn sec" style="margin-top:10px;width:100%" onclick="compGraf()">Pôr as cores que faltam na lista de compras</button></div>
+  <div class="linha" style="margin-top:10px"><button class="btn cresce" onclick="projGraf(${(W*H)-cel2.filter(k=>!k).length})">Criar projeto com este gráfico</button></div>`;
+  window._falta=ordem.filter(k=>!tem.has(k.cod.toLowerCase()));
+}
+function compGraf(){let n=0;(window._falta||[]).forEach(k=>{const t=`Linha DMC ${k.cod} – ${k.nome}`;if(!D.compras.some(c=>c.txt===t&&!c.ok)){D.compras.push({id:uid(),txt:t,ok:false});n++}});salvar();aviso(n?"Adicionado à lista de compras":"Já está tudo na lista")}
+function projGraf(total){D.projetos.unshift({id:uid(),nome:"Gráfico de ponto cruz "+new Date().toLocaleDateString("pt-BR"),tecnica:"Ponto cruz",total,feitos:0,carreira:0,obs:""});salvar();aviso("Projeto criado na aba Projetos")}
+
+/* ---- guia de pontos ---- */
+const sv=p=>`<svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true"><rect width="54" height="54" rx="10" fill="var(--tela2)"/>${p}</svg>`;
+const L=(d,c="var(--acento)")=>`<path d="${d}" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`;
+const GUIA=[
+["Ponto cruz","Fácil","Faça todas as meias cruzes ( / ) de uma carreira e volte fechando ( \\ ). Todas as cruzes devem terminar na mesma direção.",sv(L("M12 12l12 12M24 12L12 24M30 30l12 12M42 30L30 42"))],
+["Meio ponto","Fácil","Só a primeira perna da cruz. Usado para sombras e fundos mais leves.",sv(L("M12 24l12-12M30 42l12-12"))],
+["Ponto atrás","Fácil","Contorno e letras finas. Saia um ponto à frente e volte enfiando no fim do ponto anterior.",sv(L("M8 30h10M20 30h10M32 30h10M44 30h4"))],
+["Ponto haste","Fácil","Linhas curvas e caules. Pontos inclinados, cada um começando na metade do anterior.",sv(L("M10 40c8-6 14-14 22-18s10-10 12-12"))],
+["Ponto corrente","Médio","Faça uma laçada, prenda a próxima dentro dela. Ótimo para contornos grossos e letras.",sv(L("M10 27c0-6 10-6 10 0s-10 6-10 0M20 27c0-6 10-6 10 0s-10 6-10 0M30 27c0-6 10-6 10 0s-10 6-10 0"))],
+["Ponto cheio","Médio","Pontos lado a lado bem juntinhos para preencher. Contorne antes com ponto atrás para a borda ficar reta.",sv(L("M14 14v26M18 12v30M22 11v32M26 11v32M30 11v32M34 12v30M38 14v26"))],
+["Nó francês","Médio","Enrole a linha 2 vezes na agulha, entre bem perto de onde saiu e segure a linha até o fim. Miolos de flor e olhos.",sv(`<circle cx="18" cy="20" r="4" fill="var(--acento)"/><circle cx="34" cy="22" r="4" fill="var(--acento)"/><circle cx="26" cy="34" r="4" fill="var(--acento)"/>`)]
+,["Margarida (laçada)","Fácil","Uma laçada presa na ponta com um pontinho. Pétalas e folhas.",sv(L("M27 27c-4-6-4-14 0-16c4 2 4 10 0 16M27 27c6-4 14-4 16 0c-2 4-10 4-16 0M27 27c4 6 4 14 0 16c-4-2-4-10 0-16M27 27c-6 4-14 4-16 0c2-4 10-4 16 0"))],
+["Rococó","Difícil","Muitas voltas na agulha (8 a 15) formando um rolinho. Rosas e botões. Use agulha de olho fino.",sv(L("M14 27c0-10 26-10 26 0s-22 8-22 0 16-6 16 0-10 4-10 0"))],
+["Caseado","Médio","Pontos em L presos pela laçada. Acabamento de bordas e aplicações.",sv(L("M10 36h34M14 36V18M22 36V18M30 36V18M38 36V18"))],
+["Vagonite","Fácil","A linha passa por baixo dos pontinhos do tecido próprio (xadrez de vagonite), sem atravessar. Muito usado em toalhas.",sv(L("M8 20q5 8 10 0t10 0 10 0 10 0M8 34q5 8 10 0t10 0 10 0 10 0"))],
+["Ponto pena","Médio","Laçadas alternando para a esquerda e direita. Ramos e barrados.",sv(L("M27 8v38M27 14l-10 6M27 22l10 6M27 30l-10 6M27 38l10 6"))]];
+
+const DICAS=["Corte a linha do tamanho do seu braço (uns 45 cm). Linha comprida embola e desbota com o atrito.","Separe os fios da meada um por um e junte de novo: o ponto fica mais cheio e brilhante.","Comece o ponto cruz pelo meio do tecido. Dobre ao meio nas duas direções para achar o centro.","Lave as mãos antes de bordar e guarde o bordado em saquinho de tecido, nunca em plástico fechado.","Para passar a ferro, vire o bordado sobre uma toalha felpuda: os pontos não amassam.","Use caneta que some com água ou com o calor para riscar. Teste antes num cantinho.","Não dê nó no começo: deixe uma ponta atrás e prenda com os primeiros pontos.","Linha vermelha e escura: lave em água fria com uma colher de vinagre para firmar a cor.","Fotografe cada peça pronta com luz natural. Vira portfólio para mostrar às clientes.","Cobre sinal de 50% nas encomendas personalizadas com nome: elas não podem ser revendidas."];
+
+/* ---------- menu Mais ---------- */
+function abrirMais(){
+  abrir(`<h2 style="margin-top:4px">Mais opções</h2><div class="lista">
+  <button class="btn sec" onclick="compartilhar()">Compartilhar aplicativo</button>
+  <button class="btn sec" onclick="location.reload()">Atualizar aplicativo</button>
+  <button class="btn sec" onclick="meusDados()">Minha chave Pix, Instagram e WhatsApp</button>
+  <button class="btn sec" onclick="ajustes()">Ajustes: valor do ponto e reserva</button>
+  <button class="btn sec" onclick="backup()">Fazer cópia de segurança</button>
+  <button class="btn sec" onclick="restaurar()">Restaurar cópia</button>
+  <button class="btn sec" onclick="legenda()">O que significam as bolinhas</button>
+  <button class="btn sec" onclick="abrirAula(0)">Aula: como usar o app</button>
+  <button class="btn sec" onclick="guia()">Como usar (passo a passo)</button>
+  <button class="btn" onclick="fechar()">Fechar</button></div>
+  <p class="mudo" style="text-align:center;margin-top:14px">Versão ${VERSAO} · os dados ficam salvos neste aparelho.</p>`);
+}
+async function compartilhar(){const u=location.href;try{if(navigator.share){await navigator.share({title:"Ateliê de Bordado",url:u});return}}catch(e){}copiar(u)}
+function backup(){const t=JSON.stringify(D);abrir(`<h2 style="margin-top:4px">Cópia de segurança</h2><p class="mudo">Copie o texto abaixo e guarde no WhatsApp ou nas notas. Para recuperar, use “Restaurar cópia”.</p><textarea id="bk" style="min-height:160px" readonly>${esc(t)}</textarea><div class="linha" style="margin-top:10px"><button class="btn cresce" onclick="copiar($('#bk').value)">Copiar</button><button class="btn sec cresce" onclick="abrirMais()">Voltar</button></div>`)}
+function restaurar(){abrir(`<h2 style="margin-top:4px">Restaurar cópia</h2><p class="mudo">Cole aqui o texto da cópia de segurança. Os dados atuais serão substituídos.</p><textarea id="rs" style="min-height:160px"></textarea><div class="linha" style="margin-top:10px"><button class="btn cresce" onclick="fazRest()">Restaurar</button><button class="btn sec cresce" onclick="abrirMais()">Voltar</button></div>`)}
+function fazRest(){try{const n=JSON.parse($("#rs").value);if(!n.encomendas)throw 0;D=n;salvar();fechar();render();aviso("Cópia restaurada")}catch(e){aviso("Texto inválido. Copie a cópia inteira e tente de novo")}}
+function legenda(){abrir(`<h2 style="margin-top:4px">O que significam as bolinhas</h2><div class="card lista">
+  <div class="linha"><span class="bolinha b-vermelha"></span><span>Encomenda atrasada (passou da data e não está pronta).</span></div>
+  <div class="linha"><span class="bolinha b-laranja"></span><span>Atenção: entrega em até 2 dias, linha acabando, peça do catálogo sem estoque ou cor que falta.</span></div>
+  <div class="linha"><span class="chip pronto">tenho</span><span>Você já tem essa linha em casa.</span></div></div>
+  <button class="btn sec" style="margin-top:12px;width:100%" onclick="abrirMais()">Voltar</button>`)}
+function limpaEx(){const b=$("#bLimpa");if(!b.dataset.c){b.dataset.c=1;b.textContent="Toque de novo para apagar os exemplos";b.style.background="var(--vermelho)";b.style.color="#fff";return}
+  D.encomendas=D.encomendas.filter(x=>!x.ex);D.projetos=D.projetos.filter(x=>!x.ex);D.linhas=D.linhas.filter(x=>!x.ex);D.produtos=D.produtos.filter(x=>!x.ex);D.caixa=D.caixa.filter(x=>!x.ex);salvar();fechar();render();aviso("Exemplos apagados")}
+
+/* ---------- fotos e estimativa de pontos ---------- */
+function carregaImg(f){return new Promise((ok,err)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>ok(i);i.onerror=err;i.src=r.result};r.readAsDataURL(f)})}
+async function compImg(f,max=700){const i=await carregaImg(f);const s=Math.min(1,max/Math.max(i.width,i.height));const c=document.createElement("canvas");c.width=Math.round(i.width*s);c.height=Math.round(i.height*s);c.getContext("2d").drawImage(i,0,0,c.width,c.height);return c.toDataURL("image/jpeg",.72)}
+async function preench(f){const i=await carregaImg(f);const W=80,H=Math.max(1,Math.round(80*i.height/i.width));const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.drawImage(i,0,0,W,H);const d=x.getImageData(0,0,W,H).data;
+  const px=k=>[d[k*4],d[k*4+1],d[k*4+2]];const cs=[0,W-1,(H-1)*W,H*W-1].map(px);const bg=[0,1,2].map(j=>cs.reduce((s,c)=>s+c[j],0)/4);
+  let n=0;for(let k=0;k<W*H;k++){const p=px(k);if(Math.abs(p[0]-bg[0])+Math.abs(p[1]-bg[1])+Math.abs(p[2]-bg[2])>90)n++}return Math.max(5,Math.min(100,Math.round(n/(W*H)*100)))}
+function estimadorHTML(k){return `<div class="duas" style="margin-top:10px"><div class="campo"><label for="${k}L">Largura do bordado (cm)</label><input id="${k}L" inputmode="decimal" value="10"></div>
+  <div class="campo"><label for="${k}A">Altura do bordado (cm)</label><input id="${k}A" inputmode="decimal" value="8"></div></div>
+  <div class="duas"><div class="campo"><label for="${k}T">Tecido</label><select id="${k}T">${[11,14,16,18].map(t=>`<option value="${t}" ${t===14?"selected":""}>Etamine ${t}</option>`).join("")}</select></div>
+  <div class="campo"><label for="${k}P">Parte bordada: <span id="${k}Pv">60</span>%</label><input type="range" id="${k}P" min="5" max="100" value="60" style="padding:0"></div></div>
+  <div class="campo"><label for="${k}F">Foto só do bordado (mede a parte bordada sozinho)</label><input type="file" id="${k}F" accept="image/*"></div>
+  <div class="mudo" id="${k}R"></div>`}
+function estimar(k){const pc=(+$("#"+k+"T").value)/2.54;return Math.round(num($("#"+k+"L").value)*pc*num($("#"+k+"A").value)*pc*(+$("#"+k+"P").value)/100)}
+function estLigar(k){const up=()=>{$("#"+k+"Pv").textContent=$("#"+k+"P").value;$("#"+k+"R").innerHTML=`Estimativa: <b>${estimar(k).toLocaleString("pt-BR")} pontos</b> = ${brl(estimar(k)*D.config.vp)}`};
+  ["L","A","T","P"].forEach(s=>$("#"+k+s).addEventListener("input",up));$("#"+k+"T").addEventListener("change",up);
+  $("#"+k+"F").onchange=async ev=>{const f=ev.target.files[0];if(!f)return;const p=await preench(f);$("#"+k+"P").value=p;aviso(`Parte bordada: ${p}%`);up()};up()}
+function calcPP(){const n=+$("#ppN").value||0,v=num($("#ppV").value),c=num($("#ppC").value),t=n*v+c;
+  $("#ppR").innerHTML=`${n.toLocaleString("pt-BR")} pontos × ${brl(v)} = ${brl(n*v)}${c?` + ${brl(c)} de material`:""}<br>Preço: <b style="font-size:1.3rem">${brl(t)}</b><br><span class="mudo">Tirando ${D.config.pct}% (${esc(D.config.pctNome)}): fica ${brl(t*(1-D.config.pct/100))}</span>`}
+
+/* ---------- reserva para material e forma de pagamento ---------- */
+function setReserva(n){D.config.pct=n;salvar();render()}
+function formaHTML(f="Pix"){return `<div class="campo"><label for="xForma">Forma de pagamento</label><select id="xForma">${["Pix","Dinheiro","Cartão de débito","Cartão de crédito","Fiado"].map(o=>`<option ${o===f?"selected":""}>${o}</option>`).join("")}</select></div>`}
+function ajustes(){abrir(`<h2 style="margin-top:4px">Ajustes do ateliê</h2>
+  <div class="campo"><label for="aVp">Valor de cada ponto (R$)</label><input id="aVp" inputmode="decimal" value="${String(D.config.vp).replace(".",",")}"></div>
+  <div class="campo"><label>Reserva para material</label><div class="filtros" id="aRes">${[20,0].map(n=>`<button type="button" data-p="${n}" class="${D.config.pct===n?"on":""}">${n}%</button>`).join("")}</div></div>
+  <p class="mudo">A reserva separa uma parte de tudo que entra no caixa para comprar linha, tecido e etamine.</p>
+  <div class="linha"><button class="btn sec cresce" onclick="fechar()">Cancelar</button><button class="btn cresce" onclick="salvaAj()">Salvar</button></div>`);
+  document.querySelectorAll("#aRes button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#aRes button").forEach(x=>x.classList.remove("on"));b.classList.add("on")})}
+function salvaAj(){D.config.vp=num($("#aVp").value)||0.01;const on=document.querySelector("#aRes .on");if(on)D.config.pct=+on.dataset.p;salvar();fechar();render();aviso("Ajustes salvos")}
+
+/* ---------- catálogo e estoque de peças ---------- */
+const CATS=["Necessaire","Pano de prato","Toalha","Fralda","Bastidor decorativo","Chaveiro","Bolsa","Outro"];
+const preSug=(pontos,custo)=>Math.round(((+pontos||0)*D.config.vp+(+custo||0))*100)/100;
+telas.catalogo=function(){
+  return `<div class="linha" style="justify-content:space-between"><h2>Catálogo e estoque</h2><button class="btn peq" onclick="formProd()">+ Peça</button></div>
+  <p class="mudo" style="margin-top:0">Cada ponto vale <b>${brl(D.config.vp)}</b>. <button class="voltar" style="padding:0" onclick="ajustes()">Mudar</button></p>
+  ${D.marca.insta?`<a class="btn sec" style="display:block;text-align:center;text-decoration:none;margin-bottom:10px" target="_blank" rel="noopener" href="https://instagram.com/${encodeURIComponent(D.marca.insta)}">Abrir meu Instagram @${esc(D.marca.insta)}</a>`:""}
+  <div class="lista">${D.produtos.map(p=>`<div class="card">${p.ex?'<div class="exemplo">exemplo</div>':""}
+   <div class="linha" style="align-items:flex-start">${p.foto?`<img class="thumb" src="${p.foto}" alt="${esc(p.nome)}">`:`<div class="thumb semfoto"></div>`}
+   <div class="cresce"><b>${esc(p.nome)}</b><div class="mudo">${esc(p.cat)} · ${(+p.pontos||0).toLocaleString("pt-BR")} pontos</div>
+   <div style="font-family:var(--f-tit);font-size:1.2rem;margin-top:2px">${brl(p.preco)}</div></div></div>
+   <div class="linha" style="margin-top:10px;flex-wrap:wrap"><span class="mudo">Prontas</span>${p.qtd<=0?'<span class="bolinha b-laranja"></span>':""}
+   <button class="btn sec peq" onclick="qtdP('${p.id}',-1)" aria-label="Menos">−</button><b style="min-width:22px;text-align:center">${p.qtd}</b><button class="btn sec peq" onclick="qtdP('${p.id}',1)" aria-label="Mais">+</button>
+   <span class="cresce"></span><button class="btn sec peq" onclick="formProd('${p.id}')">Editar</button><button class="btn sec peq" onclick="postarInsta('${p.id}')">Postar no Insta</button><button class="btn peq" onclick="vender('${p.id}')">Vender</button></div></div>`).join("")||'<div class="card mudo">Cadastre suas peças com foto, pontos e preço.</div>'}</div>`;
+};
+let FOTO=null;
+function formProd(id){
+  const p=D.produtos.find(x=>x.id===id)||{cat:"Necessaire",qtd:1};FOTO=p.foto||null;
+  abrir(`<h2 style="margin-top:4px">${id?"Editar":"Nova"} peça</h2>
+  <img id="prevF" class="prev" alt="" ${FOTO?`src="${FOTO}"`:"hidden"}>
+  <div class="duas"><div class="campo"><label for="pdCam">Tirar foto agora</label><input type="file" id="pdCam" accept="image/*" capture="environment"></div>
+  <div class="campo"><label for="pdF">Ou escolher da galeria</label><input type="file" id="pdF" accept="image/*"></div></div>
+  <div class="campo"><label for="pdN">Nome</label><input id="pdN" value="${esc(p.nome)}" placeholder="Ex.: Necessaire flores"></div>
+  <div class="duas"><div class="campo"><label for="pdC">Tipo</label><select id="pdC">${CATS.map(c=>`<option ${c===p.cat?"selected":""}>${c}</option>`).join("")}</select></div>
+  <div class="campo"><label for="pdQ">Prontas em estoque</label><input id="pdQ" inputmode="numeric" value="${p.qtd??0}"></div></div>
+  <div class="duas"><div class="campo"><label for="pdP">Pontos do bordado</label><input id="pdP" inputmode="numeric" value="${p.pontos||""}" oninput="sugP()"></div>
+  <div class="campo"><label for="pdCu">Peça e material (R$)</label><input id="pdCu" inputmode="decimal" value="${p.custo?String(p.custo).replace(".",","):""}" oninput="sugP()"></div></div>
+  <details class="card" style="margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">Não sabe quantos pontos? Estimar pelo tamanho</summary>
+   ${estimadorHTML("e")}<button class="btn sec peq" style="margin-top:8px" onclick="$('#pdP').value=estimar('e');sugP()">Usar esta estimativa</button></details>
+  <div class="result" id="pdS"></div>
+  <div class="campo" style="margin-top:10px"><label for="pdV">Preço de venda (R$)</label><input id="pdV" inputmode="decimal" value="${p.preco?String(p.preco).replace(".",","):""}" placeholder="Vazio = usa o sugerido"></div>
+  <div class="linha"><button class="btn sec cresce" id="bDelPd" onclick="${id?`delProd('${id}')`:"fechar()"}">${id?"Excluir":"Cancelar"}</button><button class="btn cresce" onclick="salvaProd('${id||""}')">Salvar</button></div>`);
+  const pegaFoto=async ev=>{const f=ev.target.files[0];if(!f)return;try{FOTO=await compImg(f,900);const i=$("#prevF");i.src=FOTO;i.hidden=false}catch(e){aviso("Não consegui abrir essa foto")}};
+  $("#pdF").onchange=pegaFoto;$("#pdCam").onchange=pegaFoto;
+  estLigar("e");sugP();
+}
+function sugP(){const s=preSug($("#pdP").value,num($("#pdCu").value));
+  $("#pdS").innerHTML=`${(+$("#pdP").value||0).toLocaleString("pt-BR")} pontos × ${brl(D.config.vp)} + material = sugerido <b>${brl(s)}</b> <button class="btn sec peq" onclick="$('#pdV').value='${s.toFixed(2).replace(".",",")}'">Usar</button>`}
+function salvaProd(id){const nPt=parseInt($("#pdP").value)||0,custo=num($("#pdCu").value);
+  const v={nome:$("#pdN").value.trim()||"Peça",cat:$("#pdC").value,qtd:parseInt($("#pdQ").value)||0,pontos:nPt,custo,preco:num($("#pdV").value)||preSug(nPt,custo),foto:FOTO,ex:0};
+  if(id)Object.assign(D.produtos.find(x=>x.id===id),v);else D.produtos.unshift({id:uid(),...v});
+  try{localStorage.setItem(CHAVE,JSON.stringify(D))}catch(e){aviso("Memória do aparelho cheia: tente uma foto menor")}
+  pontos();fechar();render();aviso("Peça salva")}
+function delProd(id){const b=$("#bDelPd");if(b.dataset.c){D.produtos=D.produtos.filter(x=>x.id!==id);salvar();fechar();render()}else{b.dataset.c=1;b.textContent="Toque de novo";b.style.background="var(--vermelho)";b.style.color="#fff"}}
+function qtdP(id,n){const p=D.produtos.find(x=>x.id===id);p.qtd=Math.max(0,p.qtd+n);salvar();render()}
+function vender(id){const p=D.produtos.find(x=>x.id===id);
+  abrir(`<h2 style="margin-top:4px">Vender: ${esc(p.nome)}</h2>
+  <div class="duas"><div class="campo"><label for="vQ">Quantidade</label><input id="vQ" inputmode="numeric" value="1" oninput="totV()"></div>
+  <div class="campo"><label for="vP">Preço de cada (R$)</label><input id="vP" inputmode="decimal" value="${String(p.preco).replace(".",",")}" oninput="totV()"></div></div>
+  <div class="campo"><label for="vC">Cliente (opcional)</label><input id="vC"></div>
+  ${formaHTML()}
+  <div class="result" id="vR"></div>
+  <div class="linha" style="margin-top:10px"><button class="btn sec cresce" onclick="fechar()">Cancelar</button><button class="btn cresce" onclick="confVenda('${id}')">Confirmar venda</button></div>`);
+  totV()}
+function totV(){const t=num($("#vQ").value)*num($("#vP").value),pc=D.config.pct;$("#vR").innerHTML=`Total <b>${brl(t)}</b> · ${esc(D.config.pctNome)} ${pc}%: ${brl(t*pc/100)}<br>Fica para você: <b>${brl(t-t*pc/100)}</b>`}
+function confVenda(id){const p=D.produtos.find(x=>x.id===id);const q=parseInt($("#vQ").value)||1;const cli=$("#vC").value.trim();
+  D.caixa.push({id:uid(),tipo:"entrada",desc:`Venda: ${q}× ${p.nome}${cli?" – "+cli:""}`,valor:q*num($("#vP").value),forma:$("#xForma").value,data:hojeISO()});
+  p.qtd=Math.max(0,p.qtd-q);salvar();fechar();render();aviso("Venda lançada no caixa")}
+
+/* ---------- caixa (dia, semana e mês) ---------- */
+const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const CHIPS_GASTO=["Linha / meada","Etamine","Tecido","Zíper","Bastidor","Agulha","Necessaire lisa","Transporte"];
+function addDias(iso,n){const d=new Date(iso+"T12:00");d.setDate(d.getDate()+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+const iniSemana=iso=>addDias(iso,-new Date(iso+"T12:00").getDay());
+const entre=(d,a,b)=>!!d&&d>=a&&d<=b;
+const dm=iso=>iso.slice(8,10)+"/"+iso.slice(5,7);
+const longo=iso=>new Date(iso+"T12:00").toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});
+let mesCx=hojeISO().slice(0,7),diaCx=hojeISO(),semCx=null;
+function mudaMes(n){let[a,m]=mesCx.split("-").map(Number);m+=n;if(m<1){m=12;a--}if(m>12){m=1;a++}mesCx=a+"-"+String(m).padStart(2,"0");render()}
+function mudaDia(n){diaCx=addDias(diaCx,n);render()}
+function mudaSem(n){semCx=addDias(semCx||iniSemana(hojeISO()),7*n);render()}
+function resumo(a,b){
+  const l=D.caixa.filter(c=>entre(c.data,a,b)).sort((x,y)=>x.data<y.data?1:-1);
+  const tE=l.filter(c=>c.tipo==="entrada").reduce((s,c)=>s+(+c.valor||0),0),tS=l.filter(c=>c.tipo==="saida").reduce((s,c)=>s+(+c.valor||0),0);
+  const tP=tE*D.config.pct/100;
+  const aRec=D.encomendas.filter(e=>e.status!=="entregue"&&entre(e.entrega,a,b)).reduce((s,e)=>s+Math.max(0,(+e.valor||0)-(+e.sinal||0)),0);
+  const vend=l.filter(c=>c.tipo==="entrada"&&/^Venda/.test(c.desc)).length;
+  return{a,b,l,tE,tS,tP,aRec,vend,fica:tE-tP,sobra:tE-tS};
+}
+function calcCx(mes){const R=resumo(mes+"-01",mes+"-31");const[a,m]=mes.split("-");return{...R,liq:R.fica,nome:MESES[+m-1]+" de "+a}}
+function cardPer(tit,nav,R,pal){return `<div class="card" style="margin-top:12px">
+  <div class="linha" style="justify-content:space-between"><button class="icone" aria-label="Voltar" onclick="${nav}(-1)">‹</button><b>${tit}</b><button class="icone" aria-label="Avançar" onclick="${nav}(1)">›</button></div>
+  <table><tbody>
+  <tr><td>Recebido ${pal}</td><td style="text-align:right"><b>${brl(R.tE)}</b></td></tr>
+  <tr><td>A receber ${pal}</td><td style="text-align:right"><b>${brl(R.aRec)}</b></td></tr>
+  <tr><td>Reserva p/ material (${D.config.pct}%)</td><td style="text-align:right"><b>${brl(R.tP)}</b></td></tr>
+  <tr><td>Fica para você</td><td style="text-align:right"><b class="entrada">${brl(R.fica)}</b></td></tr>
+  <tr><td>Gastos ${pal}</td><td style="text-align:right"><b class="saida">${brl(R.tS)}</b></td></tr>
+  <tr><td><b>Sobrou (recebido − gastos)</b></td><td style="text-align:right"><b class="${R.sobra<0?"saida":"entrada"}" style="font-size:1.1rem">${R.sobra<0?"− ":""}${brl(Math.abs(R.sobra))}</b></td></tr>
+  </tbody></table></div>`}
+telas.caixa=function(){
+  const hoje=hojeISO(),r=resumo(diaCx,diaCx),si=semCx||iniSemana(hoje),rs=resumo(si,addDias(si,6)),rm=calcCx(mesCx),pct=D.config.pct;
+  return `<div class="linha" style="justify-content:space-between;margin-top:12px"><button class="icone" aria-label="Dia anterior" onclick="mudaDia(-1)">‹</button>
+   <div style="text-align:center"><h2 style="margin:0">${diaCx===hoje?"Caixa de hoje":"Caixa do dia"}</h2><div class="mudo">${longo(diaCx)}</div></div>
+   <button class="icone" aria-label="Próximo dia" onclick="mudaDia(1)">›</button></div>
+  <div class="resumo" style="margin-top:10px">
+   <div class="card"><span class="mudo">Recebido</span><b class="entrada">${brl(r.tE)}</b></div>
+   <div class="card"><span class="mudo">A receber</span><b>${brl(r.aRec)}</b></div>
+   <div class="card" style="grid-column:1/-1"><span class="mudo">Reserva p/ material</span><b>${brl(r.tP)}</b>
+    <div class="filtros" style="margin-top:6px">${[20,0].map(n=>`<button class="${pct===n?"on":""}" onclick="setReserva(${n})">${n}%</button>`).join("")}</div>
+    <span class="mudo">fica para você: <b>${brl(r.fica)}</b></span></div>
+   <div class="card"><span class="mudo">Gastos do dia</span><b class="saida">${brl(r.tS)}</b></div>
+   <div class="card"><span class="mudo">Sobrou no dia</span><b class="${r.sobra<0?"saida":"entrada"}">${r.sobra<0?"− ":""}${brl(Math.abs(r.sobra))}</b></div></div>
+  <div class="lista" style="margin-top:12px">
+   <button class="btn" style="background:var(--vermelho)" onclick="formCx('saida')">− Lançar gasto <span style="font-weight:400;opacity:.85">(linha, etamine, zíper…)</span></button>
+   <button class="btn sec" onclick="formCx('entrada')">+ Lançar entrada</button></div>
+  ${cardPer((si===iniSemana(hoje)?"Esta semana":"Semana")+` · ${dm(si)} a ${dm(addDias(si,6))}`,"mudaSem",rs,"na semana")}
+  ${cardPer(rm.nome,"mudaMes",rm,"no mês")}
+  <h3>Quem está me devendo</h3>
+  <div class="card"><div class="lista">${devedores().map(e=>{const f=(+e.valor||0)-(+e.sinal||0),d=diasAte(e.entrega),cor=e.status==="entregue"||(d!==null&&d<0)?"vermelha":(d!==null&&d<=2)||e.status==="pronto"?"laranja":"";
+    return `<button class="linha" style="background:none;border:0;padding:4px 0;text-align:left;cursor:pointer;width:100%" onclick="cobrar('${e.id}')">${cor?`<span class="bolinha b-${cor}"></span>`:""}<div class="cresce"><b>${esc(e.cliente)}</b><div class="mudo">${esc(e.peca)} · ${ROT[e.status]}</div></div><b style="white-space:nowrap">${brl(f)}</b><span class="chip bordando">Cobrar</span></button>`}).join("")||'<span class="mudo">Ninguém devendo. Tudo pago!</span>'}</div></div>
+  <h3>Lançamentos de ${rm.nome}</h3>
+  <div class="card"><div class="lista">${rm.l.map(x=>`<button class="linha" style="background:none;border:0;padding:4px 0;text-align:left;cursor:pointer;width:100%" onclick="verCx('${x.id}')">
+    <div class="cresce">${x.ex?'<span class="exemplo">exemplo </span>':""}<b>${esc(x.desc)}</b><div class="mudo">${dataBR(x.data)} · ${esc(x.forma||"")}</div></div>
+    <b class="${x.tipo}" style="font-variant-numeric:tabular-nums;white-space:nowrap">${x.tipo==="saida"?"−":"+"} ${brl(x.valor)}</b></button>`).join("")||'<span class="mudo">Nenhum lançamento neste mês.</span>'}</div></div>
+  <button class="btn sec" style="width:100%;margin-top:10px" onclick="copiar(resumoCx())">Copiar resumo do mês</button>`};
+function resumoCx(){const c=calcCx(mesCx);return `Caixa do ateliê – ${c.nome}\nRecebido: ${brl(c.tE)}\nReserva p/ material (${D.config.pct}%): ${brl(c.tP)}\nFica para mim: ${brl(c.fica)}\nGastos: ${brl(c.tS)}\nSobrou: ${brl(c.sobra)}`}
+function formCx(tipo,id,pre){const c=D.caixa.find(x=>x.id===id)||Object.assign({tipo,data:diaCx||hojeISO(),forma:"Pix"},pre||{});tipo=c.tipo;
+  abrir(`<h2 style="margin-top:4px">${tipo==="entrada"?"Entrada no caixa":"Lançar gasto"}</h2>
+  ${tipo==="saida"?`<div class="filtros" style="flex-wrap:wrap;margin-bottom:10px">${CHIPS_GASTO.map(g=>`<button type="button" onclick="$('#xD').value='${g}'">${g}</button>`).join("")}</div>`:""}
+  <div class="campo"><label for="xD">${tipo==="entrada"?"Descrição":"O que comprou"}</label><input id="xD" value="${esc(c.desc)}" placeholder="${tipo==="entrada"?"Ex.: Necessaire flores":"Ex.: Linha DMC 310"}"></div>
+  <div class="duas"><div class="campo"><label for="xV">Valor (R$)</label><input id="xV" inputmode="decimal" value="${c.valor?String(c.valor).replace(".",","):""}"></div>
+  <div class="campo"><label for="xDt">Data</label><input type="date" id="xDt" value="${c.data}"></div></div>
+  ${formaHTML(c.forma)}
+  <div class="linha" style="margin-top:6px"><button class="btn sec cresce" onclick="fechar()">Cancelar</button><button class="btn cresce" onclick="salvaCx('${tipo}','${id||""}')">Salvar</button></div>`)}
+function salvaCx(tipo,id){const v={tipo,desc:$("#xD").value.trim()||(tipo==="entrada"?"Entrada":"Gasto"),valor:num($("#xV").value),data:$("#xDt").value||hojeISO(),forma:$("#xForma").value,ex:0};
+  if(!v.valor)return aviso("Digite o valor");if(id)Object.assign(D.caixa.find(x=>x.id===id),v);else D.caixa.push({id:uid(),...v});salvar();fechar();render();aviso(tipo==="entrada"?"Entrada lançada":"Gasto lançado")}
+function verCx(id){formCx(null,id);$("#folha").insertAdjacentHTML("beforeend",`<button class="btn sec" id="bDelCx" style="width:100%;margin-top:10px" onclick="delCx('${id}')">Excluir lançamento</button>`)}
+function delCx(id){const b=$("#bDelCx");if(b.dataset.c){D.caixa=D.caixa.filter(x=>x.id!==id);salvar();fechar();render()}else{b.dataset.c=1;b.textContent="Toque de novo para excluir";b.style.background="var(--vermelho)";b.style.color="#fff"}}
+function lancaEnc(id){const e=D.encomendas.find(x=>x.id===id);formCx("entrada",null,{desc:`Encomenda: ${e.peca} – ${e.cliente}`,valor:e.valor})}
+
+/* ---------- moldes, riscos e aulas ---------- */
+const FONTE={A:".###.|#...#|#...#|#####|#...#|#...#|#...#",B:"####.|#...#|#...#|####.|#...#|#...#|####.",C:".###.|#...#|#....|#....|#....|#...#|.###.",D:"####.|#...#|#...#|#...#|#...#|#...#|####.",E:"#####|#....|#....|####.|#....|#....|#####",F:"#####|#....|#....|####.|#....|#....|#....",G:".###.|#...#|#....|#.###|#...#|#...#|.###.",H:"#...#|#...#|#...#|#####|#...#|#...#|#...#",I:".###.|..#..|..#..|..#..|..#..|..#..|.###.",J:"..###|...#.|...#.|...#.|...#.|#..#.|.##..",K:"#...#|#..#.|#.#..|##...|#.#..|#..#.|#...#",L:"#....|#....|#....|#....|#....|#....|#####",M:"#...#|##.##|#.#.#|#.#.#|#...#|#...#|#...#",N:"#...#|#...#|##..#|#.#.#|#..##|#...#|#...#",O:".###.|#...#|#...#|#...#|#...#|#...#|.###.",P:"####.|#...#|#...#|####.|#....|#....|#....",Q:".###.|#...#|#...#|#...#|#.#.#|#..#.|.##.#",R:"####.|#...#|#...#|####.|#.#..|#..#.|#...#",S:".####|#....|#....|.###.|....#|....#|####.",T:"#####|..#..|..#..|..#..|..#..|..#..|..#..",U:"#...#|#...#|#...#|#...#|#...#|#...#|.###.",V:"#...#|#...#|#...#|#...#|#...#|.#.#.|..#..",W:"#...#|#...#|#...#|#.#.#|#.#.#|#.#.#|.#.#.",X:"#...#|#...#|.#.#.|..#..|.#.#.|#...#|#...#",Y:"#...#|#...#|.#.#.|..#..|..#..|..#..|..#..",Z:"#####|....#|...#.|..#..|.#...|#....|#####",
+ "0":".###.|#...#|#..##|#.#.#|##..#|#...#|.###.","1":"..#..|.##..|..#..|..#..|..#..|..#..|.###.","2":".###.|#...#|....#|...#.|..#..|.#...|#####","3":"####.|....#|....#|.###.|....#|....#|####.","4":"...#.|..##.|.#.#.|#..#.|#####|...#.|...#.","5":"#####|#....|####.|....#|....#|#...#|.###.","6":".###.|#....|#....|####.|#...#|#...#|.###.","7":"#####|....#|...#.|..#..|.#...|.#...|.#...","8":".###.|#...#|#...#|.###.|#...#|#...#|.###.","9":".###.|#...#|#...#|.####|....#|....#|.###.","♥":".....|.#.#.|#####|#####|.###.|..#..|.....","&":".##..|#..#.|#.#..|.#...|#.#.#|#..#.|.##.#","-":".....|.....|.....|.###.|.....|.....|....."," ":"...|...|...|...|...|...|..."};
+const CORES={R:"321",W:"818",P:"776",Y:"726",G:"702",B:"3325",D:"797",K:"310",C:"738",M:"801",A:"414",N:"776",O:"740",V:"553",L:"340",E:"444",X:"B5200"};
+const coracoes=()=>{const h=[".R.R.","RRRRR",".RRR.","..R.."];return h.map(l=>Array(5).fill(l).join("."))};
+const GRAFICOS=[
+ {n:"Coração",r:[".RRR...RRR.","RRRRR.RRRRR","RRWRRRRRRRR","RWRRRRRRRRR","RRRRRRRRRRR",".RRRRRRRRR.","..RRRRRRR..","...RRRRR...","....RRR....",".....R....."]},
+ {n:"Flor",r:["...PPPPP...","..PPPPPPP..",".PPPYYYPPP.",".PPYYYYYPP.",".PPPYYYPPP.","..PPPPPPP..","...PPPPP...",".....G.....","..GG.G.....","...GGG.GG..",".....GGG...",".....G.....",".....G....."]},
+ {n:"Borboleta",r:["..K.....K..","...K...K...","....K.K....",".BBB.K.BBB.","BBDBBKBBDBB","BDDDBKBDDDB","BBDBBKBBDBB",".BBBBKBBBB.","..BBBKBBB..",".BBDBKBDBB.",".BDDBKBDDB.","..BB.K.BB.."]},
+ {n:"Estrela",r:[".....E.....","....EEE....","....EEE....","EEEEEEEEEEE",".EEEEEEEEE.","..EEEEEEE..","..EEEEEEE..",".EEEE.EEEE.",".EEE...EEE.","EE.......EE"]},
+ {n:"Cogumelo",r:["...RRRRR...","..RRXRRRR..",".RRRRRRXRR.","RRXRRRRRRRR","RRRRRXRRRXR","RRRRRRRRRRR","...CCCCC...","...CCCCC...","...CCCCC...","..CCCCCCC.."]},
+ {n:"Maçã",r:[".....M.....",".....MGG...","..RRR.RRR..",".RRRRRRRRR.",".RXRRRRRRR.",".RRRRRRRRR.",".RRRRRRRRR.","..RRRRRRR..","...RR.RR..."]},
+ {n:"Gatinho",r:["A.........A","AA.......AA","AAAAAAAAAAA","AAKAAAAAKAA","AAAAANAAAAA","AAAAAAAAAAA",".AAAAAAAAA.","..AAAAAAA.."]},
+ {n:"Patinho",r:["...EEE.....","..EEKEOO...","..EEEE.....","...EE......",".EEEEEEEE..","EEEEEEEEEE.","EEEEEEEEEE.",".EEEEEEEE..","..EEEEEE..."]},
+ {n:"Casinha",r:[".....R.....","....RRR....","...RRRRR...","..RRRRRRR..",".RRRRRRRRR.","RRRRRRRRRRR",".CCCCCCCCC.",".CBBCCCBBC.",".CBBCMCBBC.",".CCCCMCCCC.",".CCCCMCCCC."]},
+ {n:"Barrado de corações",r:coracoes()},
+ {n:"Lavanda",r:["..V...V...V..",".VLV.VLV.VLV.","..V...V...V..",".VLV.VLV.VLV.","..V...V...V..","..G...G...G..","...G..G..G...","....G.G.G....",".....GGG.....","......G......"]}];
+function svgRisco(k){const st='fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"';let p="";
+  const folha=(x,y,a,t=18)=>{const r=a*Math.PI/180,ex=x+Math.cos(r)*t,ey=y+Math.sin(r)*t,nx=-Math.sin(r)*t*.35,ny=Math.cos(r)*t*.35,mx=(x+ex)/2,my=(y+ey)/2;return `<path d="M${x},${y} Q${mx+nx},${my+ny} ${ex},${ey} Q${mx-nx},${my-ny} ${x},${y} M${x},${y} L${(x+ex*2)/3},${(y+ey*2)/3}"/>`};
+  const marg=(cx,cy,r)=>{let o=`<circle cx="${cx}" cy="${cy}" r="${r*.28}"/>`;for(let i=0;i<8;i++){const a=i*45;o+=`<ellipse cx="${cx+Math.cos(a*Math.PI/180)*r*.65}" cy="${cy+Math.sin(a*Math.PI/180)*r*.65}" rx="${r*.36}" ry="${r*.16}" transform="rotate(${a} ${cx+Math.cos(a*Math.PI/180)*r*.65} ${cy+Math.sin(a*Math.PI/180)*r*.65})"/>`}return o};
+  if(k===0)p=marg(100,90,70)+`<path d="M100,145 C98,165 102,180 100,195"/>`+folha(100,175,-150,30)+folha(100,165,-30,30);
+  if(k===1){p=`<path d="M30,180 C70,150 110,110 170,30"/>`;for(let i=0;i<7;i++){const t=i/7,x=30+t*130,y=180-t*150;p+=folha(x,y,-150+(i%2)*120,26)}}
+  if(k===2){p=`<path d="M100,175 C40,130 20,90 45,60 C65,38 92,45 100,70 C108,45 135,38 155,60 C180,90 160,130 100,175Z"/>`+marg(60,62,22)+marg(140,62,18)+folha(80,150,200,18)+folha(122,148,-20,18)}
+  if(k===3){p=`<circle cx="100" cy="100" r="72"/>`;for(let i=0;i<16;i++){const a=i*22.5*Math.PI/180;p+=folha(100+Math.cos(a)*72,100+Math.sin(a)*72,i*22.5+(i%2?60:120),20)}p+=marg(100,28,14)}
+  if(k===4){[60,100,140].forEach((x,j)=>{p+=`<path d="M${x},190 C${x},150 ${x+(j-1)*8},110 ${x+(j-1)*14},40"/>`;for(let i=0;i<8;i++){const y=45+i*9,xx=x+(j-1)*14*(1-i/8*.3);p+=`<ellipse cx="${xx-5}" cy="${y}" rx="5" ry="3.5"/><ellipse cx="${xx+5}" cy="${y+4}" rx="5" ry="3.5"/>`}})}
+  if(k===5){p=`<circle cx="100" cy="100" r="62"/><circle cx="100" cy="100" r="54"/>`;for(let i=0;i<5;i++){p+=folha(46+i*6,150+i*5,200-i*15,16);p+=folha(154-i*6,150+i*5,-20+i*15,16)}p+=marg(100,166,12)}
+  return `<svg viewBox="0 0 200 200" ${st}>${p}</svg>`}
+const RISCOS=["Margarida","Ramo de folhas","Coração com flores","Guirlanda","Lavanda","Moldura para monograma"];
+const AULAS_YT=["bordado livre para iniciantes","ponto cruz para iniciantes","como bordar nome ponto atrás","ponto haste bordado","nó francês bordado passo a passo","ponto rococó passo a passo","como passar risco para o tecido bordado","acabamento bastidor bordado","bordado em fralda de boca","vagonite para iniciantes","como fazer necessaire passo a passo","bordar letra cursiva à mão"];
+const MOLDES_NET=[["Gráficos de ponto cruz grátis","https://www.google.com/search?tbm=isch&q=gr%C3%A1fico+ponto+cruz+gr%C3%A1tis"],["Alfabetos de ponto cruz","https://www.google.com/search?tbm=isch&q=alfabeto+ponto+cruz+gr%C3%A1tis"],["Riscos para bordado livre","https://www.google.com/search?tbm=isch&q=riscos+para+bordado+livre+gr%C3%A1tis"],["Riscos de flores no Pinterest","https://br.pinterest.com/search/pins/?q=riscos%20bordado%20flores"],["Gráficos de bebê no Pinterest","https://br.pinterest.com/search/pins/?q=gr%C3%A1fico%20ponto%20cruz%20beb%C3%AA"],["Moldes de necessaire","https://www.google.com/search?tbm=isch&q=molde+necessaire+gr%C3%A1tis"]];
+let MOLDE_ABA="nome";
+function telaMoldes(){const ab={nome:"Nome em ponto cruz",graf:"Gráficos prontos",risco:"Riscos",aulas:"Aulas e moldes grátis"};
+  return `<h2>Moldes, riscos e aulas</h2><div class="filtros">${Object.entries(ab).map(([k,v])=>`<button class="${k===MOLDE_ABA?"on":""}" onclick="MOLDE_ABA='${k}';render()">${v}</button>`).join("")}</div><div style="margin-top:12px">${
+  MOLDE_ABA==="nome"?`<p class="mudo" style="margin-top:0">Digite o nome e o app monta o gráfico de ponto cruz, com tamanho, pontos e preço.</p>
+   <div class="campo"><label for="nmT">Nome ou frase</label><div class="linha"><input id="nmT" value="${esc(NOME_PC.t)}" maxlength="24"><button class="btn sec peq" onclick="$('#nmT').value+='♥';nomePC()">+ ♥</button></div></div>
+   <div class="duas"><div class="campo"><label for="nmC">Cor da linha</label><select id="nmC">${DMC.map(d=>`<option value="${d[0]}" ${d[0]===NOME_PC.c?"selected":""}>DMC ${d[0]} · ${d[1]}</option>`).join("")}</select></div>
+   <div class="campo"><label for="nmG">Tamanho da letra</label><select id="nmG"><option value="1">Normal (7 pontos)</option><option value="2" ${NOME_PC.g==2?"selected":""}>Grande (14 pontos)</option></select></div></div>
+   <div class="grade-box"><canvas id="nmCv" width="1" height="1"></canvas></div><div class="result" id="nmR"></div>
+   <div class="linha" style="margin-top:10px"><button class="btn sec cresce" onclick="telaCheia('nmCv')">Ver em tela cheia</button><button class="btn cresce" onclick="nomeEnc()">Fazer encomenda</button></div>`
+  :MOLDE_ABA==="graf"?`<p class="mudo" style="margin-top:0">Gráficos simples de ponto cruz, feitos aqui no app. Toque em um para ver grande.</p>
+   <div class="ferr">${GRAFICOS.map((g,k)=>`<button onclick="verGraf(${k})"><canvas class="mini-graf" data-k="${k}" width="1" height="1" style="width:100%;height:auto;image-rendering:pixelated;background:#fff;border-radius:8px"></canvas><b>${g.n}</b><span class="mudo">${g.r[0].length} × ${g.r.length} pontos</span></button>`).join("")}</div>`
+  :MOLDE_ABA==="risco"?`<p class="mudo" style="margin-top:0">Riscos para bordado livre. Abra em <b>modo decalque</b>: deixe o brilho do celular no máximo, coloque o tecido fino em cima da tela e risque com caneta que some.</p>
+   <div class="ferr">${RISCOS.map((n,k)=>`<button onclick="decalque(${k})"><div style="background:#fff;color:#2d2420;border-radius:10px;padding:6px">${svgRisco(k)}</div><b>${n}</b><span class="mudo">Abrir para decalcar</span></button>`).join("")}</div>`
+  :`<h3 style="margin-top:0">Aulas grátis no YouTube</h3><div class="card"><div class="lista">${AULAS_YT.map(a=>`<a class="linha" style="color:inherit;text-decoration:none" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(a)}"><span class="cel-btn" style="animation:none;padding:4px 9px;font-size:.75rem">▶</span><span class="cresce" style="text-transform:capitalize">${a}</span><span class="mudo">›</span></a>`).join("")}</div></div>
+   <h3>Moldes grátis na internet</h3><div class="card"><div class="lista">${MOLDES_NET.map(([n,u])=>`<a class="linha" style="color:inherit;text-decoration:none" target="_blank" rel="noopener" href="${u}"><span class="cresce">${n}</span><span class="mudo">abrir ›</span></a>`).join("")}</div></div>
+   <p class="mudo">Os links abrem a busca no YouTube, Google ou Pinterest. Ela escolhe o vídeo ou molde que gostar.</p>`}</div>`}
+let NOME_PC={t:"Helena ♥",c:"3687",g:1};
+function linhasNome(t,g){const ch=semAc(t).toUpperCase().split("").map(c=>(FONTE[c]||FONTE[" "]).split("|"));if(!ch.length)return[];
+  let rows=Array(7).fill("").map((_,y)=>ch.map(c=>c[y]).join("."));
+  if(g==2)rows=rows.flatMap(r=>{const d=r.split("").map(c=>c+c).join("");return[d,d]});return rows.map(r=>r.replace(/#/g,"Q"))}
+function desenhaGraf(cv,rows,map,cel){const W=rows[0]?.length||1,H=rows.length||1;cel=cel||Math.max(6,Math.min(18,Math.floor((Math.min(window.innerWidth,560)-40)/W)));
+  cv.width=W*cel+1;cv.height=H*cel+1;const x=cv.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,cv.width,cv.height);
+  rows.forEach((r,j)=>r.split("").forEach((c,i)=>{if(c===".")return;x.fillStyle=corDMC(map[c]);x.fillRect(i*cel,j*cel,cel,cel)}));
+  for(let i=0;i<=W;i++){x.fillStyle=i%10===0?"#666":"#d8d8d8";x.fillRect(i*cel,0,i%10===0?1:.6,H*cel)}
+  for(let j=0;j<=H;j++){x.fillStyle=j%10===0?"#666":"#d8d8d8";x.fillRect(0,j*cel,W*cel,j%10===0?1:.6)}
+  const cont={};rows.forEach(r=>r.split("").forEach(c=>{if(c!==".")cont[c]=(cont[c]||0)+1}));return{W,H,cont}}
+function infoGraf(W,H,cont,map){const tot=Object.values(cont).reduce((a,b)=>a+b,0),pc=14/2.54;
+  return `<b>${W} × ${H} pontos</b> · em etamine 14 fica ${(W/pc).toFixed(1)} × ${(H/pc).toFixed(1)} cm<br>${tot.toLocaleString("pt-BR")} pontos × ${brl(D.config.vp)} = <b style="font-size:1.15rem">${brl(tot*D.config.vp)}</b>
+  <div style="margin-top:6px">${Object.entries(cont).map(([c,n])=>`<span class="linha" style="display:inline-flex;margin-right:10px"><span class="carretel" style="width:18px;height:18px;background:${corDMC(map[c])}"></span>DMC ${map[c]} · ${n}</span>`).join("")}</div>`}
+function nomePC(){NOME_PC={t:$("#nmT").value,c:$("#nmC").value,g:+$("#nmG").value};const rows=linhasNome(NOME_PC.t,NOME_PC.g);
+  if(!rows.length||!rows[0].length){$("#nmR").textContent="Digite um nome.";return}
+  const map={Q:NOME_PC.c},{W,H,cont}=desenhaGraf($("#nmCv"),rows,map);$("#nmR").innerHTML=infoGraf(W,H,cont,map)}
+function nomeEnc(){const rows=linhasNome(NOME_PC.t,NOME_PC.g),tot=rows.join("").split("Q").length-1,v=Math.ceil(tot*D.config.vp*100)/100;formEnc();
+  setTimeout(()=>{$("#fTxt").value=NOME_PC.t;$("#fCor").value=nomeDMC(NOME_PC.c)+" "+NOME_PC.c;$("#fTec").value="Ponto cruz";$("#fVal").value=String(v).replace(".",",");$("#fObs").value=`${tot} pontos (gráfico do app)`},0)}
+function moldesLigar(){
+  if(MOLDE_ABA==="nome"){["nmT","nmC","nmG"].forEach(i=>$("#"+i).addEventListener(i==="nmT"?"input":"change",nomePC));nomePC()}
+  if(MOLDE_ABA==="graf")document.querySelectorAll(".mini-graf").forEach(cv=>{const g=GRAFICOS[+cv.dataset.k];desenhaGraf(cv,g.r,CORES,8)})}
+function verGraf(k){const g=GRAFICOS[k];abrir(`<h2 style="margin-top:4px">${g.n}</h2><div class="grade-box"><canvas id="gfCv" width="1" height="1"></canvas></div><div class="result" id="gfR"></div>
+  <div class="linha" style="margin-top:10px"><button class="btn sec cresce" onclick="telaCheia('gfCv')">Tela cheia</button><button class="btn sec cresce" onclick="fechar()">Fechar</button></div>`);
+  const{W,H,cont}=desenhaGraf($("#gfCv"),g.r,CORES);$("#gfR").innerHTML=infoGraf(W,H,cont,CORES)}
+function telaCheia(id){const src=$("#"+id);if(!src)return;const d=document.createElement("div");d.className="aula";d.id="tcheia";
+  d.innerHTML=`<div class="aula-in"><div class="linha"><b class="cresce">Gráfico</b><button class="btn sec peq" onclick="$('#tcheia').remove()">Fechar</button></div><div style="overflow:auto;background:#fff;border-radius:12px"><img src="${src.toDataURL()}" alt="Gráfico" style="max-width:none;width:${Math.max(src.width*1.6,window.innerWidth-40)}px;image-rendering:pixelated;display:block"></div><p class="mudo">Arraste para os lados para ver tudo. Cada quadradinho é um ponto; as linhas mais escuras marcam de 10 em 10.</p></div>`;document.body.appendChild(d)}
+async function decalque(k){const d=document.createElement("div");d.id="decal";d.style.cssText="position:fixed;inset:0;z-index:50;background:#fff;color:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(10px + env(safe-area-inset-top,0px)) 10px calc(10px + env(safe-area-inset-bottom,0px))";
+  d.innerHTML=`<div style="width:min(96vw,80vh);color:#000">${svgRisco(k).replace('stroke-width="2.2"','stroke-width="1.6"')}</div><div class="linha" style="gap:8px;margin-top:10px"><button class="btn peq" onclick="fechaDecal()">Fechar</button><span style="color:#555;font-size:.8rem">Brilho no máximo · tecido em cima · caneta que some</span></div>`;
+  document.body.appendChild(d);try{WL=await navigator.wakeLock.request("screen")}catch(e){}}
+let WL=null;function fechaDecal(){const d=$("#decal");if(d)d.remove();try{WL&&WL.release()}catch(e){}}
+
+/* ---------- calcular preço pela foto ---------- */
+const DENS=[{n:"Ponto cruz – etamine 14",d:30},{n:"Ponto cruz – etamine 11",d:19},{n:"Ponto cruz – etamine 16",d:40},{n:"Bordado livre à mão",d:12},{n:"Letras e contorno à mão",d:8},{n:"Bordado à máquina",d:150}];
+const MODELOS=[{n:"Nome em fralda",l:12,a:4,p:35,t:4},{n:"Nome em toalha",l:20,a:6,p:40,t:0},{n:"Necessaire com flores",l:12,a:10,p:45,t:3},{n:"Monograma (inicial)",l:6,a:6,p:45,t:3},{n:"Pano de prato com desenho",l:15,a:12,p:40,t:0},{n:"Bastidor 15 cm cheio",l:12,a:12,p:70,t:3}];
+let OF={img:null,px:null,W:0,H:0,r:null,arr:null};
+function orcLigar(){
+  const up=()=>orcCalc();
+  ["ofL","ofA","ofD","ofP","ofM"].forEach(i=>$("#"+i).addEventListener("input",up));
+  $("#ofT").addEventListener("change",()=>{$("#ofD").value=DENS[+$("#ofT").value].d;up()});
+  $("#ofSens").addEventListener("input",()=>{$("#ofSv").textContent=$("#ofSens").value;orcMede()});
+  const pega=async ev=>{const f=ev.target.files[0];if(!f)return;try{const i=await carregaImg(f);orcFoto(i)}catch(e){aviso("Não consegui abrir essa foto")}};
+  $("#ofCam").onchange=pega;$("#ofGal").onchange=pega;
+  const cv=$("#ofCv"),pos=e=>{const b=cv.getBoundingClientRect();return[(e.clientX-b.left)/b.width*OF.W,(e.clientY-b.top)/b.height*OF.H]};
+  cv.onpointerdown=e=>{if(!OF.img)return;cv.setPointerCapture(e.pointerId);OF.arr=pos(e);OF.r={x:OF.arr[0],y:OF.arr[1],w:1,h:1}};
+  cv.onpointermove=e=>{if(!OF.arr)return;const[p,q]=pos(e);OF.r={x:Math.min(p,OF.arr[0]),y:Math.min(q,OF.arr[1]),w:Math.abs(p-OF.arr[0]),h:Math.abs(q-OF.arr[1])};orcDesenha()};
+  cv.onpointerup=()=>{OF.arr=null;if(OF.r&&(OF.r.w<8||OF.r.h<8))OF.r={x:OF.W*.1,y:OF.H*.1,w:OF.W*.8,h:OF.H*.8};orcMede()};
+  if(OF.img)orcFoto(OF.img);else orcCalc();
+}
+function orcFoto(i){OF.img=i;const s=Math.min(1,420/Math.max(i.width,i.height));OF.W=Math.round(i.width*s);OF.H=Math.round(i.height*s);
+  const c=document.createElement("canvas");c.width=OF.W;c.height=OF.H;const x=c.getContext("2d");x.drawImage(i,0,0,OF.W,OF.H);OF.px=x.getImageData(0,0,OF.W,OF.H).data;
+  OF.r={x:OF.W*.1,y:OF.H*.1,w:OF.W*.8,h:OF.H*.8};$("#ofFotoBox").hidden=false;const cv=$("#ofCv");cv.width=OF.W;cv.height=OF.H;orcMede()}
+function orcMascara(){const{px,W,r}=OF,x0=Math.round(r.x),y0=Math.round(r.y),x1=Math.round(r.x+r.w),y1=Math.round(r.y+r.h);
+  let sb=[0,0,0],nb=0;const ad=(x,y)=>{const k=(y*W+x)*4;sb[0]+=px[k];sb[1]+=px[k+1];sb[2]+=px[k+2];nb++};
+  for(let x=x0;x<x1;x+=2){ad(x,y0);ad(x,Math.max(y0,y1-1))}for(let y=y0;y<y1;y+=2){ad(x0,y);ad(Math.max(x0,x1-1),y)}
+  const bg=sb.map(v=>v/Math.max(1,nb)),lim=(100-+$("#ofSens").value)*2.4+20,m=[];let n=0,t=0;
+  for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const k=(y*W+x)*4,d=Math.abs(px[k]-bg[0])+Math.abs(px[k+1]-bg[1])+Math.abs(px[k+2]-bg[2]);t++;if(d>lim){n++;m.push(k/4)}}
+  return{pct:t?Math.round(n/t*100):0,m}}
+function orcDesenha(m){const cv=$("#ofCv"),x=cv.getContext("2d"),r=OF.r;x.drawImage(OF.img,0,0,OF.W,OF.H);
+  x.fillStyle="rgba(0,0,0,.45)";x.fillRect(0,0,OF.W,r.y);x.fillRect(0,r.y+r.h,OF.W,OF.H-r.y-r.h);x.fillRect(0,r.y,r.x,r.h);x.fillRect(r.x+r.w,r.y,OF.W-r.x-r.w,r.h);
+  if(m){const d=x.getImageData(0,0,OF.W,OF.H);for(const i of m){const k=i*4;d.data[k]=d.data[k]*.45+232*.55;d.data[k+1]=d.data[k+1]*.45+73*.55;d.data[k+2]=d.data[k+2]*.45+110*.55}x.putImageData(d,0,0)}
+  x.strokeStyle="#fff";x.lineWidth=2;x.setLineDash([6,4]);x.strokeRect(r.x,r.y,r.w,r.h);x.setLineDash([])}
+function orcMede(){if(!OF.img)return orcCalc();const{pct,m}=orcMascara();orcDesenha(m);$("#ofP").value=Math.max(1,pct);
+  const L=num($("#ofL").value)||10;$("#ofA").value=(L*OF.r.h/OF.r.w).toFixed(1);orcCalc()}
+function orcValores(){const area=num($("#ofL").value)*num($("#ofA").value),pts=Math.round(area*num($("#ofD").value)*num($("#ofP").value)/100),bord=pts*D.config.vp,mat=num($("#ofM").value);return{area,pts,bord,mat,tot:Math.ceil((bord+mat)*100)/100}}
+function orcCalc(){const v=orcValores();
+  $("#ofR").innerHTML=`Área do bordado: ${v.area.toFixed(0)} cm²<br>Pontos estimados: <b style="font-size:1.2rem">${v.pts.toLocaleString("pt-BR")}</b><br>
+  ${v.pts.toLocaleString("pt-BR")} × ${brl(D.config.vp)} = ${brl(v.bord)}${v.mat?` + ${brl(v.mat)} de material`:""}<br>
+  Valor sugerido: <b style="font-size:1.4rem">${brl(v.tot)}</b>
+  ${D.config.pct?`<div class="mudo">Reserva p/ material (${D.config.pct}%): ${brl(v.tot*D.config.pct/100)} · fica para você ${brl(v.tot*(1-D.config.pct/100))}</div>`:""}`}
+function usaModelo(k){const m=MODELOS[k];$("#ofL").value=m.l;$("#ofA").value=m.a;$("#ofP").value=m.p;$("#ofT").value=m.t;$("#ofD").value=DENS[m.t].d;orcCalc();aviso("Modelo: "+m.n)}
+function fotoOrc(){if(!OF.img)return null;const c=document.createElement("canvas"),s=Math.min(1,900/Math.max(OF.img.width,OF.img.height));c.width=Math.round(OF.img.width*s);c.height=Math.round(OF.img.height*s);c.getContext("2d").drawImage(OF.img,0,0,c.width,c.height);return c.toDataURL("image/jpeg",.72)}
+function orcParaPeca(){const v=orcValores();D.produtos.unshift({id:uid(),nome:"Peça orçada "+new Date().toLocaleDateString("pt-BR"),cat:"Necessaire",pontos:v.pts,custo:v.mat,preco:v.tot,qtd:0,foto:fotoOrc()});
+  try{localStorage.setItem(CHAVE,JSON.stringify(D))}catch(e){aviso("Memória cheia: tente uma foto menor")}pontos();aba="catalogo";sub=null;render();formProd(D.produtos[0].id);aviso("Peça criada. Dê um nome para ela")}
+function orcParaEnc(){const v=orcValores();formEnc();setTimeout(()=>{$("#fVal").value=String(v.tot).replace(".",",");$("#fObs").value=`Orçamento: ${v.pts.toLocaleString("pt-BR")} pontos estimados (${num($("#ofL")?.value||0)} × ${num($("#ofA")?.value||0)} cm)`},0)}
+
+/* ---------- marca, Instagram e Pix ---------- */
+const semAc=t=>String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function fone(z){const d=String(z||"").replace(/\D/g,"");return d.length===11?`(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`:d}
+const temPix=()=>!!(D.pix&&D.pix.chave);
+function meusDados(){const m=D.marca,p=D.pix;
+  abrir(`<h2 style="margin-top:4px">Meus dados</h2>
+  <h3>Pix</h3>
+  <div class="duas"><div class="campo"><label for="mpT">Tipo de chave</label><select id="mpT">${["Celular","CPF","CNPJ","E-mail","Aleatória"].map(t=>`<option ${t===p.tipo?"selected":""}>${t}</option>`).join("")}</select></div>
+  <div class="campo"><label for="mpC">Chave Pix</label><input id="mpC" value="${esc(p.chave)}" placeholder="Sua chave"></div></div>
+  <div class="duas"><div class="campo"><label for="mpN">Nome no banco</label><input id="mpN" value="${esc(p.nome)}" placeholder="Ex.: Adriana Fonseca"></div>
+  <div class="campo"><label for="mpCi">Cidade</label><input id="mpCi" value="${esc(p.cidade)}"></div></div>
+  <p class="mudo" style="margin-top:0">O nome e a cidade aparecem no banco da cliente quando ela lê o QR Code.</p>
+  <h3>Instagram e WhatsApp</h3>
+  <div class="duas"><div class="campo"><label for="mmI">Instagram (sem @)</label><input id="mmI" value="${esc(m.insta)}"></div>
+  <div class="campo"><label for="mmN">Nome da marca</label><input id="mmN" value="${esc(m.nome)}"></div></div>
+  <div class="campo"><label for="mmZ">WhatsApp para encomendas</label><input id="mmZ" inputmode="tel" value="${esc(fone(m.zap))}"></div>
+  <div class="linha"><button class="btn sec cresce" onclick="fechar()">Cancelar</button><button class="btn cresce" onclick="salvaDados()">Salvar</button></div>`)}
+function salvaDados(){D.pix={tipo:$("#mpT").value,chave:$("#mpC").value.trim(),nome:$("#mpN").value.trim(),cidade:$("#mpCi").value.trim()||"Tatui"};
+  D.marca={insta:$("#mmI").value.trim().replace(/^@/,""),nome:$("#mmN").value.trim(),zap:$("#mmZ").value.replace(/\D/g,"")};salvar();fechar();render();aviso("Dados salvos")}
+function chavePix(){const p=D.pix,c=p.chave.trim();
+  if(p.tipo==="Celular"){const d=c.replace(/\D/g,"");return d.startsWith("55")&&d.length>11?"+"+d:"+55"+d}
+  if(p.tipo==="CPF"||p.tipo==="CNPJ")return c.replace(/\D/g,"");if(p.tipo==="E-mail")return c.toLowerCase();return c}
+function crc16(t){let c=0xFFFF;for(let i=0;i<t.length;i++){c^=t.charCodeAt(i)<<8;for(let j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return c.toString(16).toUpperCase().padStart(4,"0")}
+function payloadPix(v){const f=(id,x)=>id+String(x.length).padStart(2,"0")+x;
+  const nome=semAc(D.pix.nome||D.perfil.nome||"Recebedor").toUpperCase().slice(0,25),cid=semAc(D.pix.cidade||"Tatui").toUpperCase().slice(0,15);
+  let p=f("00","01")+f("26",f("00","br.gov.bcb.pix")+f("01",chavePix()))+f("52","0000")+f("53","986")+(v>0?f("54",v.toFixed(2)):"")+f("58","BR")+f("59",nome)+f("60",cid)+f("62",f("05","***"))+"6304";
+  return p+crc16(p)}
+function qrSVG(t){try{const q=qrcode(0,"M");q.addData(t);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){return""}}
+function devedores(){return D.encomendas.filter(e=>(+e.valor||0)-(+e.sinal||0)>0).sort((a,b)=>(a.entrega||"9")>(b.entrega||"9")?1:-1)}
+function cobrar(id){const e=D.encomendas.find(x=>x.id===id),falta=(+e.valor||0)-(+e.sinal||0),n=e.cliente.split(" ")[0],tel=String(e.fone||"").replace(/\D/g,"");
+  if(!temPix())return abrir(`<h2 style="margin-top:4px">Cobrar ${esc(n)}</h2><div class="card">Você ainda não colocou sua chave Pix. Coloque uma vez só e ela fica guardada.</div>
+   <div class="linha" style="margin-top:12px"><button class="btn sec cresce" onclick="fechar()">Agora não</button><button class="btn cresce" onclick="meusDados()">Colocar minha chave Pix</button></div>`);
+  const cc=payloadPix(falta),qr=qrSVG(cc);
+  const msg=`Oi, ${n}! Tudo bem? 😊\nPassando para lembrar do valor da sua encomenda (${e.peca}${e.texto?" – "+e.texto:""}): ${brl(falta)}.\n\nPix (${D.pix.tipo}): ${D.pix.chave}\nNome: ${D.pix.nome||D.perfil.nome}\n\nSe preferir, use o Pix copia e cola:\n${cc}\n\nObrigada! 💕`;
+  abrir(`<h2 style="margin-top:4px">Cobrar ${esc(e.cliente)}</h2>
+  <div class="result" style="text-align:center">Valor: <b style="font-size:1.3rem">${brl(falta)}</b><div class="mudo">${esc(e.peca)}</div></div>
+  ${qr?`<div class="qrbox" aria-label="QR Code do Pix">${qr}</div><p class="mudo" style="text-align:center;margin-top:0">A cliente abre o app do banco e aponta a câmera. O valor já vem preenchido.</p>`:""}
+  <div class="campo"><label>Sua chave Pix (${esc(D.pix.tipo)})</label><div class="linha"><input readonly value="${esc(D.pix.chave)}"><button class="btn sec peq" onclick="copiar(${esc(JSON.stringify(D.pix.chave))})">Copiar</button></div></div>
+  <div class="campo"><label for="ccPix">Pix copia e cola</label><textarea id="ccPix" readonly style="min-height:60px;font-size:.75rem">${esc(cc)}</textarea><button class="btn sec peq" onclick="copiar($('#ccPix').value)">Copiar Pix copia e cola</button></div>
+  <h3>Mensagem de cobrança</h3><div class="card" style="white-space:pre-wrap;user-select:all;font-size:.88rem;word-break:break-word">${esc(msg)}</div>
+  <div class="linha" style="margin-top:8px"><button class="btn sec cresce" onclick="copiar(${esc(JSON.stringify(msg))})">Copiar mensagem</button>${tel?`<a class="btn cresce" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/55${tel}?text=${encodeURIComponent(msg)}">Enviar no WhatsApp</a>`:""}</div>
+  <div class="linha" style="margin-top:12px"><button class="btn sec cresce" onclick="lancaEnc('${id}')">Recebi: lançar no caixa</button><button class="btn sec cresce" onclick="fechar()">Fechar</button></div>`)}
+
+const HASH={Necessaire:"#necessaire #necessairepersonalizada",Fralda:"#fraldadeboca #enxovaldebebe #bordadoinfantil","Pano de prato":"#panodeprato #cozinha",Toalha:"#toalhabordada #toalhapersonalizada","Bastidor decorativo":"#bastidor #bordadolivre #decoracao",Chaveiro:"#chaveiro #lembrancinha",Bolsa:"#bolsabordada"};
+function legendaInsta(p,comPreco){const m=D.marca;return `✨ ${p.nome} ✨\nBordado feito à mão, com muito amor e dedicação 🧵💕\n${comPreco?`💰 ${brl(p.preco)}\n`:""}📲 Encomendas pelo WhatsApp${m.zap?": "+fone(m.zap):""}\n${m.insta?"@"+m.insta+"\n":""}\n#bordado #bordadoamao #bordadopersonalizado #artesanato #feitoamao ${HASH[p.cat]||""} #tatui ${m.nome?"#"+semAc(m.nome).replace(/[^a-z0-9]/gi,"").toLowerCase():""}`.replace(/  +/g," ")}
+let ARTE=null;
+async function postarInsta(id){const p=D.produtos.find(x=>x.id===id);
+  if(!p.foto){aviso("Coloque uma foto na peça primeiro");return formProd(id)}
+  abrir(`<h2 style="margin-top:4px">Postar no Insta</h2>
+  <img id="arteImg" class="arte" alt="Arte para o Instagram">
+  <label class="linha mudo" style="margin:10px 0"><input type="checkbox" id="arteP" style="width:auto" checked> Mostrar o preço na arte e na legenda</label>
+  <button class="btn" style="width:100%" onclick="compartilharArte('${id}')">Compartilhar (escolha o Instagram)</button>
+  <p class="mudo" style="text-align:center">Se não abrir, toque e segure na imagem para salvar no celular e poste pelo Instagram.</p>
+  <h3>Legenda pronta</h3><textarea id="legIn" style="min-height:150px">${esc(legendaInsta(p,true))}</textarea>
+  <button class="btn sec" style="width:100%;margin-top:6px" onclick="copiar($('#legIn').value)">Copiar legenda</button>
+  ${D.marca.insta?`<a class="btn sec" style="display:block;text-align:center;text-decoration:none;margin-top:8px" target="_blank" rel="noopener" href="https://instagram.com/${encodeURIComponent(D.marca.insta)}">Abrir meu Instagram</a>`:""}
+  <button class="btn sec" style="width:100%;margin-top:8px" onclick="fechar()">Fechar</button>`);
+  const atual=async()=>{const cp=$("#arteP").checked;ARTE=await fazArte(p,cp);$("#arteImg").src=ARTE.toDataURL("image/jpeg",.9);$("#legIn").value=legendaInsta(p,cp)};
+  $("#arteP").onchange=atual;await atual()}
+async function fazArte(p,comPreco){
+  try{await document.fonts.load('64px "Young Serif"');await document.fonts.load('600 34px Figtree')}catch(e){}
+  const c=document.createElement("canvas");c.width=c.height=1080;const x=c.getContext("2d"),img=await new Promise(ok=>{const i=new Image();i.onload=()=>ok(i);i.src=p.foto});
+  x.fillStyle="#f6f2ec";x.fillRect(0,0,1080,1080);
+  x.strokeStyle="rgba(120,90,60,.08)";x.lineWidth=1;for(let k=0;k<1080;k+=12){x.beginPath();x.moveTo(k,0);x.lineTo(k,1080);x.moveTo(0,k);x.lineTo(1080,k);x.stroke()}
+  const L=60,T=60,W=960,H=760,s=Math.max(W/img.width,H/img.height),sw=W/s,sh=H/s;
+  x.save();x.beginPath();x.roundRect?x.roundRect(L,T,W,H,36):x.rect(L,T,W,H);x.clip();x.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,L,T,W,H);x.restore();
+  x.strokeStyle="#a8324a";x.lineWidth=5;for(let k=L;k<=L+W;k+=24){[T-26,T+H+24].forEach(y=>{x.beginPath();x.moveTo(k-7,y-7);x.lineTo(k+7,y+7);x.moveTo(k+7,y-7);x.lineTo(k-7,y+7);x.stroke()})}
+  x.fillStyle="#2d2420";x.textBaseline="alphabetic";let fs=58;x.font=`${fs}px "Young Serif", Georgia, serif`;while(x.measureText(p.nome).width>(comPreco?640:960)&&fs>34){fs-=2;x.font=`${fs}px "Young Serif", Georgia, serif`}
+  x.fillText(p.nome,L,T+H+110);
+  if(comPreco){x.font='64px "Young Serif", Georgia, serif';x.fillStyle="#a8324a";x.textAlign="right";x.fillText(brl(p.preco),L+W,T+H+110);x.textAlign="left"}
+  x.font='600 32px Figtree, sans-serif';x.fillStyle="#7a6b62";
+  const rod=[D.marca.insta?"@"+D.marca.insta:"",D.marca.zap?"Encomendas: "+fone(D.marca.zap):""].filter(Boolean).join("   ·   ");x.fillText(rod,L,T+H+170);
+  const lg=await new Promise(ok=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>ok(null);i.src=LOGO});if(lg){x.save();x.shadowColor="rgba(0,0,0,.25)";x.shadowBlur=18;x.drawImage(lg,L+W-170,T+20,150,150);x.restore()}
+  if(D.marca.nome){x.font='34px "Young Serif", Georgia, serif';x.fillStyle="#a8324a";x.textAlign="right";x.fillText(D.marca.nome,L+W,T+H+170);x.textAlign="left"}
+  return c}
+async function compartilharArte(id){const p=D.produtos.find(x=>x.id===id);try{
+  const b=await new Promise(ok=>ARTE.toBlob(ok,"image/jpeg",.9)),f=new File([b],(semAc(p.nome).replace(/\W+/g,"-")||"bordado")+".jpg",{type:"image/jpeg"});
+  try{await navigator.clipboard.writeText($("#legIn").value)}catch(e){}
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:$("#legIn").value});aviso("Legenda copiada: é só colar no Insta");return}}catch(e){}
+  aviso("Toque e segure na imagem para salvar, depois poste no Instagram")}
+
+/* ---------- aula em vídeo (animada, com narração) ---------- */
+const AULAS=[
+ {t:"Começando",cenas:[
+  {tela:"Início",cap:"Oi! Este é o seu Ateliê de Bordado. Aqui você controla encomendas, vendas, caixa, linhas e muito mais.",el:["linha","linha","linha"]},
+  {tela:"Início",cap:"Para trocar as fotos, toque na camerazinha em cima da sua foto. Para mudar o nome, como Adri, toque no lapizinho ao lado do nome.",btn:"✎  📷"},
+  {tela:"Suas fotos e nome",cap:"Você pode colocar várias fotos. Elas ficam virando uma depois da outra, junto com o logo Dry'Arts. Toque no xis vermelho para tirar uma foto.",btn:"Adicionar da galeria",sec:1},
+  {tela:"Início",cap:"Embaixo da tela ficam as abas: Início, Encomendas, Catálogo, Caixa, Linhas e Ferramentas. É só tocar para mudar de tela.",el:["abas"]}]},
+ {t:"Encomendas",cenas:[
+  {tela:"Encomendas",cap:"Quando uma cliente pedir um bordado, vá na aba Encomendas e toque em mais Nova.",btn:"+ Nova"},
+  {tela:"Nova encomenda",cap:"Preencha o nome da cliente, o WhatsApp, a peça, o que vai bordar, a cor da linha e a data de entrega.",el:["campo:Cliente","campo:Peça","campo:O que bordar","campo:Entrega"]},
+  {tela:"Nova encomenda",cap:"Coloque o valor total e quanto ela já pagou de sinal. O app calcula quanto falta receber. Depois toque em Salvar.",el:["campo:Valor total","campo:Sinal pago"],btn:"Salvar"},
+  {tela:"Encomendas",cap:"Toque na encomenda para mudar a situação: Aguardando, Bordando, Pronto ou Entregue.",el:["chips"]},
+  {tela:"Encomendas",cap:"Lá dentro tem uma mensagem pronta para a cliente. Toque em Copiar mensagem ou Abrir WhatsApp.",btn:"Abrir WhatsApp"},
+  {tela:"Encomendas",cap:"Bolinha laranja quer dizer que a entrega está chegando. Bolinha vermelha quer dizer que atrasou.",el:["bolinhas"]}]},
+ {t:"Preço por ponto",cenas:[
+  {tela:"Catálogo",cap:"No Catálogo você cadastra suas peças, como as necessaires. Toque em mais Peça.",btn:"+ Peça"},
+  {tela:"Nova peça",cap:"Coloque a foto, o nome e quantos pontos tem o bordado. Cada ponto vale um centavo.",el:["campo:Foto da peça","campo:Pontos do bordado"]},
+  {tela:"Nova peça",cap:"Não sabe quantos pontos? Abra Estimar pelo tamanho, coloque a largura e a altura em centímetros, ou mande uma foto só do bordado.",btn:"Estimar pelo tamanho",sec:1},
+  {tela:"Nova peça",cap:"O app soma os pontos com o custo da peça e mostra o preço sugerido. Toque em Usar para aceitar.",btn:"Usar"},
+  {tela:"Catálogo",cap:"Para mudar o valor do ponto, vá no menu de três risquinhos e toque em Ajustes.",btn:"Ajustes",sec:1},
+  {tela:"Início",cap:"Quer saber quanto cobrar? Na tela de Início toque em Quanto cobrar, calcular pela foto.",btn:"Quanto cobrar?"},
+  {tela:"Calcular pela foto",cap:"Tire a foto da peça e arraste o dedo em volta do bordado. O app pinta de rosa o que contou como bordado.",el:["linha","linha"],btn:"Tirar foto",sec:1},
+  {tela:"Calcular pela foto",cap:"Coloque a largura do bordado em centímetros e o tipo de bordado. O app mostra os pontos e o valor na hora.",el:["campo:Largura do bordado (cm)","campo:Tipo de bordado"]},
+  {tela:"Calcular pela foto",cap:"Sem foto? Escolha um modelo pronto, como Nome em fralda ou Necessaire com flores. Depois toque em Fazer encomenda ou Salvar como peça.",btn:"Fazer encomenda"}]},
+ {t:"Vender",cenas:[
+  {tela:"Catálogo",cap:"Vendeu uma peça pronta? Toque em Vender embaixo dela.",btn:"Vender"},
+  {tela:"Vender",cap:"Confira a quantidade, o preço e a forma de pagamento, e toque em Confirmar venda. A venda já entra no caixa e o estoque diminui sozinho.",btn:"Confirmar venda"},
+  {tela:"Encomendas",cap:"Para encomendas, abra a encomenda e toque em Lançar no caixa quando receber o dinheiro.",btn:"Lançar no caixa",sec:1}]},
+ {t:"Caixa",cenas:[
+  {tela:"Caixa",cap:"Na aba Caixa você vê quanto recebeu hoje, quanto falta receber e quanto gastou.",el:["linha","linha"]},
+  {tela:"Caixa",cap:"A reserva para material separa vinte por cento de tudo que entra, para comprar linha e tecido. Se não quiser separar, toque em zero por cento.",el:["pct"]},
+  {tela:"Caixa",cap:"Comprou material? Toque no botão vermelho Lançar gasto e escolha: linha, etamine, zíper, bastidor.",btn:"− Lançar gasto",verm:1},
+  {tela:"Caixa",cap:"Mais embaixo tem o resumo da semana e do mês. As setinhas mudam o dia, a semana ou o mês.",el:["linha","linha","linha"]}]},
+ {t:"Linhas",cenas:[
+  {tela:"Linhas",cap:"Na aba Linhas você guarda quantas meadas tem de cada cor. Toque em mais Linha.",btn:"+ Linha"},
+  {tela:"Linhas",cap:"Digite o número da cor, como 310, ou toque na cor na paleta. Use mais e menos para atualizar a quantidade.",el:["cores"]},
+  {tela:"Linhas",cap:"Quando sobra uma meada ou nenhuma, aparece a bolinha laranja. O botão Puxar linhas acabando monta a lista de compras.",btn:"Puxar linhas acabando",sec:1},
+  {tela:"Linhas",cap:"Depois toque em Copiar lista para o WhatsApp e mande para quem vai comprar.",btn:"Copiar lista"}]},
+ {t:"Ferramentas",cenas:[
+  {tela:"Ferramentas",cap:"Em Ferramentas tem o gráfico de ponto cruz: escolha uma foto ou desenho e o app monta o gráfico com as cores e quantos pontos tem.",btn:"Gráfico de ponto cruz",sec:1},
+  {tela:"Ferramentas",cap:"Tem também calculadora de tecido, de meadas e de preço por ponto. É só preencher que o resultado aparece na hora.",el:["campo:Quantidade de pontos","linha"]},
+  {tela:"Ferramentas",cap:"Em Projetos e contadores você conta os pontos feitos e as carreiras, tocando no mais e no menos.",btn:"+",},
+  {tela:"Ferramentas",cap:"E no Guia de pontos tem a explicação de cada ponto: cruz, haste, corrente, nó francês, rococó e outros.",btn:"Guia de pontos",sec:1},
+  {tela:"Moldes e aulas",cap:"Em Moldes, riscos e aulas, digite um nome e o app monta o gráfico de ponto cruz, com o tamanho, os pontos e o preço. Dá até para virar encomenda.",btn:"Fazer encomenda"},
+  {tela:"Moldes e aulas",cap:"Tem gráficos prontos, como coração, flor, borboleta e casinha, e riscos para bordado livre. No modo decalque, coloque o tecido em cima da tela e risque.",btn:"Abrir para decalcar",sec:1},
+  {tela:"Moldes e aulas",cap:"E na parte Aulas e moldes grátis tem atalhos para vídeos no YouTube e moldes grátis no Google e no Pinterest.",btn:"▶ Aulas grátis"}]},
+ {t:"Instagram e Pix",cenas:[
+  {tela:"Mais opções",cap:"No menu de três risquinhos, toque em Minha chave Pix, Instagram e WhatsApp. Coloque sua chave Pix uma vez só.",btn:"Minha chave Pix",sec:1},
+  {tela:"Encomendas",cap:"Para cobrar uma cliente, abra a encomenda e toque em Cobrar com Pix. Aparece o QR Code com o valor e a mensagem pronta.",btn:"Cobrar com Pix"},
+  {tela:"Caixa",cap:"No Caixa tem a lista Quem está me devendo. Toque em Cobrar ao lado do nome.",btn:"Cobrar",sec:1},
+  {tela:"Nova peça",cap:"No Catálogo você pode tirar a foto da peça na hora, com a câmera.",btn:"Tirar foto agora",sec:1},
+  {tela:"Catálogo",cap:"Toque em Postar no Insta. O app monta a arte com a foto, o nome e o seu arroba, e uma legenda pronta com hashtags.",btn:"Postar no Insta"},
+  {tela:"Postar no Insta",cap:"Toque em Compartilhar e escolha o Instagram. Depois cole a legenda e publique.",btn:"Compartilhar"}]},
+ {t:"Cuidados",cenas:[
+  {tela:"Mais opções",cap:"Seus dados ficam guardados neste celular. De vez em quando toque em Fazer cópia de segurança e guarde o texto no WhatsApp.",btn:"Fazer cópia de segurança",sec:1},
+  {tela:"Mais opções",cap:"Trocou de celular? Use Restaurar cópia e cole o texto guardado.",btn:"Restaurar cópia",sec:1},
+  {tela:"Início",cap:"Lá em cima, do lado do seu nome, tem dois símbolos: a setinha saindo da caixinha compartilha o aplicativo, e a setinha girando atualiza o aplicativo.",el:["icones"]},
+  {tela:"Mais opções",cap:"Esses mesmos botões também ficam lá embaixo de todas as telas, junto com a Aula e o Como usar. Pronto, agora é só bordar!",btn:"Compartilhar aplicativo"}]}];
+let AU={c:0,i:0,toca:true,som:true,timer:null};
+function abrirAula(c){AU.c=c||0;AU.i=0;AU.toca=true;
+  const d=document.createElement("div");d.className="aula";d.id="aula";d.setAttribute("role","dialog");d.setAttribute("aria-label","Aula do aplicativo");
+  d.innerHTML=`<div class="aula-in">
+   <div class="linha"><b class="cresce" style="font-family:var(--f-tit);font-weight:400;font-size:1.25rem">Aula do Ateliê</b><button class="btn sec peq" onclick="fecharAula()">Fechar</button></div>
+   <div class="cap-lista" id="auCaps"></div>
+   <div class="celular" id="auCel"></div>
+   <div class="progresso"><i id="auProg" style="width:0"></i></div>
+   <div class="legenda-aula" id="auCap" aria-live="polite"></div>
+   <div class="aula-ctrl"><button class="btn sec" onclick="auPasso(-1)" aria-label="Voltar">‹</button><button class="btn" id="auPlay" onclick="auPlay()">Pausar</button><button class="btn sec" onclick="auPasso(1)" aria-label="Avançar">›</button><button class="btn sec" id="auSom" onclick="auSom()">Som ligado</button></div>
+   <p class="mudo" style="text-align:center;margin:0">A aula fala sozinha e passa as telas. Pode pausar quando quiser.</p></div>`;
+  document.body.appendChild(d);D.viuAula=true;salvar();auMostra()}
+function fecharAula(){clearTimeout(AU.timer);try{speechSynthesis.cancel()}catch(e){};const a=$("#aula");if(a)a.remove()}
+function auCena(){return AULAS[AU.c].cenas[AU.i]}
+function auVis(c){
+  const el=(c.el||[]).map(e=>{
+    if(e==="linha")return '<div class="cel-linha"></div>';
+    if(e==="icones")return '<div class="linha" style="justify-content:flex-end;gap:14px"><span class="cel-btn sec" style="padding:6px 10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></span><span class="cel-btn sec" style="padding:6px 10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span class="dedo"></span></span></div>';
+    if(e==="abas")return '<div class="linha" style="justify-content:space-between;margin-top:120px;font-size:.7rem;color:var(--sub)"><span>Início</span><span>Encomendas</span><span>Catálogo</span><span>Caixa</span><span>Linhas</span></div>';
+    if(e==="chips")return '<div class="linha" style="flex-wrap:wrap"><span class="chip aguardando">Aguardando</span><span class="chip bordando">Bordando</span><span class="chip pronto">Pronto</span><span class="chip entregue">Entregue</span></div>';
+    if(e==="bolinhas")return '<div class="linha"><span class="bolinha b-laranja"></span> entrega chegando</div><div class="linha"><span class="bolinha b-vermelha"></span> atrasada</div>';
+    if(e==="pct")return '<div class="filtros"><button class="on">20%</button><button>0%</button></div><div class="mudo">fica para você</div>';
+    if(e==="cores")return '<div style="display:grid;grid-template-columns:repeat(8,1fr);gap:4px">'+DMC.slice(0,16).map(d=>`<span style="aspect-ratio:1;border-radius:5px;background:${d[2]};border:1px solid var(--linha)"></span>`).join("")+'</div>';
+    if(e.startsWith("campo:"))return `<div class="cel-campo">${e.slice(6)}</div>`;return""}).join("");
+  const b=c.btn?`<span class="cel-btn ${c.sec?"sec":""}" style="${c.verm?"background:var(--vermelho)":""}">${esc(c.btn)}<span class="dedo"></span></span>`:"";
+  return `<div class="cel-topo">${D.perfil.foto?`<img src="${D.perfil.foto}" alt="" style="width:26px;height:26px;border-radius:50%;object-fit:cover">`:""}${esc(c.tela)}</div><div class="cel-corpo">${el}${b}<div class="cel-linha" style="width:70%"></div><div class="cel-linha" style="width:50%"></div></div>`}
+function auMostra(){
+  clearTimeout(AU.timer);try{speechSynthesis.cancel()}catch(e){}
+  const c=auCena(),tot=AULAS.reduce((s,a)=>s+a.cenas.length,0),feitas=AULAS.slice(0,AU.c).reduce((s,a)=>s+a.cenas.length,0)+AU.i+1;
+  $("#auCaps").innerHTML=AULAS.map((a,k)=>`<button class="${k===AU.c?"on":""}" onclick="AU.c=${k};AU.i=0;auMostra()">${a.t}</button>`).join("");
+  const on=$("#auCaps .on");if(on)on.scrollIntoView({block:"nearest",inline:"center"});
+  $("#auCel").innerHTML=auVis(c);$("#auCap").textContent=c.cap;$("#auProg").style.width=(feitas/tot*100)+"%";
+  $("#auPlay").textContent=AU.toca?"Pausar":"Continuar";$("#auSom").textContent=AU.som?"Som ligado":"Sem som";
+  if(!AU.toca)return;
+  const prox=()=>{AU.timer=setTimeout(()=>auPasso(1,true),900)};
+  let falou=false;
+  if(AU.som){try{const u=new SpeechSynthesisUtterance(c.cap);u.lang="pt-BR";u.rate=1;
+    const v=speechSynthesis.getVoices().find(v=>/pt[-_]BR/i.test(v.lang));if(v)u.voice=v;
+    u.onend=()=>{if(AU.toca&&$("#aula"))prox()};speechSynthesis.speak(u);falou=true}catch(e){}}
+  AU.timer=setTimeout(()=>auPasso(1,true),falou?Math.max(9000,c.cap.length*95):Math.max(5000,c.cap.length*65));
+}
+function auPasso(n,auto){const a=AULAS[AU.c];AU.i+=n;
+  if(AU.i>=a.cenas.length){if(AU.c<AULAS.length-1){AU.c++;AU.i=0}else{AU.i=a.cenas.length-1;if(auto){AU.toca=false;auMostra();$("#auCap").textContent="Fim da aula! Toque em Fechar para começar a usar.";return}}}
+  if(AU.i<0){if(AU.c>0){AU.c--;AU.i=AULAS[AU.c].cenas.length-1}else AU.i=0}
+  auMostra()}
+function auPlay(){AU.toca=!AU.toca;auMostra()}
+function auSom(){AU.som=!AU.som;auMostra()}
+
+/* ---------- como usar (texto) ---------- */
+function guia(){abrir(`<h2 style="margin-top:4px">Como usar</h2>
+  <button class="btn" style="width:100%;margin-bottom:10px" onclick="fechar();abrirAula(0)">▶ Assistir à aula</button>
+  <div class="card">${AULAS.map((a,k)=>`<details class="passo" ${k===0?"open":""}><summary>${a.t}</summary><ul>${a.cenas.map(c=>`<li>${esc(c.cap)}</li>`).join("")}</ul>
+   <button class="voltar" style="padding:4px 0" onclick="fechar();abrirAula(${k})">▶ Ver esta parte em aula</button></details>`).join("")}</div>
+  <button class="btn sec" style="width:100%;margin-top:12px" onclick="fechar()">Fechar</button>`)}
+
+/* ---------- render ---------- */
+const listaVira=()=>{const pf=D.perfil;return[...(pf.fotos||[]),...(pf.logo&&pf.fotos&&pf.fotos.length?[LOGO_GIRA]:[])]};
+let VI={i:0,ang:0,t:null};
+function viraIniciar(){const l=listaVira();VI.i=VI.i%Math.max(1,l.length);
+  document.querySelectorAll(".flip-in").forEach(el=>{el.style.transition="none";el.style.transform=`rotateY(${VI.ang}deg)`;const im=el.querySelectorAll("img"),frente=(VI.ang/180)%2===0;
+    im[frente?0:1].src=l[VI.i]||"";im[frente?1:0].src=l[(VI.i+1)%Math.max(1,l.length)]||"";void el.offsetWidth;el.style.transition=""});
+  clearInterval(VI.t);if(l.length>1)VI.t=setInterval(viraPasso,4000)}
+function viraPasso(){const l=listaVira();if(l.length<2)return;VI.i=(VI.i+1)%l.length;VI.ang+=180;const frente=(VI.ang/180)%2===0;
+  document.querySelectorAll(".flip-in").forEach(el=>{const im=el.querySelectorAll("img");im[frente?0:1].src=l[VI.i];el.style.transform=`rotateY(${VI.ang}deg)`;
+    setTimeout(()=>{im[frente?1:0].src=l[(VI.i+1)%l.length]},1000)})}
+function topo(){const pf=D.perfil;pf.foto=(pf.fotos&&pf.fotos[0])||null;$("#btnPerfil").hidden=!pf.foto;$("#iconeTopo").hidden=!!pf.foto;$("#nomeTopo").textContent=pf.nome||"Dry'Arts"}
+let FOTOS_ED=[];
+function editaPerfil(){const pf=D.perfil;FOTOS_ED=[...(pf.fotos||[])];
+  abrir(`<h2 style="margin-top:4px">Suas fotos e nome</h2>
+  <p class="mudo" style="margin-top:0">Coloque quantas fotos quiser. Elas ficam virando uma depois da outra.</p>
+  <div class="fotos-ed" id="pfLista"></div>
+  <div class="duas"><div class="campo"><label for="pfCam">Tirar foto</label><input type="file" id="pfCam" accept="image/*" capture="user"></div>
+  <div class="campo"><label for="pfF">Adicionar da galeria</label><input type="file" id="pfF" accept="image/*" multiple></div></div>
+  <label class="linha" style="margin-bottom:10px"><input type="checkbox" id="pfLogo" style="width:auto" ${pf.logo?"checked":""}> Mostrar o logo Dry'Arts no meio das fotos</label>
+  <div class="linha" style="flex-wrap:wrap;margin-bottom:10px"><button class="btn sec peq" onclick="FOTOS_ED=[];pfLista()">Ficar sem foto</button><button class="btn sec peq" onclick="if(!FOTOS_ED.includes(FOTO_PADRAO))FOTOS_ED.unshift(FOTO_PADRAO);pfLista()">Voltar a foto original</button></div>
+  <div class="campo"><label for="pfT">Tamanho da foto: <span id="pfTv">${pf.tam}</span> px</label><input type="range" id="pfT" min="56" max="180" value="${pf.tam}" style="padding:0"></div>
+  <div class="campo"><label for="pfN">Nome (pode deixar vazio)</label><input id="pfN" value="${esc(pf.nome)}" placeholder="Ex.: Adri"></div>
+  <div class="linha"><button class="btn sec cresce" onclick="fechar()">Cancelar</button><button class="btn cresce" onclick="salvaPerfil()">Salvar</button></div>`);
+  $("#pfT").oninput=e=>{$("#pfTv").textContent=e.target.value};
+  const add=async ev=>{for(const f of ev.target.files){try{FOTOS_ED.push(await compQuad(f))}catch(e){aviso("Não consegui abrir uma das fotos")}}ev.target.value="";pfLista()};
+  $("#pfF").onchange=add;$("#pfCam").onchange=add;pfLista()}
+function pfLista(){$("#pfLista").innerHTML=FOTOS_ED.map((f,k)=>`<div><img src="${f}" alt="Foto"><button onclick="FOTOS_ED.splice(${k},1);pfLista()" aria-label="Tirar esta foto">×</button></div>`).join("")||'<span class="mudo">Nenhuma foto. Adicione abaixo.</span>'}
+async function compQuad(f){const i=await carregaImg(f);const s=Math.min(i.width,i.height),c=document.createElement("canvas");c.width=c.height=360;c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,360,360);return c.toDataURL("image/jpeg",.75)}
+function salvaPerfil(){D.perfil={nome:$("#pfN").value.trim(),fotos:FOTOS_ED,foto:FOTOS_ED[0]||null,logo:$("#pfLogo").checked,tam:+$("#pfT").value};VI.i=0;try{localStorage.setItem(CHAVE,JSON.stringify(D))}catch(e){aviso("Memória cheia: tire alguma foto");return}salvar();fechar();render();aviso("Foto e nome salvos")}
+function render(){
+  topo();setTimeout(viraIniciar,0);
+  $("#tela").innerHTML=telas[aba]();
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("ativo",b.dataset.aba===aba));
+  if(aba==="ferramentas"&&sub&&FERR[sub].depois)FERR[sub].depois();
+  pontos();
+}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{aba=b.dataset.aba;sub=null;render();window.scrollTo(0,0)});
+$("#btnMais").onclick=abrirMais;
+const h=new Date().getHours();$("#saudacao").textContent=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite";
+$("#versao").textContent=VERSAO;$("#logoRod").src=LOGO_GIRA;
+render();
+</script>
+
+</body>
+</html>
